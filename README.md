@@ -1,4 +1,4 @@
-# FitLife - Fitness Tracking Website
+# ByteForce - Fitness Tracking Website
 
 Modern ve kullanıcı dostu bir fitness takip web sitesi.
 
@@ -22,8 +22,8 @@ Modern ve kullanıcı dostu bir fitness takip web sitesi.
 
 1. Projeyi klonlayın:
 ```bash
-git clone https://github.com/kullaniciadi/fitlife.git
-cd fitlife
+git clone https://github.com/kullaniciadi/ByteForce.git
+cd ByteForce
 ```
 
 2. Gerekli paketleri yükleyin:
@@ -60,11 +60,7 @@ npm run dev
 4. Branch'inizi push edin (`git push origin feature/AmazingFeature`)
 5. Pull Request oluşturun
 
-## Lisans
-
-Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için [LICENSE](LICENSE) dosyasına bakın.
-
 ## İletişim
 
-Proje Sahibi - [@github_username](https://github.com/github_username)
-Proje Linki: [https://github.com/github_username/fitlife](https://github.com/github_username/fitlife) 
+Proje Sahibi - [@VolkanBkcl](https://github.com/VolkanBkcl)
+Proje Linki: [https://github.com/VolkanBkcl/Sports-Website]
