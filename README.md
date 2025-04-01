@@ -60,7 +60,10 @@ npm run dev
 4. Branch'inizi push edin (`git push origin feature/AmazingFeature`)
 5. Pull Request oluşturun
 
+<<<<<<< HEAD
 ## İletişim
 
 Proje Sahibi - [@VolkanBkcl](https://github.com/VolkanBkcl)
 Proje Linki: [https://github.com/VolkanBkcl/Sports-Website]
+=======
+>>>>>>> 5d10425b16fa65b9d73400f6c53bb1e6c88492e6
