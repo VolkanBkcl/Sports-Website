@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil - FitLife</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="logo">
+                <h1>FitLife</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Ana Sayfa</a></li>
+                <li><a href="#programlar">Programlar</a></li>
+                <li><a href="#egzersizler">Egzersizler</a></li>
+                <li><a href="#beslenme">Beslenme</a></li>
+                <li><a href="#topluluk">Topluluk</a></li>
+                <li><a href="#iletisim">İletişim</a></li>
+            </ul>
+            <div class="user-menu">
+                <img src="https://source.unsplash.com/random/100x100/?portrait" alt="Profil" class="profile-pic">
+                <div class="dropdown-menu">
+                    <a href="#"><i class="fas fa-user"></i> Profilim</a>
+                    <a href="#"><i class="fas fa-cog"></i> Ayarlar</a>
+                    <a href="#"><i class="fas fa-sign-out-alt"></i> Çıkış</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="profile-main">
+        <div class="profile-container">
+            <!-- Profil Başlığı -->
+            <section class="profile-header">
+                <div class="profile-info">
+                    <img src="https://source.unsplash.com/random/150x150/?portrait" alt="Profil Fotoğrafı" class="profile-photo">
+                    <div class="profile-details">
+                        <h1>Ahmet Yılmaz</h1>
+                        <p class="member-since">Üyelik: Ocak 2024</p>
+                        <div class="profile-stats">
+                            <div class="stat">
+                                <span class="stat-number">120</span>
+                                <span class="stat-label">Antrenman</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">85%</span>
+                                <span class="stat-label">Hedef</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">4.8</span>
+                                <span class="stat-label">Puan</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="edit-profile-btn"><i class="fas fa-edit"></i> Profili Düzenle</button>
+            </section>
+
+            <!-- İlerleme Takibi -->
+            <section class="progress-section">
+                <h2>İlerleme Takibi</h2>
+                <div class="progress-grid">
+                    <div class="progress-card">
+                        <h3>Kilo Hedefi</h3>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 75%"></div>
+                        </div>
+                        <p>75 kg / 70 kg</p>
+                    </div>
+                    <div class="progress-card">
+                        <h3>Kas Kütlesi</h3>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 60%"></div>
+                        </div>
+                        <p>35 kg / 40 kg</p>
+                    </div>
+                    <div class="progress-card">
+                        <h3>Yağ Oranı</h3>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 80%"></div>
+                        </div>
+                        <p>15% / 12%</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Günlük Egzersiz Takibi -->
+            <section class="daily-exercise">
+                <h2>Günlük Egzersiz Takibi</h2>
+                <div class="exercise-calendar">
+                    <div class="calendar-header">
+                        <button><i class="fas fa-chevron-left"></i></button>
+                        <h3>Mart 2024</h3>
+                        <button><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <div class="calendar-grid">
+                        <!-- Takvim günleri buraya gelecek -->
+                    </div>
+                </div>
+                <div class="today-exercises">
+                    <h3>Bugünkü Egzersizler</h3>
+                    <div class="exercise-list">
+                        <div class="exercise-item">
+                            <i class="fas fa-dumbbell"></i>
+                            <div class="exercise-details">
+                                <h4>Göğüs Antrenmanı</h4>
+                                <p>3 set x 12 tekrar</p>
+                            </div>
+                            <span class="status completed">Tamamlandı</span>
+                        </div>
+                        <div class="exercise-item">
+                            <i class="fas fa-running"></i>
+                            <div class="exercise-details">
+                                <h4>Kardio</h4>
+                                <p>30 dakika</p>
+                            </div>
+                            <span class="status pending">Bekliyor</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Beslenme Takibi -->
+            <section class="nutrition-tracker">
+                <h2>Beslenme Takibi</h2>
+                <div class="nutrition-summary">
+                    <div class="nutrition-card">
+                        <h3>Günlük Kalori</h3>
+                        <div class="calorie-circle">
+                            <span class="calories">1850</span>
+                            <span class="calorie-label">/ 2200 kcal</span>
+                        </div>
+                    </div>
+                    <div class="macros">
+                        <div class="macro">
+                            <span class="macro-label">Protein</span>
+                            <span class="macro-value">120g</span>
+                        </div>
+                        <div class="macro">
+                            <span class="macro-label">Karbonhidrat</span>
+                            <span class="macro-value">250g</span>
+                        </div>
+                        <div class="macro">
+                            <span class="macro-label">Yağ</span>
+                            <span class="macro-value">65g</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="meal-list">
+                    <h3>Öğünler</h3>
+                    <div class="meal-item">
+                        <div class="meal-time">08:00</div>
+                        <div class="meal-content">
+                            <h4>Kahvaltı</h4>
+                            <p>Yulaf, muz, protein tozu</p>
+                        </div>
+                        <div class="meal-calories">450 kcal</div>
+                    </div>
+                    <div class="meal-item">
+                        <div class="meal-time">12:30</div>
+                        <div class="meal-content">
+                            <h4>Öğle Yemeği</h4>
+                            <p>Tavuk, pilav, sebze</p>
+                        </div>
+                        <div class="meal-calories">650 kcal</div>
+                    </div>
+                    <div class="meal-item">
+                        <div class="meal-time">16:00</div>
+                        <div class="meal-content">
+                            <h4>Ara Öğün</h4>
+                            <p>Protein bar, elma</p>
+                        </div>
+                        <div class="meal-calories">250 kcal</div>
+                    </div>
+                    <div class="meal-item">
+                        <div class="meal-time">20:00</div>
+                        <div class="meal-content">
+                            <h4>Akşam Yemeği</h4>
+                            <p>Balık, salata, kinoa</p>
+                        </div>
+                        <div class="meal-calories">500 kcal</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>FitLife</h3>
+                <p>Fitness yolculuğunda yanındayız</p>
+            </div>
+            <div class="footer-section">
+                <h3>Hızlı Bağlantılar</h3>
+                <ul>
+                    <li><a href="#hakkimizda">Hakkımızda</a></li>
+                    <li><a href="#programlar">Programlar</a></li>
+                    <li><a href="#iletisim">İletişim</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Bizi Takip Edin</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 FitLife. Tüm hakları saklıdır.</p>
+        </div>
+    </footer>
+</body>
+</html> 
