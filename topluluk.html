@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topluluk - ByteForce</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="logo">
+                <h1>Byteforce</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Ana Sayfa</a></li>
+                <li><a href="programlar.html">Programlar</a></li>
+                <li><a href="egzersizler.html">Egzersizler</a></li>
+                <li><a href="beslenme.html">Beslenme</a></li>
+                <li><a href="topluluk.html" class="active">Topluluk</a></li>
+                <li><a href="iletisim.html">İletişim</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <div id="user-menu" class="user-menu">
+                    <img src="https://source.unsplash.com/random/100x100/?portrait" alt="Profil" class="profile-pic">
+                    <div class="dropdown-menu">
+                        <a href="profile.html"><i class="fas fa-user"></i> Profilim</a>
+                        <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Çıkış</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="community-container">
+        <section class="hero-section">
+            <h1>Fitness Topluluğu</h1>
+            <p>Deneyimlerinizi paylaşın, motivasyon bulun</p>
+        </section>
+
+        <section class="community-content">
+            <div class="content-header">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" data-tab="posts">Gönderiler</button>
+                    <button class="tab-btn" data-tab="challenges">Meydan Okumalar</button>
+                    <button class="tab-btn" data-tab="events">Etkinlikler</button>
+                </div>
+                <button class="new-post-btn" onclick="showNewPostModal()">
+                    <i class="fas fa-plus"></i> Yeni Gönderi
+                </button>
+            </div>
+
+            <div class="posts-container" id="posts">
+                <div class="post-card">
+                    <div class="post-header">
+                        <img src="https://source.unsplash.com/random/50x50/?portrait" alt="Kullanıcı">
+                        <div class="post-info">
+                            <h3>Ahmet Yılmaz</h3>
+                            <span>2 saat önce</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <p>Bugün bacak antrenmanı yaptım. İşte programım:</p>
+                        <ul>
+                            <li>Squat: 4x12</li>
+                            <li>Leg Press: 3x15</li>
+                            <li>Lunges: 3x12</li>
+                        </ul>
+                    </div>
+                    <div class="post-actions">
+                        <button><i class="far fa-heart"></i> 24</button>
+                        <button><i class="far fa-comment"></i> 8</button>
+                        <button><i class="far fa-share-square"></i></button>
+                    </div>
+                </div>
+
+                <div class="post-card">
+                    <div class="post-header">
+                        <img src="https://source.unsplash.com/random/50x50/?woman" alt="Kullanıcı">
+                        <div class="post-info">
+                            <h3>Ayşe Demir</h3>
+                            <span>5 saat önce</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <p>Yeni başlayanlar için beslenme önerileri 🥗</p>
+                        <img src="https://source.unsplash.com/random/400x300/?healthy-meal" alt="Sağlıklı Yemek">
+                    </div>
+                    <div class="post-actions">
+                        <button><i class="far fa-heart"></i> 42</button>
+                        <button><i class="far fa-comment"></i> 15</button>
+                        <button><i class="far fa-share-square"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Yeni Gönderi Modal -->
+    <div class="modal" id="new-post-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Yeni Gönderi</h2>
+                <button class="close-btn" onclick="closeNewPostModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <textarea placeholder="Ne düşünüyorsun?"></textarea>
+                <div class="upload-options">
+                    <button><i class="fas fa-image"></i> Fotoğraf</button>
+                    <button><i class="fas fa-video"></i> Video</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="post-btn">Paylaş</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Token kontrolü
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = 'index.html';
+        }
+
+        // Çıkış fonksiyonu
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = 'index.html';
+        }
+
+        // Modal fonksiyonları
+        function showNewPostModal() {
+            document.getElementById('new-post-modal').style.display = 'flex';
+        }
+
+        function closeNewPostModal() {
+            document.getElementById('new-post-modal').style.display = 'none';
+        }
+
+        // Tab değiştirme
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                // Tab içeriğini güncelle
+                console.log(`${button.dataset.tab} sekmesi açıldı`);
+            });
+        });
+    </script>
+</body>
+</html> 

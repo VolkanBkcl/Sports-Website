@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil - FitLife</title>
+    <title>Profilim - ByteForce</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -11,7 +11,7 @@
     <header class="header">
         <nav class="navbar">
             <div class="logo">
-                <h1>FitLife</h1>
+                <h1>Byteforce</h1>
             </div>
             <ul class="nav-links">
                 <li><a href="index.html">Ana Sayfa</a></li>
@@ -19,202 +19,370 @@
                 <li><a href="#egzersizler">Egzersizler</a></li>
                 <li><a href="#beslenme">Beslenme</a></li>
                 <li><a href="#topluluk">Topluluk</a></li>
-                <li><a href="#iletisim">İletişim</a></li>
             </ul>
-            <div class="user-menu">
-                <img src="https://source.unsplash.com/random/100x100/?portrait" alt="Profil" class="profile-pic">
-                <div class="dropdown-menu">
-                    <a href="#"><i class="fas fa-user"></i> Profilim</a>
-                    <a href="#"><i class="fas fa-cog"></i> Ayarlar</a>
-                    <a href="#"><i class="fas fa-sign-out-alt"></i> Çıkış</a>
+            <div class="auth-buttons">
+                <div id="user-menu" class="user-menu">
+                    <img src="https://source.unsplash.com/random/100x100/?portrait" alt="Profil" class="profile-pic">
+                    <div class="dropdown-menu">
+                        <a href="profile.html"><i class="fas fa-user"></i> Profilim</a>
+                        <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Çıkış</a>
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
 
-    <main class="profile-main">
-        <div class="profile-container">
-            <!-- Profil Başlığı -->
-            <section class="profile-header">
-                <div class="profile-info">
-                    <img src="https://source.unsplash.com/random/150x150/?portrait" alt="Profil Fotoğrafı" class="profile-photo">
-                    <div class="profile-details">
-                        <h1>Ahmet Yılmaz</h1>
-                        <p class="member-since">Üyelik: Ocak 2024</p>
-                        <div class="profile-stats">
-                            <div class="stat">
-                                <span class="stat-number">120</span>
-                                <span class="stat-label">Antrenman</span>
+    <main class="profile-container">
+        <section class="profile-header">
+            <div class="profile-info">
+                <img src="https://source.unsplash.com/random/200x200/?portrait" alt="Profil Fotoğrafı" class="profile-photo">
+                <div class="profile-details">
+                    <h1 id="user-name">Yükleniyor...</h1>
+                    <p id="user-email">Yükleniyor...</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="profile-content">
+            <div class="profile-section fitness-goals-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-bullseye"></i> Fitness Hedeflerim</h2>
+                    <p class="section-description">Hedeflerinizi belirleyin ve ilerlemenizi takip edin</p>
+                </div>
+                
+                <form id="fitness-goals-form" class="profile-form">
+                    <div class="form-grid">
+                        <div class="form-card">
+                            <div class="form-icon">
+                                <i class="fas fa-weight"></i>
                             </div>
-                            <div class="stat">
-                                <span class="stat-number">85%</span>
-                                <span class="stat-label">Hedef</span>
+                            <div class="form-group">
+                                <label for="current-weight">Mevcut Kilo (kg)</label>
+                                <input type="number" id="current-weight" step="0.1" required>
                             </div>
-                            <div class="stat">
-                                <span class="stat-number">4.8</span>
-                                <span class="stat-label">Puan</span>
+                        </div>
+
+                        <div class="form-card">
+                            <div class="form-icon">
+                                <i class="fas fa-bullseye"></i>
+                            </div>
+                            <div class="form-group">
+                                <label for="target-weight">Hedef Kilo (kg)</label>
+                                <input type="number" id="target-weight" step="0.1" required>
+                            </div>
+                        </div>
+
+                        <div class="form-card">
+                            <div class="form-icon">
+                                <i class="fas fa-ruler-vertical"></i>
+                            </div>
+                            <div class="form-group">
+                                <label for="height">Boy (cm)</label>
+                                <input type="number" id="height" required>
+                            </div>
+                        </div>
+
+                        <div class="form-card">
+                            <div class="form-icon">
+                                <i class="fas fa-birthday-cake"></i>
+                            </div>
+                            <div class="form-group">
+                                <label for="age">Yaş</label>
+                                <input type="number" id="age" required>
+                            </div>
+                        </div>
+
+                        <div class="form-card">
+                            <div class="form-icon">
+                                <i class="fas fa-venus-mars"></i>
+                            </div>
+                            <div class="form-group">
+                                <label for="gender">Cinsiyet</label>
+                                <select id="gender" required>
+                                    <option value="">Seçiniz</option>
+                                    <option value="male">Erkek</option>
+                                    <option value="female">Kadın</option>
+                                    <option value="other">Diğer</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-card">
+                            <div class="form-icon">
+                                <i class="fas fa-fire"></i>
+                            </div>
+                            <div class="form-group">
+                                <label for="activity-level">Aktivite Seviyesi</label>
+                                <select id="activity-level" required>
+                                    <option value="">Seçiniz</option>
+                                    <option value="sedentary">Hareketsiz</option>
+                                    <option value="light">Hafif Aktif</option>
+                                    <option value="moderate">Orta Aktif</option>
+                                    <option value="active">Aktif</option>
+                                    <option value="very-active">Çok Aktif</option>
+                                </select>
                             </div>
                         </div>
                     </div>
-                </div>
-                <button class="edit-profile-btn"><i class="fas fa-edit"></i> Profili Düzenle</button>
-            </section>
 
-            <!-- İlerleme Takibi -->
-            <section class="progress-section">
-                <h2>İlerleme Takibi</h2>
-                <div class="progress-grid">
+                    <div class="goals-section">
+                        <h3><i class="fas fa-flag"></i> Fitness Hedefleriniz</h3>
+                        <div class="goals-grid">
+                            <label class="goal-card">
+                                <input type="checkbox" name="goals" value="weight-loss">
+                                <div class="goal-content">
+                                    <i class="fas fa-weight"></i>
+                                    <span>Kilo Verme</span>
+                                </div>
+                            </label>
+                            <label class="goal-card">
+                                <input type="checkbox" name="goals" value="muscle-gain">
+                                <div class="goal-content">
+                                    <i class="fas fa-dumbbell"></i>
+                                    <span>Kas Kazanma</span>
+                                </div>
+                            </label>
+                            <label class="goal-card">
+                                <input type="checkbox" name="goals" value="endurance">
+                                <div class="goal-content">
+                                    <i class="fas fa-running"></i>
+                                    <span>Dayanıklılık</span>
+                                </div>
+                            </label>
+                            <label class="goal-card">
+                                <input type="checkbox" name="goals" value="flexibility">
+                                <div class="goal-content">
+                                    <i class="fas fa-yoga"></i>
+                                    <span>Esneklik</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <span>Hedefleri Kaydet</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </form>
+
+                <!-- Yükleme Animasyonu -->
+                <div id="loading-animation" class="loading-animation hidden">
+                    <div class="loading-content">
+                        <div class="loading-spinner">
+                            <div class="spinner"></div>
+                        </div>
+                        <h3>Kişisel Antrenman ve Beslenme Programı Oluşturuluyor</h3>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar"></div>
+                        </div>
+                        <p class="loading-text">Programınız hazırlanıyor, lütfen bekleyin...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-section progress-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-chart-line"></i> İlerleme Takibi</h2>
+                    <p class="section-description">Hedeflerinize ulaşma yolundaki ilerlemenizi takip edin</p>
+                </div>
+                <div class="progress-container">
                     <div class="progress-card">
+                        <div class="progress-icon">
+                            <i class="fas fa-weight"></i>
+                        </div>
                         <h3>Kilo Hedefi</h3>
                         <div class="progress-bar">
-                            <div class="progress" style="width: 75%"></div>
+                            <div class="progress" id="weight-progress"></div>
                         </div>
-                        <p>75 kg / 70 kg</p>
+                        <div class="progress-stats">
+                            <span class="current" id="current-weight-display">-- kg</span>
+                            <span class="target" id="target-weight-display">Hedef: -- kg</span>
+                        </div>
                     </div>
                     <div class="progress-card">
-                        <h3>Kas Kütlesi</h3>
-                        <div class="progress-bar">
-                            <div class="progress" style="width: 60%"></div>
-                        </div>
-                        <p>35 kg / 40 kg</p>
-                    </div>
-                    <div class="progress-card">
-                        <h3>Yağ Oranı</h3>
-                        <div class="progress-bar">
-                            <div class="progress" style="width: 80%"></div>
-                        </div>
-                        <p>15% / 12%</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Günlük Egzersiz Takibi -->
-            <section class="daily-exercise">
-                <h2>Günlük Egzersiz Takibi</h2>
-                <div class="exercise-calendar">
-                    <div class="calendar-header">
-                        <button><i class="fas fa-chevron-left"></i></button>
-                        <h3>Mart 2024</h3>
-                        <button><i class="fas fa-chevron-right"></i></button>
-                    </div>
-                    <div class="calendar-grid">
-                        <!-- Takvim günleri buraya gelecek -->
-                    </div>
-                </div>
-                <div class="today-exercises">
-                    <h3>Bugünkü Egzersizler</h3>
-                    <div class="exercise-list">
-                        <div class="exercise-item">
+                        <div class="progress-icon">
                             <i class="fas fa-dumbbell"></i>
-                            <div class="exercise-details">
-                                <h4>Göğüs Antrenmanı</h4>
-                                <p>3 set x 12 tekrar</p>
-                            </div>
-                            <span class="status completed">Tamamlandı</span>
                         </div>
-                        <div class="exercise-item">
-                            <i class="fas fa-running"></i>
-                            <div class="exercise-details">
-                                <h4>Kardio</h4>
-                                <p>30 dakika</p>
-                            </div>
-                            <span class="status pending">Bekliyor</span>
+                        <h3>Haftalık Antrenman</h3>
+                        <div class="progress-bar">
+                            <div class="progress" id="workout-progress"></div>
+                        </div>
+                        <div class="progress-stats">
+                            <span class="current" id="current-workouts">0/5</span>
+                            <span class="target">Hedef: 5 antrenman</span>
+                        </div>
+                    </div>
+                    <div class="progress-card">
+                        <div class="progress-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <h3>Beslenme Takibi</h3>
+                        <div class="progress-bar">
+                            <div class="progress" id="nutrition-progress"></div>
+                        </div>
+                        <div class="progress-stats">
+                            <span class="current" id="current-nutrition">0/7</span>
+                            <span class="target">Hedef: 7 gün</span>
                         </div>
                     </div>
                 </div>
-            </section>
-
-            <!-- Beslenme Takibi -->
-            <section class="nutrition-tracker">
-                <h2>Beslenme Takibi</h2>
-                <div class="nutrition-summary">
-                    <div class="nutrition-card">
-                        <h3>Günlük Kalori</h3>
-                        <div class="calorie-circle">
-                            <span class="calories">1850</span>
-                            <span class="calorie-label">/ 2200 kcal</span>
-                        </div>
-                    </div>
-                    <div class="macros">
-                        <div class="macro">
-                            <span class="macro-label">Protein</span>
-                            <span class="macro-value">120g</span>
-                        </div>
-                        <div class="macro">
-                            <span class="macro-label">Karbonhidrat</span>
-                            <span class="macro-value">250g</span>
-                        </div>
-                        <div class="macro">
-                            <span class="macro-label">Yağ</span>
-                            <span class="macro-value">65g</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="meal-list">
-                    <h3>Öğünler</h3>
-                    <div class="meal-item">
-                        <div class="meal-time">08:00</div>
-                        <div class="meal-content">
-                            <h4>Kahvaltı</h4>
-                            <p>Yulaf, muz, protein tozu</p>
-                        </div>
-                        <div class="meal-calories">450 kcal</div>
-                    </div>
-                    <div class="meal-item">
-                        <div class="meal-time">12:30</div>
-                        <div class="meal-content">
-                            <h4>Öğle Yemeği</h4>
-                            <p>Tavuk, pilav, sebze</p>
-                        </div>
-                        <div class="meal-calories">650 kcal</div>
-                    </div>
-                    <div class="meal-item">
-                        <div class="meal-time">16:00</div>
-                        <div class="meal-content">
-                            <h4>Ara Öğün</h4>
-                            <p>Protein bar, elma</p>
-                        </div>
-                        <div class="meal-calories">250 kcal</div>
-                    </div>
-                    <div class="meal-item">
-                        <div class="meal-time">20:00</div>
-                        <div class="meal-content">
-                            <h4>Akşam Yemeği</h4>
-                            <p>Balık, salata, kinoa</p>
-                        </div>
-                        <div class="meal-calories">500 kcal</div>
-                    </div>
-                </div>
-            </section>
-        </div>
+            </div>
+        </section>
     </main>
 
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>FitLife</h3>
-                <p>Fitness yolculuğunda yanındayız</p>
-            </div>
-            <div class="footer-section">
-                <h3>Hızlı Bağlantılar</h3>
-                <ul>
-                    <li><a href="#hakkimizda">Hakkımızda</a></li>
-                    <li><a href="#programlar">Programlar</a></li>
-                    <li><a href="#iletisim">İletişim</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Bizi Takip Edin</h3>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 FitLife. Tüm hakları saklıdır.</p>
-        </div>
-    </footer>
+    <script>
+        let token = localStorage.getItem('token');
+        let currentUser = null;
+
+        // Sayfa yüklendiğinde kullanıcı bilgilerini getir
+        async function loadUserProfile() {
+            if (!token) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:3000/api/users/me', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    currentUser = data.user;
+                    updateProfileInfo();
+                    loadFitnessGoals();
+                } else {
+                    window.location.href = 'index.html';
+                }
+            } catch (error) {
+                console.error('Profil yükleme hatası:', error);
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Profil bilgilerini güncelle
+        function updateProfileInfo() {
+            document.getElementById('user-name').textContent = `${currentUser.firstName} ${currentUser.lastName}`;
+            document.getElementById('user-email').textContent = currentUser.email;
+        }
+
+        // Fitness hedeflerini yükle
+        async function loadFitnessGoals() {
+            try {
+                const response = await fetch('http://localhost:3000/api/users/profile', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const profile = data.profile;
+                    
+                    if (profile) {
+                        document.getElementById('current-weight').value = profile.weight || '';
+                        document.getElementById('target-weight').value = profile.targetWeight || '';
+                        document.getElementById('height').value = profile.height || '';
+                        document.getElementById('age').value = profile.age || '';
+                        document.getElementById('gender').value = profile.gender || '';
+                        document.getElementById('activity-level').value = profile.activityLevel || '';
+                        
+                        // Fitness hedeflerini işaretle
+                        if (profile.fitnessGoals) {
+                            profile.fitnessGoals.forEach(goal => {
+                                const checkbox = document.querySelector(`input[name="goals"][value="${goal}"]`);
+                                if (checkbox) checkbox.checked = true;
+                            });
+                        }
+
+                        updateProgressBars(profile);
+                    }
+                }
+            } catch (error) {
+                console.error('Hedef yükleme hatası:', error);
+            }
+        }
+
+        // İlerleme çubuklarını güncelle
+        function updateProgressBars(profile) {
+            if (profile.weight && profile.targetWeight) {
+                const progress = ((profile.weight - profile.targetWeight) / (profile.weight - profile.targetWeight)) * 100;
+                document.getElementById('weight-progress').style.width = `${progress}%`;
+                document.getElementById('current-weight-display').textContent = `${profile.weight} kg`;
+                document.getElementById('target-weight-display').textContent = `Hedef: ${profile.targetWeight} kg`;
+            }
+        }
+
+        // Fitness hedeflerini kaydet
+        document.getElementById('fitness-goals-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const goals = Array.from(document.querySelectorAll('input[name="goals"]:checked'))
+                .map(checkbox => checkbox.value);
+
+            const profileData = {
+                weight: parseFloat(document.getElementById('current-weight').value),
+                targetWeight: parseFloat(document.getElementById('target-weight').value),
+                height: parseInt(document.getElementById('height').value),
+                age: parseInt(document.getElementById('age').value),
+                gender: document.getElementById('gender').value,
+                activityLevel: document.getElementById('activity-level').value,
+                fitnessGoals: goals
+            };
+
+            try {
+                // Formu gizle ve yükleme animasyonunu göster
+                document.getElementById('fitness-goals-form').classList.add('hidden');
+                document.getElementById('loading-animation').classList.remove('hidden');
+
+                // Yükleme animasyonunu başlat
+                const progressBar = document.querySelector('.loading-animation .progress-bar');
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += 1;
+                    progressBar.style.width = `${progress}%`;
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        setTimeout(() => {
+                            document.getElementById('loading-animation').classList.add('hidden');
+                            document.querySelector('.progress-section').classList.remove('hidden');
+                            document.querySelector('.fitness-goals-section').classList.add('hidden');
+                        }, 500);
+                    }
+                }, 150);
+
+                const response = await fetch('http://localhost:3000/api/users/profile', {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(profileData)
+                });
+
+                if (response.ok) {
+                    // İlerleme çubuklarını güncelle
+                    updateProgressBars(profileData);
+                } else {
+                    const data = await response.json();
+                    alert(data.message || 'Hedefler kaydedilirken bir hata oluştu');
+                }
+            } catch (error) {
+                console.error('Hedef kaydetme hatası:', error);
+                alert('Hedefler kaydedilirken bir hata oluştu');
+            }
+        });
+
+        // Çıkış yap
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = 'index.html';
+        }
+
+        // Sayfa yüklendiğinde profil bilgilerini getir
+        document.addEventListener('DOMContentLoaded', loadUserProfile);
+    </script>
 </body>
 </html> 

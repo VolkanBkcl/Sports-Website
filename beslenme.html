@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beslenme - ByteForce</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="logo">
+                <h1>Byteforce</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Ana Sayfa</a></li>
+                <li><a href="programlar.html">Programlar</a></li>
+                <li><a href="egzersizler.html">Egzersizler</a></li>
+                <li><a href="beslenme.html" class="active">Beslenme</a></li>
+                <li><a href="topluluk.html">Topluluk</a></li>
+                <li><a href="iletisim.html">İletişim</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <div id="user-menu" class="user-menu">
+                    <img src="https://source.unsplash.com/random/100x100/?portrait" alt="Profil" class="profile-pic">
+                    <div class="dropdown-menu">
+                        <a href="profile.html"><i class="fas fa-user"></i> Profilim</a>
+                        <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Çıkış</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="nutrition-container">
+        <section class="hero-section">
+            <h1>Beslenme Rehberi</h1>
+            <p>Sağlıklı beslenme ve diyet programları</p>
+            <div class="search-bar">
+                <input type="text" id="nutrition-search" placeholder="Besin veya tarif ara...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+        </section>
+
+        <section class="nutrition-categories">
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-apple-alt"></i>
+                </div>
+                <h3>Sağlıklı Tarifler</h3>
+                <p>Protein bakımından zengin, düşük kalorili tarifler</p>
+                <button class="category-btn">İncele</button>
+            </div>
+
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <h3>Kalori Hesaplama</h3>
+                <p>Besinlerin kalori ve besin değeri hesaplayıcı</p>
+                <button class="category-btn">Hesapla</button>
+            </div>
+
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <h3>Haftalık Plan</h3>
+                <p>Size özel hazırlanmış beslenme programı</p>
+                <button class="category-btn">Planı Gör</button>
+            </div>
+
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Besin Takibi</h3>
+                <p>Günlük besin ve kalori takibi</p>
+                <button class="category-btn">Takip Et</button>
+            </div>
+        </section>
+
+        <section class="nutrition-tips">
+            <h2>Beslenme Önerileri</h2>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <img src="https://source.unsplash.com/random/300x200/?healthy-food" alt="Sağlıklı Beslenme">
+                    <h3>Kahvaltının Önemi</h3>
+                    <p>Güne sağlıklı bir kahvaltı ile başlamanın faydaları</p>
+                    <a href="#" class="read-more">Devamını Oku</a>
+                </div>
+
+                <div class="tip-card">
+                    <img src="https://source.unsplash.com/random/300x200/?protein" alt="Protein Kaynakları">
+                    <h3>Protein Kaynakları</h3>
+                    <p>Bitkisel ve hayvansal protein kaynakları</p>
+                    <a href="#" class="read-more">Devamını Oku</a>
+                </div>
+
+                <div class="tip-card">
+                    <img src="https://source.unsplash.com/random/300x200/?supplements" alt="Takviyeler">
+                    <h3>Besin Takviyeleri</h3>
+                    <p>Doğru besin takviyesi kullanımı</p>
+                    <a href="#" class="read-more">Devamını Oku</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Token kontrolü
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = 'index.html';
+        }
+
+        // Çıkış fonksiyonu
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = 'index.html';
+        }
+
+        // Arama fonksiyonu
+        document.getElementById('nutrition-search').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            // API'den arama sonuçlarını çek ve listele
+            console.log(`"${searchTerm}" için besin/tarif aranıyor...`);
+        });
+    </script>
+</body>
+</html> 

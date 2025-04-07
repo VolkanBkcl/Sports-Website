@@ -8,24 +8,54 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <header class="header">
-        <nav class="navbar">
-            <div class="logo">
-                <h1>Byteforce</h1>
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <i class="fas fa-dumbbell"></i>
+                <span>ByteForce</span>
+            </a>
+            
+            <nav class="nav-links">
+                <a href="/" class="nav-link active">Ana Sayfa</a>
+                <a href="/programlar" class="nav-link">Programlar</a>
+                <a href="/egzersizler" class="nav-link">Egzersizler</a>
+                <a href="/beslenme" class="nav-link">Beslenme</a>
+                <a href="/topluluk" class="nav-link">Topluluk</a>
+                <a href="/iletisim" class="nav-link">İletişim</a>
+            </nav>
+
+            <div class="auth-buttons" id="authButtons">
+                <a href="#" class="auth-button login-button" id="loginButton">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Giriş Yap
+                </a>
+                <a href="#" class="auth-button register-button" id="registerButton">
+                    <i class="fas fa-user-plus"></i>
+                    Kayıt Ol
+                </a>
             </div>
-            <ul class="nav-links">
-                <li><a href="#anasayfa">Ana Sayfa</a></li>
-                <li><a href="#programlar">Programlar</a></li>
-                <li><a href="#egzersizler">Egzersizler</a></li>
-                <li><a href="#beslenme">Beslenme</a></li>
-                <li><a href="#topluluk">Topluluk</a></li>
-                <li><a href="#iletisim">İletişim</a></li>
-            </ul>
-            <div class="auth-buttons">
-                <button class="login-btn" onclick="showLoginForm()">Giriş Yap</button>
-                <button class="signup-btn" onclick="showSignupForm()">Kayıt Ol</button>
+
+            <div class="user-menu" id="userMenu" style="display: none;">
+                <button class="user-button">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="userName">Kullanıcı</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="/profile" class="dropdown-item">
+                        <i class="fas fa-user"></i>
+                        Profilim
+                    </a>
+                    <a href="#" class="dropdown-item" id="logoutButton">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Çıkış Yap
+                    </a>
+                </div>
             </div>
-        </nav>
+
+            <button class="mobile-menu-button" id="mobileMenuButton">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
     </header>
 
     <!-- Giriş Formu Modal -->
@@ -169,58 +199,160 @@
     </footer>
 
     <script>
-        // Kullanıcı durumu
-        let currentUser = null;
-        let token = localStorage.getItem('token');
-
-        // Sayfa yüklendiğinde kullanıcı durumunu kontrol et
-        document.addEventListener('DOMContentLoaded', () => {
-            if (token) {
-                fetchUserProfile();
+        // Navbar scroll efekti
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
             }
         });
 
-        // Kullanıcı profili getirme
-        async function fetchUserProfile() {
-            try {
-                const response = await fetch('http://localhost:3000/api/profile', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                if (response.ok) {
-                    currentUser = await response.json();
-                    updateNavbar();
-                } else {
-                    localStorage.removeItem('token');
-                    token = null;
-                }
-            } catch (error) {
-                console.error('Profil getirme hatası:', error);
+        // Mobil menü toggle
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const navLinksContainer = document.querySelector('.nav-links');
+        const authButtons = document.querySelector('.auth-buttons');
+
+        mobileMenuButton.addEventListener('click', () => {
+            navLinksContainer.classList.toggle('active');
+            authButtons.classList.toggle('mobile');
+            mobileMenuButton.innerHTML = navLinksContainer.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+
+        // Aktif sayfa linkini vurgula
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === currentPath) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+
+        // Giriş ve kayıt butonlarına tıklama olayları
+        document.getElementById('loginButton').addEventListener('click', (e) => {
+            e.preventDefault();
+            showLoginForm();
+        });
+
+        document.getElementById('registerButton').addEventListener('click', (e) => {
+            e.preventDefault();
+            showSignupForm();
+        });
+
+        // Modal işlemleri
+        function showLoginForm() {
+            const modal = document.getElementById('loginModal');
+            modal.style.display = 'flex';
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.opacity = '1';
+            }, 10);
+        }
+
+        function closeLoginForm() {
+            const modal = document.getElementById('loginModal');
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+
+        function showSignupForm() {
+            const modal = document.getElementById('signupModal');
+            modal.style.display = 'flex';
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.opacity = '1';
+            }, 10);
+        }
+
+        function closeSignupForm() {
+            const modal = document.getElementById('signupModal');
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+
+        function switchToSignup() {
+            closeLoginForm();
+            setTimeout(showSignupForm, 300);
+        }
+
+        function switchToLogin() {
+            closeSignupForm();
+            setTimeout(showLoginForm, 300);
+        }
+
+        // Modal dışına tıklandığında kapatma
+        window.onclick = function(event) {
+            if (event.target.className === 'modal') {
+                const modal = event.target;
+                modal.style.opacity = '0';
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 300);
             }
         }
 
-        // Navbar güncelleme
-        function updateNavbar() {
-            const authButtons = document.querySelector('.auth-buttons');
-            if (currentUser) {
-                authButtons.innerHTML = `
-                    <div class="user-menu">
-                        <img src="https://source.unsplash.com/random/100x100/?portrait" alt="Profil" class="profile-pic">
-                        <div class="dropdown-menu">
-                            <a href="profile.html"><i class="fas fa-user"></i> Profilim</a>
-                            <a href="#"><i class="fas fa-cog"></i> Ayarlar</a>
-                            <a href="#" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Çıkış</a>
-                        </div>
-                    </div>
-                `;
+        // Token kontrolü ve navbar güncelleme
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const authButtons = document.getElementById('authButtons');
+            const userMenu = document.getElementById('userMenu');
+            const userName = document.getElementById('userName');
+            const storedUserName = localStorage.getItem('userName');
+
+            if (token) {
+                try {
+                    // Token'ı doğrula ve kullanıcı bilgilerini al
+                    fetch('/api/users/me', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Token geçersiz');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        authButtons.style.display = 'none';
+                        userMenu.style.display = 'block';
+                        userName.textContent = storedUserName || 'Kullanıcı';
+                    })
+                    .catch(error => {
+                        console.error('Token doğrulama hatası:', error);
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('userName');
+                        authButtons.style.display = 'flex';
+                        userMenu.style.display = 'none';
+                    });
+                } catch (error) {
+                    console.error('checkAuth hatası:', error);
+                }
             } else {
-                authButtons.innerHTML = `
-                    <button class="login-btn" onclick="showLoginForm()">Giriş Yap</button>
-                    <button class="signup-btn" onclick="showSignupForm()">Kayıt Ol</button>
-                `;
+                authButtons.style.display = 'flex';
+                userMenu.style.display = 'none';
             }
         }
+
+        // Sayfa yüklendiğinde token kontrolü yap
+        document.addEventListener('DOMContentLoaded', checkAuth);
+
+        // Çıkış yapma fonksiyonu
+        document.getElementById('logoutButton').addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('token');
+            localStorage.removeItem('userName');
+            window.location.href = '/';
+        });
 
         // Giriş işlemi
         async function handleLogin(event) {
@@ -229,7 +361,7 @@
             const password = document.getElementById('login-password').value;
 
             try {
-                const response = await fetch('http://localhost:3000/api/login', {
+                const response = await fetch('/api/users/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -239,14 +371,12 @@
 
                 const data = await response.json();
                 if (response.ok) {
-                    token = data.token;
-                    currentUser = data.user;
-                    localStorage.setItem('token', token);
+                    localStorage.setItem('token', data.token);
+                    checkAuth();
                     closeLoginForm();
-                    updateNavbar();
-                    window.location.href = 'profile.html';
+                    window.location.href = '/profile';
                 } else {
-                    alert(data.message);
+                    alert(data.message || 'Giriş yapılırken bir hata oluştu');
                 }
             } catch (error) {
                 console.error('Giriş hatası:', error);
@@ -258,6 +388,8 @@
         async function handleSignup(event) {
             event.preventDefault();
             const name = document.getElementById('signup-name').value;
+            const [firstName, ...lastNameParts] = name.split(' ');
+            const lastName = lastNameParts.join(' ');
             const email = document.getElementById('signup-email').value;
             const password = document.getElementById('signup-password').value;
             const passwordConfirm = document.getElementById('signup-password-confirm').value;
@@ -268,70 +400,29 @@
             }
 
             try {
-                const response = await fetch('http://localhost:3000/api/register', {
+                const response = await fetch('/api/users/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ name, email, password })
+                    body: JSON.stringify({ 
+                        firstName, 
+                        lastName, 
+                        email, 
+                        password 
+                    })
                 });
 
                 const data = await response.json();
                 if (response.ok) {
-                    token = data.token;
-                    currentUser = data.user;
-                    localStorage.setItem('token', token);
+                    alert('Kayıt başarılı! Lütfen e-posta adresinizi doğrulayın.');
                     closeSignupForm();
-                    updateNavbar();
-                    window.location.href = 'profile.html';
                 } else {
                     alert(data.message);
                 }
             } catch (error) {
                 console.error('Kayıt hatası:', error);
                 alert('Kayıt olurken bir hata oluştu');
-            }
-        }
-
-        // Çıkış işlemi
-        function handleLogout() {
-            localStorage.removeItem('token');
-            token = null;
-            currentUser = null;
-            updateNavbar();
-        }
-
-        // Modal işlemleri
-        function showLoginForm() {
-            document.getElementById('loginModal').style.display = 'flex';
-        }
-
-        function closeLoginForm() {
-            document.getElementById('loginModal').style.display = 'none';
-        }
-
-        function showSignupForm() {
-            document.getElementById('signupModal').style.display = 'flex';
-        }
-
-        function closeSignupForm() {
-            document.getElementById('signupModal').style.display = 'none';
-        }
-
-        function switchToSignup() {
-            closeLoginForm();
-            showSignupForm();
-        }
-
-        function switchToLogin() {
-            closeSignupForm();
-            showLoginForm();
-        }
-
-        // Modal dışına tıklandığında kapatma
-        window.onclick = function(event) {
-            if (event.target.className === 'modal') {
-                event.target.style.display = 'none';
             }
         }
     </script>
