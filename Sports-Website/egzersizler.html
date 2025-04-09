@@ -614,17 +614,13 @@
 
     <script>
         // Antrenman Planı Oluşturucu
-        document.getElementById('workoutForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            generateWorkoutPlan();
-        });
-
         function generateWorkoutPlan() {
             const goal = document.getElementById('goal').value;
             const days = parseInt(document.getElementById('days').value);
             const planContainer = document.getElementById('workoutPlan');
             
             planContainer.innerHTML = '';
+            planContainer.style.display = 'block';
             
             const exercises = {
                 'kas-gelistirme': {
@@ -712,6 +708,11 @@
                 }
             });
         }
+
+        document.getElementById('workoutForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            generateWorkoutPlan();
+        });
 
         // Kalori Hesaplayıcı
         document.getElementById('calorieForm').addEventListener('submit', function(e) {
