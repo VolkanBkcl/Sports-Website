@@ -3,108 +3,422 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Egzersizler - ByteForce</title>
+    <title>ByteForce - Egzersizler</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .tools-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tool-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .tool-title {
+            font-size: 1.5em;
+            color: #2ecc71;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tool-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input, .form-group select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .calculate-btn {
+            background: #2ecc71;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        .calculate-btn:hover {
+            background: #27ae60;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .timer-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .timer-display {
+            font-size: 3em;
+            font-weight: bold;
+            color: #2ecc71;
+            margin: 20px 0;
+        }
+
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .timer-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        .start-btn {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .reset-btn {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .workout-plan {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .workout-day {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
 </head>
 <body>
-    <header class="header">
-        <nav class="navbar">
-            <div class="logo">
-                <h1>Byteforce</h1>
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <i class="fas fa-dumbbell"></i>
+                <span>ByteForce</span>
+            </a>
+            
+            <nav class="nav-links">
+                <a href="/" class="nav-link">Ana Sayfa</a>
+                <a href="/programlar" class="nav-link">Programlar</a>
+                <a href="/egzersizler" class="nav-link active">Egzersizler</a>
+                <a href="/beslenme" class="nav-link">Beslenme</a>
+                <a href="/spor-urunleri" class="nav-link">Spor Ürünleri</a>
+                <a href="/topluluk" class="nav-link">Topluluk</a>
+                <a href="/iletisim" class="nav-link">İletişim</a>
+            </nav>
+
+            <div class="auth-buttons" id="authButtons">
+                <a href="#" class="auth-button login-button" id="loginButton">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Giriş Yap
+                </a>
+                <a href="#" class="auth-button register-button" id="registerButton">
+                    <i class="fas fa-user-plus"></i>
+                    Kayıt Ol
+                </a>
             </div>
-            <ul class="nav-links">
-                <li><a href="index.html">Ana Sayfa</a></li>
-                <li><a href="programlar.html">Programlar</a></li>
-                <li><a href="egzersizler.html" class="active">Egzersizler</a></li>
-                <li><a href="beslenme.html">Beslenme</a></li>
-                <li><a href="topluluk.html">Topluluk</a></li>
-                <li><a href="iletisim.html">İletişim</a></li>
-            </ul>
-            <div class="auth-buttons">
-                <div id="user-menu" class="user-menu">
-                    <img src="https://source.unsplash.com/random/100x100/?portrait" alt="Profil" class="profile-pic">
-                    <div class="dropdown-menu">
-                        <a href="profile.html"><i class="fas fa-user"></i> Profilim</a>
-                        <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Çıkış</a>
+
+            <div class="user-menu" id="userMenu" style="display: none;">
+                <button class="user-button">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="userName">Kullanıcı</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="/profile" class="dropdown-item">
+                        <i class="fas fa-user"></i>
+                        Profilim
+                    </a>
+                    <a href="#" class="dropdown-item" id="logoutButton">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Çıkış Yap
+                    </a>
+                </div>
+            </div>
+
+            <button class="mobile-menu-button" id="mobileMenuButton">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <div class="tools-container">
+            <!-- Antrenman Planı Oluşturucu -->
+            <div class="tool-card">
+                <h2 class="tool-title">
+                    <i class="fas fa-dumbbell"></i>
+                    Antrenman Planı Oluşturucu
+                </h2>
+                <form class="tool-form" id="workoutForm">
+                    <div class="form-group">
+                        <label for="goal">Hedef</label>
+                        <select id="goal" required>
+                            <option value="muscle">Kas Geliştirme</option>
+                            <option value="fat">Yağ Yakma</option>
+                            <option value="endurance">Dayanıklılık</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="days">Haftalık Antrenman Günü</label>
+                        <select id="days" required>
+                            <option value="3">3 Gün</option>
+                            <option value="4">4 Gün</option>
+                            <option value="5">5 Gün</option>
+                            <option value="6">6 Gün</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="calculate-btn">Plan Oluştur</button>
+                </form>
+                <div class="workout-plan" id="workoutPlan" style="display: none;">
+                    <!-- Plan buraya dinamik olarak eklenecek -->
+                </div>
+            </div>
+
+            <!-- Kalori Hesaplayıcı -->
+            <div class="tool-card">
+                <h2 class="tool-title">
+                    <i class="fas fa-calculator"></i>
+                    Kalori Hesaplayıcı
+                </h2>
+                <form class="tool-form" id="calorieForm">
+                    <div class="form-group">
+                        <label for="gender">Cinsiyet</label>
+                        <select id="gender" required>
+                            <option value="male">Erkek</option>
+                            <option value="female">Kadın</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="age">Yaş</label>
+                        <input type="number" id="age" required min="15" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="height">Boy (cm)</label>
+                        <input type="number" id="height" required min="100" max="250">
+                    </div>
+                    <div class="form-group">
+                        <label for="weight">Kilo (kg)</label>
+                        <input type="number" id="weight" required min="30" max="200">
+                    </div>
+                    <div class="form-group">
+                        <label for="activity">Aktivite Seviyesi</label>
+                        <select id="activity" required>
+                            <option value="1.2">Hareketsiz</option>
+                            <option value="1.375">Hafif Aktif</option>
+                            <option value="1.55">Orta Aktif</option>
+                            <option value="1.725">Çok Aktif</option>
+                            <option value="1.9">Ekstra Aktif</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="calculate-btn">Hesapla</button>
+                </form>
+                <div class="result" id="calorieResult">
+                    <!-- Sonuç buraya dinamik olarak eklenecek -->
+                </div>
+            </div>
+
+            <!-- Egzersiz Zamanlayıcı -->
+            <div class="tool-card">
+                <h2 class="tool-title">
+                    <i class="fas fa-clock"></i>
+                    Egzersiz Zamanlayıcı
+                </h2>
+                <div class="timer-container">
+                    <div class="timer-display" id="timer">00:00</div>
+                    <div class="timer-controls">
+                        <button class="timer-btn start-btn" id="startTimer">Başla</button>
+                        <button class="timer-btn reset-btn" id="resetTimer">Sıfırla</button>
                     </div>
                 </div>
             </div>
-        </nav>
-    </header>
-
-    <main class="exercises-container">
-        <section class="hero-section">
-            <h1>Egzersiz Kütüphanesi</h1>
-            <p>Vücut bölgelerine göre kategorize edilmiş egzersiz hareketleri</p>
-            <div class="search-bar">
-                <input type="text" id="exercise-search" placeholder="Egzersiz ara...">
-                <button><i class="fas fa-search"></i></button>
-            </div>
-        </section>
-
-        <section class="exercise-categories">
-            <div class="category-card" onclick="filterExercises('göğüs')">
-                <i class="fas fa-dumbbell"></i>
-                <h3>Göğüs</h3>
-                <p>15 Hareket</p>
-            </div>
-            <div class="category-card" onclick="filterExercises('sırt')">
-                <i class="fas fa-dumbbell"></i>
-                <h3>Sırt</h3>
-                <p>18 Hareket</p>
-            </div>
-            <div class="category-card" onclick="filterExercises('bacak')">
-                <i class="fas fa-running"></i>
-                <h3>Bacak</h3>
-                <p>12 Hareket</p>
-            </div>
-            <div class="category-card" onclick="filterExercises('omuz')">
-                <i class="fas fa-dumbbell"></i>
-                <h3>Omuz</h3>
-                <p>10 Hareket</p>
-            </div>
-            <div class="category-card" onclick="filterExercises('kol')">
-                <i class="fas fa-dumbbell"></i>
-                <h3>Kol</h3>
-                <p>14 Hareket</p>
-            </div>
-            <div class="category-card" onclick="filterExercises('karın')">
-                <i class="fas fa-dumbbell"></i>
-                <h3>Karın</h3>
-                <p>8 Hareket</p>
-            </div>
-        </section>
-
-        <section class="exercise-list" id="exercise-list">
-            <!-- Egzersizler JavaScript ile dinamik olarak yüklenecek -->
-        </section>
+        </div>
     </main>
 
     <script>
-        // Token kontrolü
-        const token = localStorage.getItem('token');
-        if (!token) {
-            window.location.href = 'index.html';
+        // Antrenman Planı Oluşturucu
+        document.getElementById('workoutForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const goal = document.getElementById('goal').value;
+            const days = document.getElementById('days').value;
+            const plan = generateWorkoutPlan(goal, days);
+            document.getElementById('workoutPlan').innerHTML = plan;
+            document.getElementById('workoutPlan').style.display = 'block';
+        });
+
+        function generateWorkoutPlan(goal, days) {
+            let plan = '';
+            const workouts = {
+                muscle: {
+                    '3': ['Göğüs & Triceps', 'Sırt & Biceps', 'Bacak & Omuz'],
+                    '4': ['Göğüs', 'Sırt', 'Bacak', 'Omuz & Kollar'],
+                    '5': ['Göğüs', 'Sırt', 'Bacak', 'Omuz', 'Kollar'],
+                    '6': ['Göğüs & Triceps', 'Sırt & Biceps', 'Bacak', 'Omuz', 'Göğüs & Triceps', 'Sırt & Biceps']
+                },
+                fat: {
+                    '3': ['Tam Vücut HIIT', 'Kardiyo & Core', 'Tam Vücut HIIT'],
+                    '4': ['Üst Vücut HIIT', 'Alt Vücut HIIT', 'Kardiyo', 'Core & Esneklik'],
+                    '5': ['HIIT', 'Kardiyo', 'HIIT', 'Kardiyo', 'Core & Esneklik'],
+                    '6': ['HIIT', 'Kardiyo', 'HIIT', 'Kardiyo', 'HIIT', 'Core & Esneklik']
+                },
+                endurance: {
+                    '3': ['Uzun Mesafe Koşu', 'Interval Koşu', 'Cross Training'],
+                    '4': ['Uzun Mesafe Koşu', 'Interval Koşu', 'Cross Training', 'Esneklik'],
+                    '5': ['Uzun Mesafe Koşu', 'Interval Koşu', 'Cross Training', 'Uzun Mesafe Koşu', 'Esneklik'],
+                    '6': ['Uzun Mesafe Koşu', 'Interval Koşu', 'Cross Training', 'Uzun Mesafe Koşu', 'Interval Koşu', 'Esneklik']
+                }
+            };
+
+            workouts[goal][days].forEach((workout, index) => {
+                plan += `
+                    <div class="workout-day">
+                        <h3>Gün ${index + 1}: ${workout}</h3>
+                        <p>${getWorkoutDescription(goal, workout)}</p>
+                    </div>
+                `;
+            });
+
+            return plan;
         }
 
-        // Çıkış fonksiyonu
-        function logout() {
-            localStorage.removeItem('token');
-            window.location.href = 'index.html';
+        function getWorkoutDescription(goal, workout) {
+            const descriptions = {
+                muscle: {
+                    'Göğüs & Triceps': 'Bench press, dips, triceps extension',
+                    'Sırt & Biceps': 'Pull-ups, rows, biceps curls',
+                    'Bacak & Omuz': 'Squats, lunges, shoulder press',
+                    'Göğüs': 'Bench press, incline press, flyes',
+                    'Sırt': 'Pull-ups, rows, deadlifts',
+                    'Bacak': 'Squats, lunges, leg press',
+                    'Omuz & Kollar': 'Shoulder press, lateral raises, biceps curls',
+                    'Omuz': 'Shoulder press, lateral raises, front raises',
+                    'Kollar': 'Biceps curls, triceps extension, hammer curls'
+                },
+                fat: {
+                    'Tam Vücut HIIT': '20 dakika HIIT, 10 dakika core',
+                    'Kardiyo & Core': '30 dakika kardiyo, 15 dakika core',
+                    'Üst Vücut HIIT': '20 dakika üst vücut HIIT',
+                    'Alt Vücut HIIT': '20 dakika alt vücut HIIT',
+                    'Kardiyo': '45 dakika kardiyo',
+                    'Core & Esneklik': '20 dakika core, 10 dakika esneklik',
+                    'HIIT': '20 dakika HIIT'
+                },
+                endurance: {
+                    'Uzun Mesafe Koşu': '45-60 dakika koşu',
+                    'Interval Koşu': '30 dakika interval koşu',
+                    'Cross Training': '45 dakika cross training',
+                    'Esneklik': '30 dakika esneklik egzersizleri'
+                }
+            };
+
+            return descriptions[goal][workout] || 'Detaylı egzersiz programı için antrenörünüze danışın.';
         }
 
-        // Egzersiz filtreleme fonksiyonu
-        function filterExercises(category) {
-            // API'den egzersizleri çek ve listele
-            console.log(`${category} kategorisindeki egzersizler filtreleniyor...`);
-        }
+        // Kalori Hesaplayıcı
+        document.getElementById('calorieForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const gender = document.getElementById('gender').value;
+            const age = parseInt(document.getElementById('age').value);
+            const height = parseInt(document.getElementById('height').value);
+            const weight = parseInt(document.getElementById('weight').value);
+            const activity = parseFloat(document.getElementById('activity').value);
 
-        // Arama fonksiyonu
-        document.getElementById('exercise-search').addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            // API'den arama sonuçlarını çek ve listele
-            console.log(`"${searchTerm}" için arama yapılıyor...`);
+            let bmr;
+            if (gender === 'male') {
+                bmr = 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+            } else {
+                bmr = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+            }
+
+            const tdee = Math.round(bmr * activity);
+            const result = `
+                <h3>Günlük Kalori İhtiyacınız</h3>
+                <p>Bazal Metabolizma Hızı (BMR): ${Math.round(bmr)} kalori</p>
+                <p>Toplam Günlük Enerji Harcaması (TDEE): ${tdee} kalori</p>
+                <p>Kilo Vermek İçin: ${tdee - 500} kalori</p>
+                <p>Kilo Almak İçin: ${tdee + 500} kalori</p>
+            `;
+
+            document.getElementById('calorieResult').innerHTML = result;
+            document.getElementById('calorieResult').style.display = 'block';
+        });
+
+        // Egzersiz Zamanlayıcı
+        let timer;
+        let timeLeft = 0;
+        const timerDisplay = document.getElementById('timer');
+        const startBtn = document.getElementById('startTimer');
+        const resetBtn = document.getElementById('resetTimer');
+
+        startBtn.addEventListener('click', function() {
+            if (!timer) {
+                timer = setInterval(function() {
+                    timeLeft++;
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }, 1000);
+                startBtn.textContent = 'Durdur';
+            } else {
+                clearInterval(timer);
+                timer = null;
+                startBtn.textContent = 'Devam Et';
+            }
+        });
+
+        resetBtn.addEventListener('click', function() {
+            clearInterval(timer);
+            timer = null;
+            timeLeft = 0;
+            timerDisplay.textContent = '00:00';
+            startBtn.textContent = 'Başla';
         });
     </script>
 </body>
