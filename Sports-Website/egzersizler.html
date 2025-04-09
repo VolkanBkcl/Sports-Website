@@ -406,28 +406,6 @@
             width: 100%;
             top: 0;
             z-index: 1000;
-            transition: all 0.3s ease;
-            transform-origin: top;
-        }
-
-        nav:hover {
-            padding: 1.5rem 2rem;
-            background: #34495e;
-        }
-
-        nav:not(:hover) {
-            animation: shrinkNav 0.3s ease forwards;
-        }
-
-        @keyframes shrinkNav {
-            from {
-                padding: 1.5rem 2rem;
-                background: #34495e;
-            }
-            to {
-                padding: 1rem 2rem;
-                background: #2c3e50;
-            }
         }
 
         nav ul {
@@ -443,27 +421,10 @@
             color: white;
             text-decoration: none;
             font-weight: 500;
-            transition: all 0.3s ease;
-            position: relative;
         }
 
         nav a:hover {
             color: #3498db;
-        }
-
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: #3498db;
-            transition: width 0.3s ease;
-        }
-
-        nav a:hover::after {
-            width: 100%;
         }
     </style>
 </head>
