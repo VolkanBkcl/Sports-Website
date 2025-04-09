@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ByteForce - Spor Ürünleri</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .products-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 15px;
+        }
+
+        .product-title {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .product-price {
+            font-size: 1.3em;
+            color: #2ecc71;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .product-description {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+        }
+
+        .add-to-cart {
+            background: #2ecc71;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        .add-to-cart:hover {
+            background: #27ae60;
+        }
+
+        .category-filter {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .category-button {
+            padding: 8px 15px;
+            border: 2px solid #2ecc71;
+            border-radius: 20px;
+            background: white;
+            color: #2ecc71;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .category-button.active {
+            background: #2ecc71;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <i class="fas fa-dumbbell"></i>
+                <span>ByteForce</span>
+            </a>
+            
+            <nav class="nav-links">
+                <a href="/" class="nav-link">Ana Sayfa</a>
+                <a href="/programlar" class="nav-link">Programlar</a>
+                <a href="/egzersizler" class="nav-link">Egzersizler</a>
+                <a href="/beslenme" class="nav-link">Beslenme</a>
+                <a href="/spor-urunleri" class="nav-link active">Spor Ürünleri</a>
+                <a href="/topluluk" class="nav-link">Topluluk</a>
+                <a href="/iletisim" class="nav-link">İletişim</a>
+            </nav>
+
+            <div class="auth-buttons" id="authButtons">
+                <a href="#" class="auth-button login-button" id="loginButton">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Giriş Yap
+                </a>
+                <a href="#" class="auth-button register-button" id="registerButton">
+                    <i class="fas fa-user-plus"></i>
+                    Kayıt Ol
+                </a>
+            </div>
+
+            <div class="user-menu" id="userMenu" style="display: none;">
+                <button class="user-button">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="userName">Kullanıcı</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="/profile" class="dropdown-item">
+                        <i class="fas fa-user"></i>
+                        Profilim
+                    </a>
+                    <a href="#" class="dropdown-item" id="logoutButton">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Çıkış Yap
+                    </a>
+                </div>
+            </div>
+
+            <button class="mobile-menu-button" id="mobileMenuButton">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <div class="category-filter">
+            <button class="category-button active" data-category="all">Tümü</button>
+            <button class="category-button" data-category="protein">Protein Tozları</button>
+            <button class="category-button" data-category="vitamin">Vitaminler</button>
+            <button class="category-button" data-category="snack">Sağlıklı Atıştırmalıklar</button>
+        </div>
+
+        <div class="products-container">
+            <!-- Protein Tozları -->
+            <div class="product-card" data-category="protein">
+                <img src="https://via.placeholder.com/300x200" alt="Whey Protein" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Whey Protein 2.5kg</h3>
+                    <p class="product-price">₺899.99</p>
+                    <p class="product-description">Yüksek kaliteli whey protein konsantresi, 25g protein içerir.</p>
+                    <button class="add-to-cart">Sepete Ekle</button>
+                </div>
+            </div>
+
+            <!-- Vitaminler -->
+            <div class="product-card" data-category="vitamin">
+                <img src="https://via.placeholder.com/300x200" alt="Multivitamin" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Multivitamin Kompleks</h3>
+                    <p class="product-price">₺249.99</p>
+                    <p class="product-description">Günlük vitamin ve mineral ihtiyacınızı karşılayan kompleks formül.</p>
+                    <button class="add-to-cart">Sepete Ekle</button>
+                </div>
+            </div>
+
+            <!-- Atıştırmalıklar -->
+            <div class="product-card" data-category="snack">
+                <img src="https://via.placeholder.com/300x200" alt="Protein Bar" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Protein Bar (12'li Paket)</h3>
+                    <p class="product-price">₺199.99</p>
+                    <p class="product-description">Yüksek proteinli, düşük şekerli lezzetli atıştırmalık.</p>
+                    <button class="add-to-cart">Sepete Ekle</button>
+                </div>
+            </div>
+
+            <!-- Diğer ürünler -->
+            <div class="product-card" data-category="protein">
+                <img src="https://via.placeholder.com/300x200" alt="BCAA" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">BCAA 2:1:1</h3>
+                    <p class="product-price">₺349.99</p>
+                    <p class="product-description">Kas onarımı ve büyümesi için özel formül.</p>
+                    <button class="add-to-cart">Sepete Ekle</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Kategori filtreleme
+        document.querySelectorAll('.category-button').forEach(button => {
+            button.addEventListener('click', () => {
+                // Aktif buton stilini güncelle
+                document.querySelectorAll('.category-button').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                const category = button.dataset.category;
+                const products = document.querySelectorAll('.product-card');
+
+                products.forEach(product => {
+                    if (category === 'all' || product.dataset.category === category) {
+                        product.style.display = 'block';
+                    } else {
+                        product.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

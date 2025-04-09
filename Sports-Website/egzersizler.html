@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Egzersizler - ByteForce</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="logo">
+                <h1>Byteforce</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Ana Sayfa</a></li>
+                <li><a href="programlar.html">Programlar</a></li>
+                <li><a href="egzersizler.html" class="active">Egzersizler</a></li>
+                <li><a href="beslenme.html">Beslenme</a></li>
+                <li><a href="topluluk.html">Topluluk</a></li>
+                <li><a href="iletisim.html">İletişim</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <div id="user-menu" class="user-menu">
+                    <img src="https://source.unsplash.com/random/100x100/?portrait" alt="Profil" class="profile-pic">
+                    <div class="dropdown-menu">
+                        <a href="profile.html"><i class="fas fa-user"></i> Profilim</a>
+                        <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Çıkış</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="exercises-container">
+        <section class="hero-section">
+            <h1>Egzersiz Kütüphanesi</h1>
+            <p>Vücut bölgelerine göre kategorize edilmiş egzersiz hareketleri</p>
+            <div class="search-bar">
+                <input type="text" id="exercise-search" placeholder="Egzersiz ara...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+        </section>
+
+        <section class="exercise-categories">
+            <div class="category-card" onclick="filterExercises('göğüs')">
+                <i class="fas fa-dumbbell"></i>
+                <h3>Göğüs</h3>
+                <p>15 Hareket</p>
+            </div>
+            <div class="category-card" onclick="filterExercises('sırt')">
+                <i class="fas fa-dumbbell"></i>
+                <h3>Sırt</h3>
+                <p>18 Hareket</p>
+            </div>
+            <div class="category-card" onclick="filterExercises('bacak')">
+                <i class="fas fa-running"></i>
+                <h3>Bacak</h3>
+                <p>12 Hareket</p>
+            </div>
+            <div class="category-card" onclick="filterExercises('omuz')">
+                <i class="fas fa-dumbbell"></i>
+                <h3>Omuz</h3>
+                <p>10 Hareket</p>
+            </div>
+            <div class="category-card" onclick="filterExercises('kol')">
+                <i class="fas fa-dumbbell"></i>
+                <h3>Kol</h3>
+                <p>14 Hareket</p>
+            </div>
+            <div class="category-card" onclick="filterExercises('karın')">
+                <i class="fas fa-dumbbell"></i>
+                <h3>Karın</h3>
+                <p>8 Hareket</p>
+            </div>
+        </section>
+
+        <section class="exercise-list" id="exercise-list">
+            <!-- Egzersizler JavaScript ile dinamik olarak yüklenecek -->
+        </section>
+    </main>
+
+    <script>
+        // Token kontrolü
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = 'index.html';
+        }
+
+        // Çıkış fonksiyonu
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = 'index.html';
+        }
+
+        // Egzersiz filtreleme fonksiyonu
+        function filterExercises(category) {
+            // API'den egzersizleri çek ve listele
+            console.log(`${category} kategorisindeki egzersizler filtreleniyor...`);
+        }
+
+        // Arama fonksiyonu
+        document.getElementById('exercise-search').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            // API'den arama sonuçlarını çek ve listele
+            console.log(`"${searchTerm}" için arama yapılıyor...`);
+        });
+    </script>
+</body>
+</html> 

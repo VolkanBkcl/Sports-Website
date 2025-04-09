@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ByteForce - Fitness & Sağlık Platformu</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <i class="fas fa-dumbbell"></i>
+                <span>ByteForce</span>
+            </a>
+            
+            <nav class="nav-links">
+                <a href="/" class="nav-link active">Ana Sayfa</a>
+                <a href="/programlar" class="nav-link">Programlar</a>
+                <a href="/egzersizler" class="nav-link">Egzersizler</a>
+                <a href="/beslenme" class="nav-link">Beslenme</a>
+                <a href="/spor-urunleri" class="nav-link">Spor Ürünleri</a>
+                <a href="/topluluk" class="nav-link">Topluluk</a>
+                <a href="/iletisim" class="nav-link">İletişim</a>
+            </nav>
+
+            <div class="auth-buttons" id="authButtons">
+                <a href="#" class="auth-button login-button" id="loginButton">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Giriş Yap
+                </a>
+                <a href="#" class="auth-button register-button" id="registerButton">
+                    <i class="fas fa-user-plus"></i>
+                    Kayıt Ol
+                </a>
+            </div>
+
+            <div class="user-menu" id="userMenu" style="display: none;">
+                <button class="user-button">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="userName">Kullanıcı</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="/profile" class="dropdown-item">
+                        <i class="fas fa-user"></i>
+                        Profilim
+                    </a>
+                    <a href="#" class="dropdown-item" id="logoutButton">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Çıkış Yap
+                    </a>
+                </div>
+            </div>
+
+            <button class="mobile-menu-button" id="mobileMenuButton">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Giriş Formu Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLoginForm()">&times;</span>
+            <h2>Giriş Yap</h2>
+            <form class="auth-form" id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="login-email">E-posta</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Şifre</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox"> Beni hatırla
+                    </label>
+                    <a href="#" class="forgot-password">Şifremi unuttum</a>
+                </div>
+                <button type="submit" class="submit-btn">Giriş Yap</button>
+                <p class="form-footer">
+                    Hesabın yok mu? <a href="#" onclick="switchToSignup()">Kayıt Ol</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Kayıt Formu Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeSignupForm()">&times;</span>
+            <h2>Kayıt Ol</h2>
+            <form class="auth-form" id="signupForm" onsubmit="handleSignup(event)">
+                <div class="form-group">
+                    <label for="signup-name">Ad Soyad</label>
+                    <input type="text" id="signup-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-email">E-posta</label>
+                    <input type="email" id="signup-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-password">Şifre</label>
+                    <input type="password" id="signup-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-password-confirm">Şifre Tekrar</label>
+                    <input type="password" id="signup-password-confirm" required>
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" required> Kullanım koşullarını kabul ediyorum
+                    </label>
+                </div>
+                <button type="submit" class="submit-btn">Kayıt Ol</button>
+                <p class="form-footer">
+                    Zaten hesabın var mı? <a href="#" onclick="switchToLogin()">Giriş Yap</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Fitness Yolculuğuna Başla</h1>
+                <p>Kişisel antrenörler ve uzmanlarla hedeflerine ulaş</p>
+                <button class="cta-button">Ücretsiz Başla</button>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="feature-card">
+                <i class="fas fa-dumbbell"></i>
+                <h3>Özel Programlar</h3>
+                <p>Hedeflerine uygun kişiselleştirilmiş antrenman programları</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-utensils"></i>
+                <h3>Beslenme Planları</h3>
+                <p>Uzman diyetisyenlerden özel beslenme tavsiyeleri</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-users"></i>
+                <h3>Topluluk Desteği</h3>
+                <p>Motivasyonunu artıracak fitness topluluğu</p>
+            </div>
+        </section>
+
+        <section class="popular-workouts">
+            <h2>Popüler Egzersizler</h2>
+            <div class="workout-grid">
+                <div class="workout-card">
+                    <img src="https://source.unsplash.com/random/400x300/?gym" alt="Kuvvet Antrenmanı">
+                    <h3>Kuvvet Antrenmanı</h3>
+                    <p>Kas gücünü artır ve formunu koru</p>
+                </div>
+                <div class="workout-card">
+                    <img src="https://source.unsplash.com/random/400x300/?yoga" alt="Yoga">
+                    <h3>Yoga</h3>
+                    <p>Esneklik ve zihinsel denge</p>
+                </div>
+                <div class="workout-card">
+                    <img src="https://source.unsplash.com/random/400x300/?cardio" alt="Kardio">
+                    <h3>Kardio</h3>
+                    <p>Dayanıklılık ve kalp sağlığı</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>FitLife</h3>
+                <p>Fitness yolculuğunda yanındayız</p>
+            </div>
+            <div class="footer-section">
+                <h3>Hızlı Bağlantılar</h3>
+                <ul>
+                    <li><a href="#hakkimizda">Hakkımızda</a></li>
+                    <li><a href="#programlar">Programlar</a></li>
+                    <li><a href="#iletisim">İletişim</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Bizi Takip Edin</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 FitLife. Tüm hakları saklıdır.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll efekti
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Mobil menü toggle
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const navLinksContainer = document.querySelector('.nav-links');
+        const authButtons = document.querySelector('.auth-buttons');
+
+        mobileMenuButton.addEventListener('click', () => {
+            navLinksContainer.classList.toggle('active');
+            authButtons.classList.toggle('mobile');
+            mobileMenuButton.innerHTML = navLinksContainer.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+
+        // Aktif sayfa linkini vurgula
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === currentPath) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+
+        // Giriş ve kayıt butonlarına tıklama olayları
+        document.getElementById('loginButton').addEventListener('click', (e) => {
+            e.preventDefault();
+            showLoginForm();
+        });
+
+        document.getElementById('registerButton').addEventListener('click', (e) => {
+            e.preventDefault();
+            showSignupForm();
+        });
+
+        // Modal işlemleri
+        function showLoginForm() {
+            const modal = document.getElementById('loginModal');
+            modal.style.display = 'flex';
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.opacity = '1';
+            }, 10);
+        }
+
+        function closeLoginForm() {
+            const modal = document.getElementById('loginModal');
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+
+        function showSignupForm() {
+            const modal = document.getElementById('signupModal');
+            modal.style.display = 'flex';
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.opacity = '1';
+            }, 10);
+        }
+
+        function closeSignupForm() {
+            const modal = document.getElementById('signupModal');
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+
+        function switchToSignup() {
+            closeLoginForm();
+            setTimeout(showSignupForm, 300);
+        }
+
+        function switchToLogin() {
+            closeSignupForm();
+            setTimeout(showLoginForm, 300);
+        }
+
+        // Modal dışına tıklandığında kapatma
+        window.onclick = function(event) {
+            if (event.target.className === 'modal') {
+                const modal = event.target;
+                modal.style.opacity = '0';
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 300);
+            }
+        }
+
+        // Token kontrolü ve navbar güncelleme
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const authButtons = document.getElementById('authButtons');
+            const userMenu = document.getElementById('userMenu');
+            const userName = document.getElementById('userName');
+            const storedUserName = localStorage.getItem('userName');
+
+            if (token) {
+                try {
+                    // Token'ı doğrula ve kullanıcı bilgilerini al
+                    fetch('/api/users/me', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Token geçersiz');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        authButtons.style.display = 'none';
+                        userMenu.style.display = 'block';
+                        userName.textContent = storedUserName || 'Kullanıcı';
+                    })
+                    .catch(error => {
+                        console.error('Token doğrulama hatası:', error);
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('userName');
+                        authButtons.style.display = 'flex';
+                        userMenu.style.display = 'none';
+                    });
+                } catch (error) {
+                    console.error('checkAuth hatası:', error);
+                }
+            } else {
+                authButtons.style.display = 'flex';
+                userMenu.style.display = 'none';
+            }
+        }
+
+        // Sayfa yüklendiğinde token kontrolü yap
+        document.addEventListener('DOMContentLoaded', checkAuth);
+
+        // Çıkış yapma fonksiyonu
+        document.getElementById('logoutButton').addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('token');
+            localStorage.removeItem('userName');
+            window.location.href = '/';
+        });
+
+        // Giriş işlemi
+        async function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            try {
+                const response = await fetch('/api/users/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    localStorage.setItem('token', data.token);
+                    checkAuth();
+                    closeLoginForm();
+                    window.location.href = '/profile';
+                } else {
+                    alert(data.message || 'Giriş yapılırken bir hata oluştu');
+                }
+            } catch (error) {
+                console.error('Giriş hatası:', error);
+                alert('Giriş yapılırken bir hata oluştu');
+            }
+        }
+
+        // Kayıt işlemi
+        async function handleSignup(event) {
+            event.preventDefault();
+            const name = document.getElementById('signup-name').value;
+            const [firstName, ...lastNameParts] = name.split(' ');
+            const lastName = lastNameParts.join(' ');
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const passwordConfirm = document.getElementById('signup-password-confirm').value;
+
+            if (password !== passwordConfirm) {
+                alert('Şifreler eşleşmiyor');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/users/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        firstName, 
+                        lastName, 
+                        email, 
+                        password 
+                    })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    alert('Kayıt başarılı! Lütfen e-posta adresinizi doğrulayın.');
+                    closeSignupForm();
+                } else {
+                    alert(data.message);
+                }
+            } catch (error) {
+                console.error('Kayıt hatası:', error);
+                alert('Kayıt olurken bir hata oluştu');
+            }
+        }
+    </script>
+</body>
+</html> 
