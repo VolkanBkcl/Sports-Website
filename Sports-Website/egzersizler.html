@@ -343,6 +343,7 @@
             padding: 0.5rem;
             border-bottom: 1px solid #e0e0e0;
             transition: background-color 0.3s ease;
+            position: relative;
         }
 
         .exercise-item:hover {
@@ -353,6 +354,34 @@
             content: '→';
             color: #3498db;
             font-weight: bold;
+        }
+
+        .exercise-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .exercise-item:hover .exercise-image {
+            transform: scale(1.05);
+        }
+
+        .exercise-details {
+            flex: 1;
+        }
+
+        .exercise-name {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.25rem;
+        }
+
+        .exercise-info {
+            font-size: 0.9rem;
+            color: #666;
         }
 
         @media (max-width: 768px) {
@@ -520,79 +549,101 @@
         // Antrenman Planı Oluşturucu
         document.getElementById('workoutForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const goal = document.getElementById('goal').value;
-            const days = document.getElementById('days').value;
-            const plan = generateWorkoutPlan(goal, days);
-            document.getElementById('workoutPlan').innerHTML = plan;
-            document.getElementById('workoutPlan').style.display = 'block';
+            generateWorkoutPlan();
         });
 
-        function generateWorkoutPlan(goal, days) {
-            let plan = '';
-            const workouts = {
-                muscle: {
-                    '3': ['Göğüs & Triceps', 'Sırt & Biceps', 'Bacak & Omuz'],
-                    '4': ['Göğüs', 'Sırt', 'Bacak', 'Omuz & Kollar'],
-                    '5': ['Göğüs', 'Sırt', 'Bacak', 'Omuz', 'Kollar'],
-                    '6': ['Göğüs & Triceps', 'Sırt & Biceps', 'Bacak', 'Omuz', 'Göğüs & Triceps', 'Sırt & Biceps']
+        function generateWorkoutPlan() {
+            const goal = document.getElementById('goal').value;
+            const days = parseInt(document.getElementById('days').value);
+            const planContainer = document.getElementById('workoutPlan');
+            
+            planContainer.innerHTML = '';
+            
+            const exercises = {
+                'kas-gelistirme': {
+                    'Göğüs': [
+                        { name: 'Bench Press', sets: '4x8-12', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' },
+                        { name: 'Incline Dumbbell Press', sets: '3x10-12', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' },
+                        { name: 'Cable Fly', sets: '3x12-15', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' }
+                    ],
+                    'Sırt': [
+                        { name: 'Pull-ups', sets: '4x8-12', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' },
+                        { name: 'Barbell Row', sets: '4x8-12', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' },
+                        { name: 'Lat Pulldown', sets: '3x10-12', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' }
+                    ],
+                    'Bacak': [
+                        { name: 'Squat', sets: '4x8-12', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' },
+                        { name: 'Leg Press', sets: '4x10-12', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' },
+                        { name: 'Romanian Deadlift', sets: '3x10-12', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' }
+                    ],
+                    'Omuz': [
+                        { name: 'Overhead Press', sets: '4x8-12', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' },
+                        { name: 'Lateral Raises', sets: '3x12-15', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' },
+                        { name: 'Face Pulls', sets: '3x12-15', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' }
+                    ],
+                    'Kol': [
+                        { name: 'Barbell Curl', sets: '3x10-12', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' },
+                        { name: 'Tricep Pushdown', sets: '3x12-15', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' },
+                        { name: 'Hammer Curl', sets: '3x10-12', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' }
+                    ]
                 },
-                fat: {
-                    '3': ['Tam Vücut HIIT', 'Kardiyo & Core', 'Tam Vücut HIIT'],
-                    '4': ['Üst Vücut HIIT', 'Alt Vücut HIIT', 'Kardiyo', 'Core & Esneklik'],
-                    '5': ['HIIT', 'Kardiyo', 'HIIT', 'Kardiyo', 'Core & Esneklik'],
-                    '6': ['HIIT', 'Kardiyo', 'HIIT', 'Kardiyo', 'HIIT', 'Core & Esneklik']
+                'yag-yakma': {
+                    'Kardiyo': [
+                        { name: 'HIIT', sets: '20 dakika', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' },
+                        { name: 'Koşu', sets: '30 dakika', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' },
+                        { name: 'Bisiklet', sets: '45 dakika', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' }
+                    ],
+                    'Tam Vücut': [
+                        { name: 'Burpee', sets: '4x15', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' },
+                        { name: 'Mountain Climber', sets: '4x20', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' },
+                        { name: 'Jump Squat', sets: '4x15', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' }
+                    ],
+                    'Core': [
+                        { name: 'Plank', sets: '3x60sn', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' },
+                        { name: 'Russian Twist', sets: '3x20', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' },
+                        { name: 'Leg Raises', sets: '3x15', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' }
+                    ]
                 },
-                endurance: {
-                    '3': ['Uzun Mesafe Koşu', 'Interval Koşu', 'Cross Training'],
-                    '4': ['Uzun Mesafe Koşu', 'Interval Koşu', 'Cross Training', 'Esneklik'],
-                    '5': ['Uzun Mesafe Koşu', 'Interval Koşu', 'Cross Training', 'Uzun Mesafe Koşu', 'Esneklik'],
-                    '6': ['Uzun Mesafe Koşu', 'Interval Koşu', 'Cross Training', 'Uzun Mesafe Koşu', 'Interval Koşu', 'Esneklik']
+                'dayaniklilik': {
+                    'Kardiyo': [
+                        { name: 'Uzun Mesafe Koşu', sets: '45-60 dakika', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' },
+                        { name: 'Yüzme', sets: '30-45 dakika', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' },
+                        { name: 'Bisiklet', sets: '60 dakika', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' }
+                    ],
+                    'Circuit': [
+                        { name: 'Circuit Training', sets: '4 tur', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' },
+                        { name: 'Tabata', sets: '8 tur', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' },
+                        { name: 'AMRAP', sets: '20 dakika', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' }
+                    ]
                 }
             };
 
-            workouts[goal][days].forEach((workout, index) => {
-                plan += `
-                    <div class="workout-day">
-                        <h3>Gün ${index + 1}: ${workout}</h3>
-                        <p>${getWorkoutDescription(goal, workout)}</p>
-                    </div>
-                `;
+            const muscleGroups = Object.keys(exercises[goal]);
+            const daysPerGroup = Math.ceil(days / muscleGroups.length);
+            
+            let currentDay = 1;
+            muscleGroups.forEach(group => {
+                for (let i = 0; i < daysPerGroup && currentDay <= days; i++) {
+                    const dayDiv = document.createElement('div');
+                    dayDiv.className = 'workout-day';
+                    dayDiv.innerHTML = `
+                        <h3>Gün ${currentDay}: ${group}</h3>
+                        <div class="exercise-list">
+                            ${exercises[goal][group].map(exercise => `
+                                <div class="exercise-item">
+                                    <img src="${exercise.image}" alt="${exercise.name}" class="exercise-image">
+                                    <div class="exercise-details">
+                                        <div class="exercise-name">${exercise.name}</div>
+                                        <div class="exercise-info">${exercise.sets}</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                    planContainer.appendChild(dayDiv);
+                    currentDay++;
+                }
             });
-
-            return plan;
-        }
-
-        function getWorkoutDescription(goal, workout) {
-            const descriptions = {
-                muscle: {
-                    'Göğüs & Triceps': 'Bench press, dips, triceps extension',
-                    'Sırt & Biceps': 'Pull-ups, rows, biceps curls',
-                    'Bacak & Omuz': 'Squats, lunges, shoulder press',
-                    'Göğüs': 'Bench press, incline press, flyes',
-                    'Sırt': 'Pull-ups, rows, deadlifts',
-                    'Bacak': 'Squats, lunges, leg press',
-                    'Omuz & Kollar': 'Shoulder press, lateral raises, biceps curls',
-                    'Omuz': 'Shoulder press, lateral raises, front raises',
-                    'Kollar': 'Biceps curls, triceps extension, hammer curls'
-                },
-                fat: {
-                    'Tam Vücut HIIT': '20 dakika HIIT, 10 dakika core',
-                    'Kardiyo & Core': '30 dakika kardiyo, 15 dakika core',
-                    'Üst Vücut HIIT': '20 dakika üst vücut HIIT',
-                    'Alt Vücut HIIT': '20 dakika alt vücut HIIT',
-                    'Kardiyo': '45 dakika kardiyo',
-                    'Core & Esneklik': '20 dakika core, 10 dakika esneklik',
-                    'HIIT': '20 dakika HIIT'
-                },
-                endurance: {
-                    'Uzun Mesafe Koşu': '45-60 dakika koşu',
-                    'Interval Koşu': '30 dakika interval koşu',
-                    'Cross Training': '45 dakika cross training',
-                    'Esneklik': '30 dakika esneklik egzersizleri'
-                }
-            };
-
-            return descriptions[goal][workout] || 'Detaylı egzersiz programı için antrenörünüze danışın.';
         }
 
         // Kalori Hesaplayıcı
