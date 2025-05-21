@@ -14,18 +14,18 @@
                 <h1>Byteforce</h1>
             </div>
             <ul class="nav-links">
-                <li><a href="index.html">Ana Sayfa</a></li>
-                <li><a href="programlar.html" class="active">Programlar</a></li>
-                <li><a href="egzersizler.html">Egzersizler</a></li>
-                <li><a href="beslenme.html">Beslenme</a></li>
-                <li><a href="topluluk.html">Topluluk</a></li>
-                <li><a href="iletisim.html">İletişim</a></li>
+                <li><a href="/">Ana Sayfa</a></li>
+                <li><a href="/programlar" class="active">Programlar</a></li>
+                <li><a href="/egzersizler">Egzersizler</a></li>
+                <li><a href="/beslenme">Beslenme</a></li>
+                <li><a href="/topluluk">Topluluk</a></li>
+                <li><a href="/iletisim">İletişim</a></li>
             </ul>
             <div class="auth-buttons">
                 <div id="user-menu" class="user-menu">
                     <img src="https://source.unsplash.com/random/100x100/?portrait" alt="Profil" class="profile-pic">
                     <div class="dropdown-menu">
-                        <a href="profile.html"><i class="fas fa-user"></i> Profilim</a>
+                        <a href="/profile"><i class="fas fa-user"></i> Profilim</a>
                         <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Çıkış</a>
                     </div>
                 </div>
@@ -91,17 +91,55 @@
     </main>
 
     <script>
-        // Token kontrolü
-        const token = localStorage.getItem('token');
-        if (!token) {
-            window.location.href = 'index.html';
+        // Sayfa yüklendiğinde çalışacak fonksiyonlar
+        document.addEventListener('DOMContentLoaded', function() {
+            // Aktif menü öğesini işaretle
+            const currentPath = window.location.pathname;
+            document.querySelectorAll('.nav-link').forEach(link => {
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+
+            // Kullanıcı durumunu kontrol et
+            checkAuthStatus();
+        });
+
+        // Kullanıcı durumunu kontrol et
+        function checkAuthStatus() {
+            const token = localStorage.getItem('token');
+            const authButtons = document.getElementById('authButtons');
+            const userMenu = document.getElementById('userMenu');
+            const userName = document.getElementById('userName');
+
+            if (token) {
+                // Kullanıcı giriş yapmış
+                authButtons.style.display = 'none';
+                userMenu.style.display = 'flex';
+                
+                // Kullanıcı adını göster
+                const user = JSON.parse(localStorage.getItem('user'));
+                if (user && user.name) {
+                    userName.textContent = user.name;
+                }
+            } else {
+                // Kullanıcı giriş yapmamış
+                authButtons.style.display = 'flex';
+                userMenu.style.display = 'none';
+            }
         }
 
-        // Çıkış fonksiyonu
+        // Çıkış işlemi
         function logout() {
             localStorage.removeItem('token');
-            window.location.href = 'index.html';
+            localStorage.removeItem('user');
+            checkAuthStatus();
         }
+
+        // Event listeners
+        document.getElementById('logoutButton').addEventListener('click', logout);
     </script>
 </body>
 </html> 
