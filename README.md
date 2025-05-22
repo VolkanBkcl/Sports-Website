@@ -5,6 +5,7 @@ Modern ve kullanıcı dostu bir fitness takip web sitesi.
 ## Özellikler
 
 - Kullanıcı kayıt ve giriş sistemi
+- Kullanıcı veri güvenliği
 - Kişisel profil sayfası
 - İlerleme takibi
 - Günlük egzersiz planı

@@ -15,14 +15,14 @@
                 <span>ByteForce</span>
             </a>
             
-            <nav class="nav-links">
-                <a href="/" class="nav-link active">Ana Sayfa</a>
-                <a href="/programlar" class="nav-link">Programlar</a>
-                <a href="/egzersizler" class="nav-link">Egzersizler</a>
-                <a href="/beslenme" class="nav-link">Beslenme</a>
-                <a href="/topluluk" class="nav-link">Topluluk</a>
-                <a href="/iletisim" class="nav-link">İletişim</a>
-            </nav>
+            <ul class="nav-links">
+                <li><a href="/" class="nav-link active">Ana Sayfa</a></li>
+                <li><a href="/programlar" class="nav-link">Programlar</a></li>
+                <li><a href="/egzersizler" class="nav-link">Egzersizler</a></li>
+                <li><a href="/beslenme" class="nav-link">Beslenme</a></li>
+                <li><a href="/topluluk" class="nav-link">Topluluk</a></li>
+                <li><a href="/iletisim" class="nav-link">İletişim</a></li>
+            </ul>
 
             <div class="auth-buttons" id="authButtons">
                 <a href="#" class="auth-button login-button" id="loginButton">
@@ -300,63 +300,50 @@
             }
         }
 
-        // Token kontrolü ve navbar güncelleme
-        function checkAuth() {
+        // Kullanıcı durumunu kontrol et
+        function checkAuthStatus() {
             const token = localStorage.getItem('token');
             const authButtons = document.getElementById('authButtons');
             const userMenu = document.getElementById('userMenu');
             const userName = document.getElementById('userName');
-            const storedUserName = localStorage.getItem('userName');
 
             if (token) {
-                try {
-                    // Token'ı doğrula ve kullanıcı bilgilerini al
-                    fetch('/api/users/me', {
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        }
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Token geçersiz');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        authButtons.style.display = 'none';
-                        userMenu.style.display = 'block';
-                        userName.textContent = storedUserName || 'Kullanıcı';
-                    })
-                    .catch(error => {
-                        console.error('Token doğrulama hatası:', error);
-                        localStorage.removeItem('token');
-                        localStorage.removeItem('userName');
-                        authButtons.style.display = 'flex';
-                        userMenu.style.display = 'none';
-                    });
-                } catch (error) {
-                    console.error('checkAuth hatası:', error);
+                // Kullanıcı giriş yapmış
+                authButtons.style.display = 'none';
+                userMenu.style.display = 'flex';
+                
+                // Kullanıcı adını göster
+                const user = JSON.parse(localStorage.getItem('user'));
+                if (user && user.name) {
+                    userName.textContent = user.name;
                 }
             } else {
+                // Kullanıcı giriş yapmamış
                 authButtons.style.display = 'flex';
                 userMenu.style.display = 'none';
             }
         }
 
-        // Sayfa yüklendiğinde token kontrolü yap
-        document.addEventListener('DOMContentLoaded', checkAuth);
+        // Sayfa yüklendiğinde çalışacak fonksiyonlar
+        document.addEventListener('DOMContentLoaded', function() {
+            // Aktif menü öğesini işaretle
+            const currentPath = window.location.pathname;
+            document.querySelectorAll('.nav-link').forEach(link => {
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
 
-        // Çıkış yapma fonksiyonu
-        document.getElementById('logoutButton').addEventListener('click', (e) => {
-            e.preventDefault();
-            localStorage.removeItem('token');
-            localStorage.removeItem('userName');
-            window.location.href = '/';
+            // Kullanıcı durumunu kontrol et
+            checkAuthStatus();
         });
 
         // Giriş işlemi
         async function handleLogin(event) {
             event.preventDefault();
+            
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
 
@@ -370,13 +357,19 @@
                 });
 
                 const data = await response.json();
+
                 if (response.ok) {
+                    // Token'ı ve kullanıcı bilgilerini kaydet
                     localStorage.setItem('token', data.token);
-                    checkAuth();
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    
+                    // Modal'ı kapat
                     closeLoginForm();
-                    window.location.href = '/profile';
+                    
+                    // Kullanıcı durumunu güncelle
+                    checkAuthStatus();
                 } else {
-                    alert(data.message || 'Giriş yapılırken bir hata oluştu');
+                    alert(data.message || 'Giriş başarısız');
                 }
             } catch (error) {
                 console.error('Giriş hatası:', error);
@@ -387,9 +380,8 @@
         // Kayıt işlemi
         async function handleSignup(event) {
             event.preventDefault();
+            
             const name = document.getElementById('signup-name').value;
-            const [firstName, ...lastNameParts] = name.split(' ');
-            const lastName = lastNameParts.join(' ');
             const email = document.getElementById('signup-email').value;
             const password = document.getElementById('signup-password').value;
             const passwordConfirm = document.getElementById('signup-password-confirm').value;
@@ -405,26 +397,39 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ 
-                        firstName, 
-                        lastName, 
-                        email, 
-                        password 
-                    })
+                    body: JSON.stringify({ name, email, password })
                 });
 
                 const data = await response.json();
+
                 if (response.ok) {
-                    alert('Kayıt başarılı! Lütfen e-posta adresinizi doğrulayın.');
+                    // Token'ı ve kullanıcı bilgilerini kaydet
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    
+                    // Modal'ı kapat
                     closeSignupForm();
+                    
+                    // Kullanıcı durumunu güncelle
+                    checkAuthStatus();
                 } else {
-                    alert(data.message);
+                    alert(data.message || 'Kayıt başarısız');
                 }
             } catch (error) {
                 console.error('Kayıt hatası:', error);
                 alert('Kayıt olurken bir hata oluştu');
             }
         }
+
+        // Çıkış işlemi
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            checkAuthStatus();
+        }
+
+        // Event listeners
+        document.getElementById('logoutButton').addEventListener('click', logout);
     </script>
 </body>
 </html> 

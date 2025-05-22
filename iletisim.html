@@ -111,17 +111,55 @@
     </main>
 
     <script>
-        // Token kontrolü
-        const token = localStorage.getItem('token');
-        if (!token) {
-            window.location.href = 'index.html';
+        // Sayfa yüklendiğinde çalışacak fonksiyonlar
+        document.addEventListener('DOMContentLoaded', function() {
+            // Aktif menü öğesini işaretle
+            const currentPath = window.location.pathname;
+            document.querySelectorAll('.nav-link').forEach(link => {
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+
+            // Kullanıcı durumunu kontrol et
+            checkAuthStatus();
+        });
+
+        // Kullanıcı durumunu kontrol et
+        function checkAuthStatus() {
+            const token = localStorage.getItem('token');
+            const authButtons = document.getElementById('authButtons');
+            const userMenu = document.getElementById('userMenu');
+            const userName = document.getElementById('userName');
+
+            if (token) {
+                // Kullanıcı giriş yapmış
+                authButtons.style.display = 'none';
+                userMenu.style.display = 'flex';
+                
+                // Kullanıcı adını göster
+                const user = JSON.parse(localStorage.getItem('user'));
+                if (user && user.name) {
+                    userName.textContent = user.name;
+                }
+            } else {
+                // Kullanıcı giriş yapmamış
+                authButtons.style.display = 'flex';
+                userMenu.style.display = 'none';
+            }
         }
 
-        // Çıkış fonksiyonu
+        // Çıkış işlemi
         function logout() {
             localStorage.removeItem('token');
-            window.location.href = 'index.html';
+            localStorage.removeItem('user');
+            checkAuthStatus();
         }
+
+        // Event listeners
+        document.getElementById('logoutButton').addEventListener('click', logout);
 
         // İletişim formu gönderimi
         document.getElementById('contact-form').addEventListener('submit', async (e) => {

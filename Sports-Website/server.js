@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const path = require('path');
 const userRoutes = require('./routes/userRoutes');
 const programRoutes = require('./routes/programRoutes');
 const contentRoutes = require('./routes/contentRoutes');
@@ -23,36 +24,41 @@ app.use(express.static(__dirname));
 
 // Ana sayfa route'u
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // Diğer sayfalar için route'lar
 app.get('/programlar', (req, res) => {
-    res.sendFile(__dirname + '/programlar.html');
+    try {
+        res.sendFile(path.join(__dirname, 'programlar.html'));
+    } catch (error) {
+        console.error('Programlar sayfası hatası:', error);
+        res.status(500).send('Dosya bulunamadı');
+    }
 });
 
 app.get('/egzersizler', (req, res) => {
-    res.sendFile(__dirname + '/egzersizler.html');
+    res.sendFile(path.join(__dirname, 'egzersizler.html'));
 });
 
 app.get('/beslenme', (req, res) => {
-    res.sendFile(__dirname + '/beslenme.html');
+    res.sendFile(path.join(__dirname, 'beslenme.html'));
 });
 
 app.get('/topluluk', (req, res) => {
-    res.sendFile(__dirname + '/topluluk.html');
+    res.sendFile(path.join(__dirname, 'topluluk.html'));
 });
 
 app.get('/iletisim', (req, res) => {
-    res.sendFile(__dirname + '/iletisim.html');
+    res.sendFile(path.join(__dirname, 'iletisim.html'));
 });
 
 app.get('/profile', (req, res) => {
-    res.sendFile(__dirname + '/profile.html');
+    res.sendFile(path.join(__dirname, 'profile.html'));
 });
 
 app.get('/spor-urunleri', (req, res) => {
-    res.sendFile(__dirname + '/spor-urunleri.html');
+    res.sendFile(path.join(__dirname, 'spor-urunleri.html'));
 });
 
 // Routes
