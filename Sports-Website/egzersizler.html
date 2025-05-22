@@ -573,6 +573,8 @@
         </div>
     </main>
 
+    <script src="js/auth.js"></script>
+    <script src="js/image-optimizer.js"></script>
     <script>
         // Antrenman Planı Oluşturucu
         function generateWorkoutPlan() {
@@ -586,14 +588,44 @@
             const exercises = {
                 'kas-gelistirme': {
                     'Göğüs': [
-                        { name: 'Bench Press', sets: '4x8-12', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' },
-                        { name: 'Incline Dumbbell Press', sets: '3x10-12', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' },
-                        { name: 'Cable Fly', sets: '3x12-15', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' }
+                        { 
+                            name: 'Bench Press', 
+                            sets: '4x8-12', 
+                            image: 'images/exercises/bench-press.webp',
+                            placeholder: 'data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoQABAABUB8JZwAA3AA/v3yAAA='
+                        },
+                        { 
+                            name: 'Incline Dumbbell Press', 
+                            sets: '3x10-12', 
+                            image: 'images/exercises/incline-dumbbell-press.webp',
+                            placeholder: 'data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoQABAABUB8JZwAA3AA/v3yAAA='
+                        },
+                        { 
+                            name: 'Cable Fly', 
+                            sets: '3x12-15', 
+                            image: 'images/exercises/cable-fly.webp',
+                            placeholder: 'data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoQABAABUB8JZwAA3AA/v3yAAA='
+                        }
                     ],
                     'Sırt': [
-                        { name: 'Pull-ups', sets: '4x8-12', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' },
-                        { name: 'Barbell Row', sets: '4x8-12', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' },
-                        { name: 'Lat Pulldown', sets: '3x10-12', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' }
+                        { 
+                            name: 'Pull-ups', 
+                            sets: '4x8-12', 
+                            image: 'images/exercises/pull-ups.webp',
+                            placeholder: 'data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoQABAABUB8JZwAA3AA/v3yAAA='
+                        },
+                        { 
+                            name: 'Barbell Row', 
+                            sets: '4x8-12', 
+                            image: 'images/exercises/barbell-row.webp',
+                            placeholder: 'data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoQABAABUB8JZwAA3AA/v3yAAA='
+                        },
+                        { 
+                            name: 'Lat Pulldown', 
+                            sets: '3x10-12', 
+                            image: 'images/exercises/lat-pulldown.webp',
+                            placeholder: 'data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoQABAABUB8JZwAA3AA/v3yAAA='
+                        }
                     ],
                     'Bacak': [
                         { name: 'Squat', sets: '4x8-12', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3' },
@@ -655,7 +687,15 @@
                         <div class="exercise-list">
                             ${exercises[goal][group].map(exercise => `
                                 <div class="exercise-item">
-                                    <img src="${exercise.image}" alt="${exercise.name}" class="exercise-image">
+                                    <img 
+                                        src="${exercise.placeholder}"
+                                        data-src="${exercise.image}"
+                                        alt="${exercise.name}"
+                                        loading="lazy"
+                                        class="exercise-image"
+                                        width="300"
+                                        height="200"
+                                    >
                                     <div class="exercise-details">
                                         <div class="exercise-name">${exercise.name}</div>
                                         <div class="exercise-info">${exercise.sets}</div>
