@@ -84,6 +84,7 @@ a:hover {
 .nav-links {
     display: flex;
     gap: 2rem;
+    list-style: none;
 }
 
 .nav-link {
@@ -100,16 +101,6 @@ a:hover {
 
 .nav-link.active {
     color: var(--secondary-color);
-}
-
-.nav-link.active::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: var(--secondary-color);
 }
 
 .auth-buttons {

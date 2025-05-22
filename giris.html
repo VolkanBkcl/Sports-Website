@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Yap - ByteForce</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--white);
+        }
+        .login-container {
+            display: flex;
+            height: 100vh;
+        }
+        .login-left {
+            flex: 1;
+            background: linear-gradient(rgba(26,26,26,0.7), rgba(255,77,77,0.3)), url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=900&q=80') center center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            flex-direction: column;
+            padding: 2rem;
+        }
+        .login-left h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--white);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .login-left p {
+            font-size: 1.2rem;
+            max-width: 400px;
+            color: var(--white);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .login-right {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--white);
+        }
+        .login-form {
+            background: var(--white);
+            padding: 2.5rem 2rem;
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+            width: 100%;
+            max-width: 400px;
+        }
+        .login-form h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--secondary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .submit-btn:hover {
+            background: var(--accent-color);
+        }
+        .register-link {
+            display: block;
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-size: 1rem;
+        }
+        .register-link:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 900px) {
+            .login-container {
+                flex-direction: column;
+            }
+            .login-left, .login-right {
+                flex: unset;
+                width: 100%;
+                min-height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-left">
+            <h2>Güçlü Başla!</h2>
+            <p>Her yeni gün, yeni bir başlangıçtır. Hedeflerine ulaşmak için şimdi giriş yap ve yolculuğuna devam et!</p>
+        </div>
+        <div class="login-right">
+            <form class="login-form">
+                <h2>Giriş Yap</h2>
+                <div class="form-group">
+                    <label for="email">E-posta</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Şifre</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="submit-btn">Giriş Yap</button>
+                <a href="kayitol.html" class="register-link">Hesabın yok mu? Kayıt Ol</a>
+            </form>
+        </div>
+    </div>
+</body>
+</html> 
