@@ -6,6 +6,7 @@ const path = require('path');
 const userRoutes = require('./routes/userRoutes');
 const programRoutes = require('./routes/programRoutes');
 const contentRoutes = require('./routes/contentRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 // Environment variables
 dotenv.config();
@@ -44,6 +45,7 @@ routes.forEach(route => {
 });
 
 // API Routes
+app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/programs', programRoutes);
 app.use('/api/content', contentRoutes);

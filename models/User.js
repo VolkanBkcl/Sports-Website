@@ -3,25 +3,34 @@ const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 
 const userSchema = new mongoose.Schema({
+    username: {
+        type: String,
+        required: true,
+        unique: true,
+        trim: true,
+        minlength: 3
+    },
     email: {
         type: String,
-        required: [true, 'Email gereklidir'],
+        required: true,
         unique: true,
-        lowercase: true,
-        trim: true
+        trim: true,
+        lowercase: true
     },
     password: {
         type: String,
-        required: [true, 'Şifre gereklidir'],
-        minlength: [6, 'Şifre en az 6 karakter olmalıdır']
+        required: true,
+        minlength: 6
     },
     firstName: {
         type: String,
-        required: [true, 'Ad gereklidir']
+        required: false,
+        trim: true
     },
     lastName: {
         type: String,
-        required: [true, 'Soyad gereklidir']
+        required: false,
+        trim: true
     },
     isVerified: {
         type: Boolean,
@@ -38,12 +47,16 @@ const userSchema = new mongoose.Schema({
         weight: Number,
         fitnessGoals: [String],
         activityLevel: String
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
     }
 }, {
     timestamps: true
 });
 
-// Şifre hashleme middleware
+// Şifreyi hashleme middleware'i
 userSchema.pre('save', async function(next) {
     if (!this.isModified('password')) return next();
     
@@ -58,7 +71,7 @@ userSchema.pre('save', async function(next) {
 
 // Şifre karşılaştırma metodu
 userSchema.methods.comparePassword = async function(candidatePassword) {
-    return await bcrypt.compare(candidatePassword, this.password);
+    return bcrypt.compare(candidatePassword, this.password);
 };
 
 // Doğrulama token'ı oluşturma metodu

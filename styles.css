@@ -437,11 +437,8 @@ a:hover {
     z-index: 1000;
     opacity: 0;
     transition: opacity 0.3s ease;
-}
-
-.modal.active {
-    display: flex;
-    opacity: 1;
+    justify-content: center;
+    align-items: center;
 }
 
 .modal-content {
@@ -460,18 +457,24 @@ a:hover {
     transform: translateY(0);
 }
 
-.close-modal {
+.close {
     position: absolute;
     top: 1rem;
     right: 1rem;
     font-size: 1.5rem;
     cursor: pointer;
     color: var(--light-text);
+    transition: color 0.3s ease;
+}
+
+.close:hover {
+    color: var(--secondary-color);
 }
 
 .modal h2 {
     margin-bottom: 1.5rem;
     color: var(--primary-color);
+    text-align: center;
 }
 
 .form-group {
@@ -482,6 +485,7 @@ a:hover {
     display: block;
     margin-bottom: 0.5rem;
     color: var(--text-color);
+    font-weight: 500;
 }
 
 .form-group input {
@@ -490,6 +494,7 @@ a:hover {
     border: 1px solid var(--border-color);
     border-radius: 5px;
     font-size: 1rem;
+    transition: border-color 0.3s ease;
 }
 
 .form-group input:focus {
@@ -497,27 +502,61 @@ a:hover {
     border-color: var(--secondary-color);
 }
 
-.modal-footer {
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--light-text);
+    font-size: 0.9rem;
+}
+
+.forgot-password {
+    float: right;
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: var(--secondary-color);
+    color: var(--white);
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: var(--accent-color);
+}
+
+.form-footer {
     text-align: center;
     margin-top: 1.5rem;
-}
-
-.modal-footer p {
     color: var(--light-text);
+    font-size: 0.9rem;
 }
 
-.modal-footer a {
+.form-footer a {
     color: var(--secondary-color);
     text-decoration: none;
 }
 
-.modal-footer a:hover {
+.form-footer a:hover {
     text-decoration: underline;
 }
 
 /* User Menu */
 .user-menu {
     position: relative;
+    display: none;
 }
 
 .user-button {
@@ -529,6 +568,12 @@ a:hover {
     align-items: center;
     gap: 0.5rem;
     font-size: 1rem;
+    padding: 0.5rem 1rem;
+    transition: color 0.3s ease;
+}
+
+.user-button:hover {
+    color: var(--secondary-color);
 }
 
 .dropdown-menu {
@@ -541,9 +586,10 @@ a:hover {
     padding: 0.5rem 0;
     min-width: 200px;
     display: none;
+    z-index: 1000;
 }
 
-.dropdown-menu.active {
+.user-menu:hover .dropdown-menu {
     display: block;
 }
 
@@ -564,6 +610,8 @@ a:hover {
 
 .dropdown-item i {
     color: var(--secondary-color);
+    width: 20px;
+    text-align: center;
 }
 
 /* Mobile Menu Button */
@@ -1364,4 +1412,100 @@ a:hover {
 
 .cta-button:hover::before {
     left: 100%;
+}
+
+/* Auth Forms */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+    padding: 20px;
+}
+
+.auth-box {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.auth-box h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.auth-form .form-group {
+    margin-bottom: 20px;
+}
+
+.auth-form label {
+    display: block;
+    margin-bottom: 5px;
+    color: #666;
+    font-size: 14px;
+}
+
+.auth-form input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.auth-form input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.auth-form .btn-primary {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.auth-form .btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.auth-link {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #666;
+}
+
+.auth-link a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.auth-link a:hover {
+    text-decoration: underline;
+}
+
+/* Error messages */
+.error-message {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+/* Success message */
+.success-message {
+    color: #28a745;
+    font-size: 14px;
+    margin-top: 5px;
 } 

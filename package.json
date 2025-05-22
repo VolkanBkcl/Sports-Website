@@ -13,8 +13,8 @@
     "crypto": "^1.0.1",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "jsonwebtoken": "^9.0.0",
-    "mongoose": "^7.0.3",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.8.7",
     "nodemailer": "^6.9.1"
   },
   "devDependencies": {
