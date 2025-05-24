@@ -1,6 +1,7 @@
 const User = require('../models/User');
-const { sendVerificationEmail } = require('../services/emailService');
+const { sendVerificationEmail, sendPasswordResetEmail } = require('../services/emailService');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 
 // Kayıt işlemi
 exports.register = async (req, res) => {
@@ -173,6 +174,57 @@ exports.getCurrentUser = async (req, res) => {
             return res.status(404).json({ message: 'Kullanıcı bulunamadı' });
         }
         res.status(200).json({ user });
+    } catch (error) {
+        res.status(500).json({ message: 'Sunucu hatası', error: error.message });
+    }
+};
+
+// Şifre sıfırlama isteği
+exports.requestPasswordReset = async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ message: 'Bu e-posta adresiyle kayıtlı kullanıcı bulunamadı' });
+        }
+
+        // Şifre sıfırlama token'ı oluştur
+        const resetToken = crypto.randomBytes(32).toString('hex');
+        user.resetPasswordToken = resetToken;
+        user.resetPasswordExpires = Date.now() + 3600000; // 1 saat
+        await user.save();
+
+        // Şifre sıfırlama e-postası gönder
+        await sendPasswordResetEmail(email, resetToken);
+
+        res.status(200).json({ message: 'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi' });
+    } catch (error) {
+        res.status(500).json({ message: 'Sunucu hatası', error: error.message });
+    }
+};
+
+// Şifre sıfırlama
+exports.resetPassword = async (req, res) => {
+    try {
+        const { token, password } = req.body;
+
+        const user = await User.findOne({
+            resetPasswordToken: token,
+            resetPasswordExpires: { $gt: Date.now() }
+        });
+
+        if (!user) {
+            return res.status(400).json({ message: 'Geçersiz veya süresi dolmuş şifre sıfırlama bağlantısı' });
+        }
+
+        // Yeni şifreyi ayarla
+        user.password = password;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
+        await user.save();
+
+        res.status(200).json({ message: 'Şifreniz başarıyla güncellendi' });
     } catch (error) {
         res.status(500).json({ message: 'Sunucu hatası', error: error.message });
     }

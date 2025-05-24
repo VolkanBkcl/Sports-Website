@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const { sendVerificationEmail } = require('../services/emailService');
 
 // JWT token oluşturma fonksiyonu
 const generateToken = (userId) => {
@@ -9,12 +10,8 @@ const generateToken = (userId) => {
 };
 
 // Input validasyonu
-const validateRegisterInput = (username, email, password) => {
+const validateRegisterInput = (email, password) => {
     const errors = {};
-    
-    if (!username || username.length < 3) {
-        errors.username = 'Kullanıcı adı en az 3 karakter olmalıdır';
-    }
     
     if (!email || !email.includes('@')) {
         errors.email = 'Geçerli bir email adresi giriniz';
@@ -33,10 +30,10 @@ const validateRegisterInput = (username, email, password) => {
 // Kullanıcı kayıt işlemi
 exports.register = async (req, res) => {
     try {
-        const { username, email, password, firstName, lastName } = req.body;
+        const { email, password, firstName, lastName } = req.body;
 
         // Input validasyonu
-        const { isValid, errors } = validateRegisterInput(username, email, password);
+        const { isValid, errors } = validateRegisterInput(email, password);
         if (!isValid) {
             return res.status(400).json({
                 success: false,
@@ -44,17 +41,18 @@ exports.register = async (req, res) => {
             });
         }
 
-        // Email ve kullanıcı adının benzersiz olduğunu kontrol et
-        const existingUser = await User.findOne({ 
-            $or: [{ email }, { username }] 
-        });
+        // Email'in benzersiz olduğunu kontrol et
+        const existingUser = await User.findOne({ email });
 
         if (existingUser) {
             return res.status(400).json({
                 success: false,
-                message: 'Bu email veya kullanıcı adı zaten kullanımda'
+                message: 'Bu email adresi zaten kullanımda'
             });
         }
+
+        // Kullanıcı adını email'den oluştur
+        const username = email.split('@')[0];
 
         // Yeni kullanıcı oluştur
         const user = new User({
@@ -62,7 +60,8 @@ exports.register = async (req, res) => {
             email,
             password,
             firstName,
-            lastName
+            lastName,
+            isVerified: true // E-posta doğrulamasını atla
         });
 
         await user.save();
@@ -79,7 +78,8 @@ exports.register = async (req, res) => {
                 email: user.email,
                 firstName: user.firstName,
                 lastName: user.lastName
-            }
+            },
+            message: 'Kayıt başarılı! Giriş yapabilirsiniz.'
         });
 
     } catch (error) {
@@ -87,6 +87,42 @@ exports.register = async (req, res) => {
         res.status(500).json({
             success: false,
             message: 'Kayıt işlemi sırasında bir hata oluştu',
+            error: process.env.NODE_ENV === 'development' ? error.message : undefined
+        });
+    }
+};
+
+// E-posta doğrulama
+exports.verifyEmail = async (req, res) => {
+    try {
+        const { token } = req.query;
+
+        const user = await User.findOne({
+            verificationToken: token,
+            verificationTokenExpires: { $gt: Date.now() }
+        });
+
+        if (!user) {
+            return res.status(400).json({
+                success: false,
+                message: 'Geçersiz veya süresi dolmuş doğrulama bağlantısı'
+            });
+        }
+
+        user.isVerified = true;
+        user.verificationToken = undefined;
+        user.verificationTokenExpires = undefined;
+        await user.save();
+
+        res.status(200).json({
+            success: true,
+            message: 'E-posta adresiniz başarıyla doğrulandı'
+        });
+    } catch (error) {
+        console.error('E-posta doğrulama hatası:', error);
+        res.status(500).json({
+            success: false,
+            message: 'E-posta doğrulama işlemi sırasında bir hata oluştu',
             error: process.env.NODE_ENV === 'development' ? error.message : undefined
         });
     }

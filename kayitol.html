@@ -145,5 +145,99 @@
             </form>
         </div>
     </div>
+    <script>
+        // Form gönderimini dinle
+        document.querySelector('.register-form').addEventListener('submit', async (e) => {
+            // Sayfanın yenilenmesini engelle
+            e.preventDefault();
+            
+            // Form verilerini al
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const passwordConfirm = document.getElementById('password-confirm').value;
+
+            // Boş alan kontrolü
+            if (!name || !email || !password || !passwordConfirm) {
+                alert('Lütfen tüm alanları doldurunuz!');
+                return;
+            }
+
+            // E-posta formatı kontrolü
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Lütfen geçerli bir e-posta adresi giriniz!');
+                return;
+            }
+
+            // Şifre uzunluğu kontrolü
+            if (password.length < 6) {
+                alert('Şifre en az 6 karakter olmalıdır!');
+                return;
+            }
+
+            // Şifre eşleşme kontrolü
+            if (password !== passwordConfirm) {
+                alert('Girdiğiniz şifreler eşleşmiyor!');
+                return;
+            }
+
+            // İsim ve soyisim ayırma
+            const [firstName, ...lastNameParts] = name.split(' ');
+            const lastName = lastNameParts.join(' ');
+
+            // İsim kontrolü
+            if (!firstName || !lastName) {
+                alert('Lütfen adınızı ve soyadınızı tam olarak giriniz!');
+                return;
+            }
+
+            try {
+                console.log('Kayıt isteği gönderiliyor...');
+                // Kayıt isteği gönder
+                const response = await fetch('http://localhost:8080/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        firstName,
+                        lastName,
+                        email,
+                        password
+                    })
+                });
+
+                console.log('Sunucu yanıtı alındı:', response.status);
+                const data = await response.json();
+                console.log('Sunucu yanıtı:', data);
+
+                if (response.ok) {
+                    // Token ve kullanıcı bilgilerini kaydet
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    
+                    alert('Kayıt işleminiz başarıyla tamamlandı! Giriş yapabilirsiniz.');
+                    window.location.href = 'index.html';
+                } else {
+                    // Sunucudan gelen hata mesajını göster
+                    if (data.errors) {
+                        const hataMesajlari = Object.values(data.errors).join('\n');
+                        alert('Kayıt işlemi başarısız:\n' + hataMesajlari);
+                    } else {
+                        alert(data.message || 'Kayıt işlemi sırasında bir hata oluştu. Lütfen daha sonra tekrar deneyiniz.');
+                    }
+                }
+            } catch (error) {
+                console.error('Kayıt hatası:', error);
+                if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+                    alert('Sunucuya bağlanılamıyor. Lütfen sunucunun çalıştığından emin olun ve tekrar deneyin.');
+                } else {
+                    alert('Bir hata oluştu: ' + error.message);
+                }
+            }
+        });
+    </script>
 </body>
 </html> 

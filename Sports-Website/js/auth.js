@@ -1,127 +1,127 @@
-// Modal işlemleri
-function showLoginForm() {
-    const modal = document.getElementById('loginModal');
-    if (modal) {
-        modal.style.display = 'flex';
-        modal.style.opacity = '0';
-        requestAnimationFrame(() => {
-            modal.style.opacity = '1';
-        });
-    }
+// API endpoint'leri
+const API_URL = '/api/users';
+
+// Token yönetimi
+const getToken = () => localStorage.getItem('token');
+const setToken = (token) => localStorage.setItem('token', token);
+const removeToken = () => localStorage.removeItem('token');
+
+// Kullanıcı bilgilerini yönetme
+const getUser = () => JSON.parse(localStorage.getItem('user'));
+const setUser = (user) => localStorage.setItem('user', JSON.stringify(user));
+const removeUser = () => localStorage.removeItem('user');
+
+// Form elementlerini seçme
+const loginForm = document.getElementById('loginForm');
+const signupForm = document.getElementById('signupForm');
+const loginModal = document.getElementById('loginModal');
+const signupModal = document.getElementById('signupModal');
+const authButtons = document.getElementById('authButtons');
+const userMenu = document.getElementById('userMenu');
+const userName = document.getElementById('userName');
+const logoutButton = document.getElementById('logoutButton');
+
+// Modal yönetimi
+function openLoginForm() {
+    loginModal.style.display = 'block';
+    signupModal.style.display = 'none';
+}
+
+function openSignupForm() {
+    signupModal.style.display = 'block';
+    loginModal.style.display = 'none';
 }
 
 function closeLoginForm() {
-    const modal = document.getElementById('loginModal');
-    if (modal) {
-        modal.style.opacity = '0';
-        setTimeout(() => {
-            modal.style.display = 'none';
-        }, 300);
-    }
-}
-
-function showSignupForm() {
-    const modal = document.getElementById('signupModal');
-    if (modal) {
-        modal.style.display = 'flex';
-        modal.style.opacity = '0';
-        requestAnimationFrame(() => {
-            modal.style.opacity = '1';
-        });
-    }
+    loginModal.style.display = 'none';
 }
 
 function closeSignupForm() {
-    const modal = document.getElementById('signupModal');
-    if (modal) {
-        modal.style.opacity = '0';
-        setTimeout(() => {
-            modal.style.display = 'none';
-        }, 300);
-    }
+    signupModal.style.display = 'none';
 }
 
 function switchToSignup() {
     closeLoginForm();
-    setTimeout(showSignupForm, 300);
+    openSignupForm();
 }
 
 function switchToLogin() {
     closeSignupForm();
-    setTimeout(showLoginForm, 300);
+    openLoginForm();
 }
 
-// Modal dışına tıklandığında kapatma
-document.addEventListener('click', (event) => {
-    if (event.target.className === 'modal') {
-        const modal = event.target;
-        modal.style.opacity = '0';
-        setTimeout(() => {
-            modal.style.display = 'none';
-        }, 300);
-    }
-});
+// Kullanıcı arayüzünü güncelleme
+function updateUI() {
+    const token = getToken();
+    const user = getUser();
 
-// Token kontrolü ve navbar güncelleme
-async function checkAuth() {
-    const token = localStorage.getItem('token');
-    const authButtons = document.getElementById('authButtons');
-    const userMenu = document.getElementById('userMenu');
-    const userName = document.getElementById('userName');
-    const storedUserName = localStorage.getItem('userName');
-
-    if (!authButtons || !userMenu) return;
-
-    if (token) {
-        try {
-            const response = await fetch('/api/users/me', {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error('Token geçersiz');
-            }
-
-            const data = await response.json();
-            authButtons.style.display = 'none';
-            userMenu.style.display = 'block';
-            if (userName) {
-                userName.textContent = storedUserName || 'Kullanıcı';
-            }
-        } catch (error) {
-            console.error('Token doğrulama hatası:', error);
-            localStorage.removeItem('token');
-            localStorage.removeItem('userName');
-            authButtons.style.display = 'flex';
-            userMenu.style.display = 'none';
-        }
+    if (token && user) {
+        authButtons.style.display = 'none';
+        userMenu.style.display = 'block';
+        userName.textContent = `${user.firstName} ${user.lastName}`;
     } else {
-        authButtons.style.display = 'flex';
+        authButtons.style.display = 'block';
         userMenu.style.display = 'none';
     }
 }
 
-// Çıkış yapma fonksiyonu
-const logoutButton = document.getElementById('logoutButton');
-if (logoutButton) {
-    logoutButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        localStorage.removeItem('token');
-        localStorage.removeItem('userName');
-        window.location.href = '/';
-    });
+// Kayıt işlemi
+async function handleSignup(event) {
+    event.preventDefault();
+
+    const name = document.getElementById('signup-name').value;
+    const email = document.getElementById('signup-email').value;
+    const password = document.getElementById('signup-password').value;
+    const passwordConfirm = document.getElementById('signup-password-confirm').value;
+
+    // Şifre kontrolü
+    if (password !== passwordConfirm) {
+        alert('Şifreler eşleşmiyor!');
+        return;
+    }
+
+    // İsim ayırma
+    const [firstName, ...lastNameParts] = name.split(' ');
+    const lastName = lastNameParts.join(' ');
+
+    try {
+        const response = await fetch(`${API_URL}/register`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                firstName,
+                lastName,
+                email,
+                password
+            })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            alert('Kayıt başarılı! Lütfen e-posta adresinizi doğrulayın.');
+            closeSignupForm();
+            openLoginForm();
+        } else {
+            alert(data.message || 'Kayıt işlemi başarısız oldu.');
+        }
+    } catch (error) {
+        console.error('Kayıt hatası:', error);
+        alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+    }
 }
 
 // Giriş işlemi
 async function handleLogin(event) {
     event.preventDefault();
+
     const email = document.getElementById('login-email').value;
     const password = document.getElementById('login-password').value;
 
     try {
-        const response = await fetch('/api/users/login', {
+        const response = await fetch(`${API_URL}/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -130,94 +130,44 @@ async function handleLogin(event) {
         });
 
         const data = await response.json();
+
         if (response.ok) {
-            localStorage.setItem('token', data.token);
-            await checkAuth();
+            setToken(data.token);
+            setUser(data.user);
+            updateUI();
             closeLoginForm();
             window.location.href = '/profile';
         } else {
-            alert(data.message || 'Giriş yapılırken bir hata oluştu');
+            alert(data.message || 'Giriş başarısız oldu.');
         }
     } catch (error) {
         console.error('Giriş hatası:', error);
-        alert('Giriş yapılırken bir hata oluştu');
+        alert('Bir hata oluştu. Lütfen tekrar deneyin.');
     }
 }
 
-// Kayıt işlemi
-async function handleSignup(event) {
-    event.preventDefault();
-    const name = document.getElementById('signup-name').value;
-    const [firstName, ...lastNameParts] = name.split(' ');
-    const lastName = lastNameParts.join(' ');
-    const email = document.getElementById('signup-email').value;
-    const password = document.getElementById('signup-password').value;
-    const passwordConfirm = document.getElementById('signup-password-confirm').value;
-
-    if (password !== passwordConfirm) {
-        alert('Şifreler eşleşmiyor');
-        return;
-    }
-
-    try {
-        const response = await fetch('/api/users/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ 
-                firstName, 
-                lastName, 
-                email, 
-                password 
-            })
-        });
-
-        const data = await response.json();
-        if (response.ok) {
-            alert('Kayıt başarılı! Lütfen e-posta adresinizi doğrulayın.');
-            closeSignupForm();
-        } else {
-            alert(data.message);
-        }
-    } catch (error) {
-        console.error('Kayıt hatası:', error);
-        alert('Kayıt olurken bir hata oluştu');
-    }
+// Çıkış işlemi
+function handleLogout() {
+    removeToken();
+    removeUser();
+    updateUI();
+    window.location.href = '/';
 }
 
-// Event listener'ları ekle
-document.addEventListener('DOMContentLoaded', () => {
-    // Giriş ve kayıt butonları
-    const loginButton = document.getElementById('loginButton');
-    const registerButton = document.getElementById('registerButton');
-    
-    if (loginButton) {
-        loginButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            showLoginForm();
-        });
-    }
-    
-    if (registerButton) {
-        registerButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            showSignupForm();
-        });
-    }
+// Event listener'ları ekleme
+document.getElementById('loginButton').addEventListener('click', openLoginForm);
+document.getElementById('registerButton').addEventListener('click', openSignupForm);
+logoutButton.addEventListener('click', handleLogout);
 
-    // Form submit işlemleri
-    const loginForm = document.getElementById('loginForm');
-    const signupForm = document.getElementById('signupForm');
-    
-    if (loginForm) {
-        loginForm.addEventListener('submit', handleLogin);
-    }
-    
-    if (signupForm) {
-        signupForm.addEventListener('submit', handleSignup);
-    }
+// Sayfa yüklendiğinde UI'ı güncelle
+document.addEventListener('DOMContentLoaded', updateUI);
 
-    // Sayfa yüklendiğinde token kontrolü yap
-    checkAuth();
+// Modal dışına tıklandığında kapatma
+window.addEventListener('click', (event) => {
+    if (event.target === loginModal) {
+        closeLoginForm();
+    }
+    if (event.target === signupModal) {
+        closeSignupForm();
+    }
 }); 

@@ -13,4 +13,8 @@ router.get('/me', auth, userController.getCurrentUser);
 router.get('/profile', auth, userController.getProfile);
 router.put('/profile', auth, userController.updateProfile);
 
+// Şifre sıfırlama route'ları
+router.post('/request-password-reset', userController.requestPasswordReset);
+router.post('/reset-password', userController.resetPassword);
+
 module.exports = router; 

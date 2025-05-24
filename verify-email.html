@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-posta Doğrulama - ByteForce</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .verification-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+            text-align: center;
+        }
+        .verification-box {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+            max-width: 500px;
+            width: 100%;
+        }
+        .verification-box h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        .verification-box p {
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        .verification-box .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: var(--secondary-color);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .verification-box .btn:hover {
+            background: var(--accent-color);
+        }
+        .verification-box .error {
+            color: #dc3545;
+            margin-top: 1rem;
+        }
+        .verification-box .success {
+            color: #28a745;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="verification-container">
+        <div class="verification-box">
+            <h2>E-posta Doğrulama</h2>
+            <div id="verificationStatus">
+                <p>E-posta adresiniz doğrulanıyor...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const statusDiv = document.getElementById('verificationStatus');
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
+
+            if (!token) {
+                statusDiv.innerHTML = `
+                    <p class="error">Geçersiz doğrulama bağlantısı.</p>
+                    <p>Lütfen e-postanıza gönderilen doğrulama bağlantısını kullanın.</p>
+                `;
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:8080/api/auth/verify-email?token=${token}`);
+                const data = await response.json();
+
+                if (response.ok) {
+                    statusDiv.innerHTML = `
+                        <p class="success">${data.message}</p>
+                        <p>Hesabınız başarıyla doğrulandı. Şimdi giriş yapabilirsiniz.</p>
+                        <a href="giris.html" class="btn">Giriş Yap</a>
+                    `;
+                } else {
+                    statusDiv.innerHTML = `
+                        <p class="error">${data.message}</p>
+                        <p>Lütfen e-postanıza gönderilen yeni doğrulama bağlantısını kullanın veya yeni bir doğrulama e-postası talep edin.</p>
+                    `;
+                }
+            } catch (error) {
+                console.error('Doğrulama hatası:', error);
+                statusDiv.innerHTML = `
+                    <p class="error">Doğrulama işlemi sırasında bir hata oluştu.</p>
+                    <p>Lütfen daha sonra tekrar deneyin.</p>
+                `;
+            }
+        });
+    </script>
+</body>
+</html> 

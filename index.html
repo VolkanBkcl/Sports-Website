@@ -41,7 +41,7 @@
                     <span id="userName">Kullanıcı</span>
                 </button>
                 <div class="dropdown-menu">
-                    <a href="/profile" class="dropdown-item">
+                    <a href="profile.html" class="dropdown-item">
                         <i class="fas fa-user"></i>
                         Profilim
                     </a>
@@ -125,21 +125,50 @@
             }
         });
 
-        // Mobil menü toggle
+        // Kullanıcı durumunu kontrol et ve menüyü güncelle
+        function checkAuthStatus() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user'));
+            const authButtons = document.getElementById('authButtons');
+            const userMenu = document.getElementById('userMenu');
+            const userName = document.getElementById('userName');
+            const logoutButton = document.getElementById('logoutButton');
+            const navLinksContainer = document.querySelector('.nav-links');
+            
+            if (token && user) {
+                // Kullanıcı giriş yapmış
+                authButtons.style.display = 'none';
+                userMenu.style.display = 'block';
+                userName.textContent = user.name || user.email; // Kullanıcı adı yoksa email göster
+                
+                // Çıkış yapma işlemi
+                logoutButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    window.location.reload();
+                });
+            } else {
+                // Kullanıcı giriş yapmamış
+                authButtons.style.display = 'flex';
+                userMenu.style.display = 'none';
+            }
+        }
+
+        // Sayfa yüklendiğinde kullanıcı durumunu kontrol et
+        document.addEventListener('DOMContentLoaded', checkAuthStatus);
+
+        // Mobil menü işlemleri
         const mobileMenuButton = document.getElementById('mobileMenuButton');
         const navLinksContainer = document.querySelector('.nav-links');
-        const authButtonsContainer = document.querySelector('.auth-buttons');
-
+        
         mobileMenuButton.addEventListener('click', () => {
             navLinksContainer.classList.toggle('active');
-            authButtonsContainer.classList.toggle('mobile');
             mobileMenuButton.innerHTML = navLinksContainer.classList.contains('active') 
                 ? '<i class="fas fa-times"></i>' 
                 : '<i class="fas fa-bars"></i>';
         });
 
-<<<<<<< HEAD
-=======
         // Aktif sayfa linkini vurgula
         const currentPath = window.location.pathname;
         const navLinks = document.querySelectorAll('.nav-link');
@@ -203,120 +232,6 @@
                 loginModal.style.opacity = '1';
             }, 300);
         }
-
->>>>>>> bd2baa9 (kullanıcı kayıdı ve şifre oluşturma yapıldı.kullanıcı girişi backend i yapıldı)
-        // Kullanıcı durumunu kontrol et
-        function checkAuthStatus() {
-            const token = localStorage.getItem('token');
-            const user = JSON.parse(localStorage.getItem('user'));
-            
-            if (token && user) {
-                authButtons.style.display = 'none';
-                userMenu.style.display = 'block';
-                userName.textContent = user.username;
-            } else {
-                authButtons.style.display = 'flex';
-                userMenu.style.display = 'none';
-            }
-        }
-
-        // Sayfa yüklendiğinde kullanıcı durumunu kontrol et
-        checkAuthStatus();
-
-<<<<<<< HEAD
-=======
-        // Giriş işlemi
-        async function handleLogin(event) {
-            event.preventDefault();
-            
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
-
-            try {
-                const response = await fetch('http://localhost:3000/api/auth/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ email, password })
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    localStorage.setItem('token', data.token);
-                    localStorage.setItem('user', JSON.stringify(data.user));
-                    closeLoginForm();
-                    checkAuthStatus();
-                } else {
-                    alert(data.message || 'Giriş başarısız!');
-                }
-            } catch (error) {
-                console.error('Giriş hatası:', error);
-                alert('Bir hata oluştu. Lütfen tekrar deneyin.');
-            }
-        }
-
-        // Kayıt işlemi
-        async function handleSignup(event) {
-            event.preventDefault();
-            
-            const name = document.getElementById('signup-name').value;
-            const [firstName, ...lastNameParts] = name.split(' ');
-            const lastName = lastNameParts.join(' ');
-            
-            const formData = {
-                username: document.getElementById('signup-email').value.split('@')[0],
-                email: document.getElementById('signup-email').value,
-                password: document.getElementById('signup-password').value,
-                firstName,
-                lastName
-            };
-
-            if (formData.password !== document.getElementById('signup-password-confirm').value) {
-                alert('Şifreler eşleşmiyor!');
-                return;
-            }
-
-            try {
-                const response = await fetch('http://localhost:3000/api/auth/register', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    localStorage.setItem('token', data.token);
-                    localStorage.setItem('user', JSON.stringify(data.user));
-                    closeSignupForm();
-                    checkAuthStatus();
-                } else {
-                    if (data.errors) {
-                        const errorMessages = Object.values(data.errors).join('\n');
-                        alert(errorMessages);
-                    } else {
-                        alert(data.message || 'Kayıt başarısız!');
-                    }
-                }
-            } catch (error) {
-                console.error('Kayıt hatası:', error);
-                alert('Bir hata oluştu. Lütfen tekrar deneyin.');
-            }
-        }
-
->>>>>>> bd2baa9 (kullanıcı kayıdı ve şifre oluşturma yapıldı.kullanıcı girişi backend i yapıldı)
-        // Çıkış işlemi
-        logoutButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            checkAuthStatus();
-            window.location.reload(); // Sayfayı yenile
-        });
 
         // Kullanıcı menüsü toggle
         const userButton = document.querySelector('.user-button');

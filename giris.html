@@ -137,5 +137,61 @@
             </form>
         </div>
     </div>
+    <script>
+        // Form gönderimini dinle
+        document.querySelector('.login-form').addEventListener('submit', async (e) => {
+            // Sayfanın yenilenmesini engelle
+            e.preventDefault();
+            
+            // Form verilerini al
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            // Boş alan kontrolü
+            if (!email || !password) {
+                alert('Lütfen tüm alanları doldurunuz!');
+                return;
+            }
+
+            try {
+                console.log('Giriş isteği gönderiliyor...');
+                // Giriş isteği gönder
+                const response = await fetch('http://localhost:8080/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email,
+                        password
+                    })
+                });
+
+                console.log('Sunucu yanıtı alındı:', response.status);
+                const data = await response.json();
+                console.log('Sunucu yanıtı:', data);
+
+                if (response.ok) {
+                    // Token ve kullanıcı bilgilerini kaydet
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    
+                    alert('Giriş başarılı!');
+                    window.location.href = 'index.html';
+                } else {
+                    // Sunucudan gelen hata mesajını göster
+                    alert(data.message || 'Giriş işlemi başarısız. Lütfen bilgilerinizi kontrol ediniz.');
+                }
+            } catch (error) {
+                console.error('Giriş hatası:', error);
+                if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+                    alert('Sunucuya bağlanılamıyor. Lütfen sunucunun çalıştığından emin olun ve tekrar deneyin.');
+                } else {
+                    alert('Bir hata oluştu: ' + error.message);
+                }
+            }
+        });
+    </script>
 </body>
 </html> 
