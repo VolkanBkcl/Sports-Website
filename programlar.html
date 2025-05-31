@@ -8,57 +8,33 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <header class="header">
-        <nav class="navbar">
-            <div class="logo">
-                <h1>Byteforce</h1>
-            </div>
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <i class="fas fa-dumbbell"></i>
+                <span>ByteForce</span>
+            </a>
+            
             <ul class="nav-links">
-                <li><a href="/">Ana Sayfa</a></li>
-                <li><a href="/programlar" class="active">Programlar</a></li>
-                <li><a href="/egzersizler">Egzersizler</a></li>
-                <li><a href="/beslenme">Beslenme</a></li>
-                <li><a href="/topluluk">Topluluk</a></li>
-                <li><a href="/iletisim">İletişim</a></li>
+                <li><a href="/" class="nav-link">Ana Sayfa</a></li>
+                <li><a href="/programlar" class="nav-link active">Programlar</a></li>
+                <li><a href="/egzersizler" class="nav-link">Egzersizler</a></li>
+                <li><a href="/beslenme" class="nav-link">Beslenme</a></li>
+                <li><a href="/topluluk" class="nav-link">Topluluk</a></li>
+                <li><a href="/iletisim" class="nav-link">İletişim</a></li>
             </ul>
-            <div class="auth-buttons">
-                <div id="user-menu" class="user-menu">
-                    <img src="https://source.unsplash.com/random/100x100/?portrait" alt="Profil" class="profile-pic">
-                    <div class="dropdown-menu">
-                        <a href="/profile"><i class="fas fa-user"></i> Profilim</a>
-                        <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Çıkış</a>
-                    </div>
-                </div>
-            </div>
-        </nav>
+        </div>
     </header>
 
     <main class="programs-container">
         <section class="hero-section">
             <h1>Fitness Programları</h1>
-            <p>Size özel hazırlanmış antrenman ve beslenme programları</p>
         </section>
 
         <section class="programs-grid">
             <div class="program-card">
                 <div class="program-image">
-                    <img src="https://source.unsplash.com/random/400x300/?fitness" alt="Başlangıç Programı">
-                </div>
-                <div class="program-content">
-                    <h3>Başlangıç Programı</h3>
-                    <p>Fitness yolculuğunuza başlamak için ideal program</p>
-                    <ul class="program-features">
-                        <li><i class="fas fa-check"></i> 4 Haftalık Program</li>
-                        <li><i class="fas fa-check"></i> Temel Egzersizler</li>
-                        <li><i class="fas fa-check"></i> Beslenme Önerileri</li>
-                    </ul>
-                    <button class="program-btn">Programa Başla</button>
-                </div>
-            </div>
-
-            <div class="program-card">
-                <div class="program-image">
-                    <img src="https://source.unsplash.com/random/400x300/?gym" alt="Kas Kazanma Programı">
+                    <img src="https://images.pexels.com/photos/2261482/pexels-photo-2261482.jpeg?auto=compress&w=600&q=80" alt="Kas Kazanma Programı">
                 </div>
                 <div class="program-content">
                     <h3>Kas Kazanma Programı</h3>
@@ -68,13 +44,13 @@
                         <li><i class="fas fa-check"></i> Ağırlık Antrenmanları</li>
                         <li><i class="fas fa-check"></i> Protein Odaklı Beslenme</li>
                     </ul>
-                    <button class="program-btn">Programa Başla</button>
+                    <a href="kas-kazanma.html" class="program-btn">Programa Başla</a>
                 </div>
             </div>
 
             <div class="program-card">
                 <div class="program-image">
-                    <img src="https://source.unsplash.com/random/400x300/?weight-loss" alt="Kilo Verme Programı">
+                    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" alt="Kilo Verme Programı">
                 </div>
                 <div class="program-content">
                     <h3>Kilo Verme Programı</h3>
@@ -84,62 +60,30 @@
                         <li><i class="fas fa-check"></i> Kardio Egzersizleri</li>
                         <li><i class="fas fa-check"></i> Kalori Kontrollü Beslenme</li>
                     </ul>
-                    <button class="program-btn">Programa Başla</button>
+                    <a href="kilo-verme.html" class="program-btn">Programa Başla</a>
                 </div>
             </div>
         </section>
     </main>
 
-    <script>
-        // Sayfa yüklendiğinde çalışacak fonksiyonlar
-        document.addEventListener('DOMContentLoaded', function() {
-            // Aktif menü öğesini işaretle
-            const currentPath = window.location.pathname;
-            document.querySelectorAll('.nav-link').forEach(link => {
-                if (link.getAttribute('href') === currentPath) {
-                    link.classList.add('active');
-                } else {
-                    link.classList.remove('active');
-                }
-            });
-
-            // Kullanıcı durumunu kontrol et
-            checkAuthStatus();
-        });
-
-        // Kullanıcı durumunu kontrol et
-        function checkAuthStatus() {
-            const token = localStorage.getItem('token');
-            const authButtons = document.getElementById('authButtons');
-            const userMenu = document.getElementById('userMenu');
-            const userName = document.getElementById('userName');
-
-            if (token) {
-                // Kullanıcı giriş yapmış
-                authButtons.style.display = 'none';
-                userMenu.style.display = 'flex';
-                
-                // Kullanıcı adını göster
-                const user = JSON.parse(localStorage.getItem('user'));
-                if (user && user.name) {
-                    userName.textContent = user.name;
-                }
-            } else {
-                // Kullanıcı giriş yapmamış
-                authButtons.style.display = 'flex';
-                userMenu.style.display = 'none';
-            }
-        }
-
-        // Çıkış işlemi
-        function logout() {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            checkAuthStatus();
-        }
-
-        // Event listeners
-        document.getElementById('logoutButton').addEventListener('click', logout);
-    </script>
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>ByteForce</h3>
+                <p>Fitness yolculuğunda yanındayız</p>
+            </div>
+            <div class="footer-section">
+                <h3>Hızlı Bağlantılar</h3>
+                <ul>
+                    <li><a href="#hakkimizda">Hakkımızda</a></li>
+                    <li><a href="#programlar">Programlar</a></li>
+                    <li><a href="#iletisim">İletişim</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 ByteForce. Tüm hakları saklıdır.</p>
+        </div>
+    </footer>
 </body>
 </html> 
