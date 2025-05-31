@@ -6,37 +6,440 @@
     <title>Topluluk - ByteForce</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1a1a1a;
+            --secondary-color: #ff4d4d;
+            --accent-color: #ff6b6b;
+            --text-color: #333;
+            --light-text: #666;
+            --white: #fff;
+            --light-gray: #f5f5f5;
+            --border-color: #ddd;
+            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        .community-container {
+            max-width: 1200px;
+            margin: 6rem auto 2rem;
+            padding: 0 2rem;
+        }
+
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1571902943202-507ec2618e8f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 50vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+            margin-bottom: 3rem;
+            border-radius: 15px;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 0 2rem;
+        }
+
+        .hero-section h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: var(--white);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: var(--white);
+            opacity: 0.9;
+        }
+
+        .community-content {
+            background: var(--white);
+            border-radius: 15px;
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: var(--light-gray);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .tab-btn:hover, .tab-btn.active {
+            background: var(--secondary-color);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        .new-post-btn {
+            background: var(--secondary-color);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .new-post-btn:hover {
+            background: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .posts-container {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .post-card {
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .post-header img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .post-info h3 {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        .post-info span {
+            font-size: 0.9rem;
+            color: var(--light-text);
+        }
+
+        .post-content {
+            margin-bottom: 1rem;
+        }
+
+        .post-content p {
+            color: var(--text-color);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .post-content img {
+            width: 100%;
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+
+        .post-content ul {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+        }
+
+        .post-content li {
+            padding: 0.5rem 0;
+            color: var(--text-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .post-content li:last-child {
+            border-bottom: none;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 1rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1rem;
+        }
+
+        .post-actions button {
+            background: none;
+            border: none;
+            color: var(--light-text);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .post-actions button:hover {
+            color: var(--secondary-color);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            color: var(--primary-color);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--light-text);
+            transition: var(--transition);
+        }
+
+        .close-btn:hover {
+            color: var(--secondary-color);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-body textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            resize: vertical;
+            margin-bottom: 1rem;
+            font-family: inherit;
+        }
+
+        .upload-options {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .upload-options button {
+            background: var(--light-gray);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .upload-options button:hover {
+            background: var(--secondary-color);
+            color: var(--white);
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            text-align: right;
+        }
+
+        .post-btn {
+            background: var(--secondary-color);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .post-btn:hover {
+            background: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .community-container {
+                padding: 1rem;
+                margin-top: 5rem;
+            }
+
+            .hero-section {
+                height: 40vh;
+                margin-bottom: 2rem;
+            }
+
+            .hero-section h1 {
+                font-size: 2.5rem;
+            }
+
+            .content-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .tab-buttons {
+                justify-content: center;
+            }
+
+            .new-post-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .post-card {
+                padding: 1rem;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 1rem;
+            }
+        }
+
+        /* Animasyonlar */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .post-card {
+            animation: fadeIn 0.5s ease forwards;
+        }
+    </style>
 </head>
 <body>
-    <header class="header">
-        <nav class="navbar">
-            <div class="logo">
-                <h1>Byteforce</h1>
-            </div>
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <i class="fas fa-dumbbell"></i>
+                <span>ByteForce</span>
+            </a>
+            
             <ul class="nav-links">
-                <li><a href="/">Ana Sayfa</a></li>
-                <li><a href="/programlar">Programlar</a></li>
-                <li><a href="/egzersizler">Egzersizler</a></li>
-                <li><a href="/beslenme">Beslenme</a></li>
-                <li><a href="/topluluk" class="active">Topluluk</a></li>
-                <li><a href="/iletisim">İletişim</a></li>
+                <li><a href="/" class="nav-link">Ana Sayfa</a></li>
+                <li><a href="/programlar" class="nav-link">Programlar</a></li>
+                <li><a href="/egzersizler" class="nav-link">Egzersizler</a></li>
+                <li><a href="/beslenme" class="nav-link">Beslenme</a></li>
+                <li><a href="/topluluk" class="nav-link active">Topluluk</a></li>
+                <li><a href="/iletisim" class="nav-link">İletişim</a></li>
             </ul>
-            <div class="auth-buttons">
-                <div id="user-menu" class="user-menu">
-                    <img src="https://source.unsplash.com/random/100x100/?portrait" alt="Profil" class="profile-pic">
-                    <div class="dropdown-menu">
-                        <a href="/profile"><i class="fas fa-user"></i> Profilim</a>
-                        <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Çıkış</a>
-                    </div>
+
+            <div class="auth-buttons" id="authButtons">
+                <a href="giris.html" class="btn btn-primary" id="loginButton">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Giriş Yap
+                </a>
+                <a href="kayitol.html" class="btn btn-outline" id="registerButton">
+                    <i class="fas fa-user-plus"></i>
+                    Kayıt Ol
+                </a>
+            </div>
+
+            <div class="user-menu" id="userMenu" style="display: none;">
+                <button class="user-button">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="userName">Kullanıcı</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="/profile" class="dropdown-item">
+                        <i class="fas fa-user"></i>
+                        Profilim
+                    </a>
+                    <a href="#" class="dropdown-item" id="logoutButton">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Çıkış Yap
+                    </a>
                 </div>
             </div>
-        </nav>
+
+            <button class="mobile-menu-button" id="mobileMenuButton">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
     </header>
 
     <main class="community-container">
         <section class="hero-section">
-            <h1>Fitness Topluluğu</h1>
-            <p>Deneyimlerinizi paylaşın, motivasyon bulun</p>
+            <div class="hero-content">
+                <h1>Fitness Topluluğu</h1>
+                <p>Deneyimlerinizi paylaşın, motivasyon bulun</p>
+            </div>
         </section>
 
         <section class="community-content">
@@ -118,55 +521,32 @@
     </div>
 
     <script>
-        // Sayfa yüklendiğinde çalışacak fonksiyonlar
-        document.addEventListener('DOMContentLoaded', function() {
-            // Aktif menü öğesini işaretle
-            const currentPath = window.location.pathname;
-            document.querySelectorAll('.nav-link').forEach(link => {
-                if (link.getAttribute('href') === currentPath) {
-                    link.classList.add('active');
-                } else {
-                    link.classList.remove('active');
-                }
-            });
-
-            // Kullanıcı durumunu kontrol et
-            checkAuthStatus();
-        });
-
         // Kullanıcı durumunu kontrol et
         function checkAuthStatus() {
             const token = localStorage.getItem('token');
-            const authButtons = document.getElementById('authButtons');
-            const userMenu = document.getElementById('userMenu');
-            const userName = document.getElementById('userName');
-
-            if (token) {
-                // Kullanıcı giriş yapmış
-                authButtons.style.display = 'none';
-                userMenu.style.display = 'flex';
-                
-                // Kullanıcı adını göster
-                const user = JSON.parse(localStorage.getItem('user'));
-                if (user && user.name) {
-                    userName.textContent = user.name;
-                }
+            const user = JSON.parse(localStorage.getItem('user'));
+            
+            if (token && user) {
+                document.getElementById('authButtons').style.display = 'none';
+                document.getElementById('userMenu').style.display = 'block';
+                document.getElementById('userName').textContent = user.username;
             } else {
-                // Kullanıcı giriş yapmamış
-                authButtons.style.display = 'flex';
-                userMenu.style.display = 'none';
+                document.getElementById('authButtons').style.display = 'flex';
+                document.getElementById('userMenu').style.display = 'none';
             }
         }
 
+        // Sayfa yüklendiğinde kullanıcı durumunu kontrol et
+        checkAuthStatus();
+
         // Çıkış işlemi
-        function logout() {
+        document.getElementById('logoutButton').addEventListener('click', (e) => {
+            e.preventDefault();
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             checkAuthStatus();
-        }
-
-        // Event listeners
-        document.getElementById('logoutButton').addEventListener('click', logout);
+            window.location.reload();
+        });
 
         // Modal fonksiyonları
         function showNewPostModal() {
@@ -185,6 +565,30 @@
                 button.classList.add('active');
                 // Tab içeriğini güncelle
                 console.log(`${button.dataset.tab} sekmesi açıldı`);
+            });
+        });
+
+        // Mobil menü toggle
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const navLinksContainer = document.querySelector('.nav-links');
+        const authButtonsContainer = document.querySelector('.auth-buttons');
+
+        mobileMenuButton.addEventListener('click', () => {
+            navLinksContainer.classList.toggle('active');
+            authButtonsContainer.classList.toggle('mobile');
+            mobileMenuButton.innerHTML = navLinksContainer.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+
+        // Gönderi kartları için hover efektleri
+        document.querySelectorAll('.post-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-5px)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
             });
         });
     </script>

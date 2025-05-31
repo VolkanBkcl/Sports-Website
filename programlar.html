@@ -23,6 +23,38 @@
                 <li><a href="/topluluk" class="nav-link">Topluluk</a></li>
                 <li><a href="/iletisim" class="nav-link">İletişim</a></li>
             </ul>
+
+            <div class="auth-buttons" id="authButtons">
+                <a href="giris.html" class="btn btn-primary" id="loginButton">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Giriş Yap
+                </a>
+                <a href="kayitol.html" class="btn btn-outline" id="registerButton">
+                    <i class="fas fa-user-plus"></i>
+                    Kayıt Ol
+                </a>
+            </div>
+
+            <div class="user-menu" id="userMenu" style="display: none;">
+                <button class="user-button">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="userName">Kullanıcı</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="/profile" class="dropdown-item">
+                        <i class="fas fa-user"></i>
+                        Profilim
+                    </a>
+                    <a href="#" class="dropdown-item" id="logoutButton">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Çıkış Yap
+                    </a>
+                </div>
+            </div>
+
+            <button class="mobile-menu-button" id="mobileMenuButton">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
     </header>
 
@@ -85,5 +117,47 @@
             <p>&copy; 2024 ByteForce. Tüm hakları saklıdır.</p>
         </div>
     </footer>
+
+    <script>
+        // Kullanıcı durumunu kontrol et
+        function checkAuthStatus() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user'));
+            
+            if (token && user) {
+                document.getElementById('authButtons').style.display = 'none';
+                document.getElementById('userMenu').style.display = 'block';
+                document.getElementById('userName').textContent = user.username;
+            } else {
+                document.getElementById('authButtons').style.display = 'flex';
+                document.getElementById('userMenu').style.display = 'none';
+            }
+        }
+
+        // Sayfa yüklendiğinde kullanıcı durumunu kontrol et
+        checkAuthStatus();
+
+        // Çıkış işlemi
+        document.getElementById('logoutButton').addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            checkAuthStatus();
+            window.location.reload();
+        });
+
+        // Mobil menü toggle
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const navLinksContainer = document.querySelector('.nav-links');
+        const authButtonsContainer = document.querySelector('.auth-buttons');
+
+        mobileMenuButton.addEventListener('click', () => {
+            navLinksContainer.classList.toggle('active');
+            authButtonsContainer.classList.toggle('mobile');
+            mobileMenuButton.innerHTML = navLinksContainer.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+    </script>
 </body>
 </html> 

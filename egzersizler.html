@@ -6,40 +6,324 @@
     <title>Egzersizler - ByteForce</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1a1a1a;
+            --secondary-color: #ff4d4d;
+            --accent-color: #ff6b6b;
+            --text-color: #333;
+            --light-text: #666;
+            --white: #fff;
+            --light-gray: #f5f5f5;
+            --border-color: #ddd;
+            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        .exercises-container {
+            max-width: 1200px;
+            margin: 6rem auto 2rem;
+            padding: 0 2rem;
+        }
+
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 50vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+            margin-bottom: 3rem;
+            border-radius: 15px;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 0 2rem;
+        }
+
+        .hero-section h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: var(--white);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: var(--white);
+            opacity: 0.9;
+        }
+
+        .search-bar {
+            max-width: 600px;
+            margin: 2rem auto 0;
+            display: flex;
+            gap: 1rem;
+            background: var(--white);
+            padding: 0.5rem;
+            border-radius: 50px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .search-bar input {
+            flex: 1;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 25px;
+            outline: none;
+        }
+
+        .search-bar button {
+            background: var(--secondary-color);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .search-bar button:hover {
+            background: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .exercise-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .category-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: var(--box-shadow);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .category-card i {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .category-card h3 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .category-card p {
+            color: var(--light-text);
+            font-size: 0.9rem;
+        }
+
+        .exercise-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .exercise-card {
+            background: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .exercise-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .exercise-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .exercise-content {
+            padding: 1.5rem;
+        }
+
+        .exercise-title {
+            font-size: 1.25rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .exercise-info {
+            color: var(--light-text);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .exercise-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .exercise-tag {
+            background: var(--light-gray);
+            color: var(--text-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+
+        .exercise-difficulty {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            color: var(--light-text);
+            font-size: 0.9rem;
+        }
+
+        .difficulty-dots {
+            display: flex;
+            gap: 0.2rem;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--border-color);
+        }
+
+        .dot.active {
+            background: var(--secondary-color);
+        }
+
+        @media (max-width: 768px) {
+            .exercises-container {
+                padding: 1rem;
+                margin-top: 5rem;
+            }
+
+            .hero-section {
+                height: 40vh;
+                margin-bottom: 2rem;
+            }
+
+            .hero-section h1 {
+                font-size: 2.5rem;
+            }
+
+            .search-bar {
+                flex-direction: column;
+                border-radius: 15px;
+            }
+
+            .search-bar input,
+            .search-bar button {
+                width: 100%;
+                border-radius: 10px;
+            }
+
+            .exercise-categories {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+        }
+
+        /* Animasyonlar */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .exercise-card {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .category-card {
+            animation: fadeIn 0.5s ease forwards;
+        }
+    </style>
 </head>
 <body>
-    <header class="header">
-        <nav class="navbar">
-            <div class="logo">
-                <h1>Byteforce</h1>
-            </div>
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <i class="fas fa-dumbbell"></i>
+                <span>ByteForce</span>
+            </a>
+            
             <ul class="nav-links">
-                <li><a href="/">Ana Sayfa</a></li>
-                <li><a href="/programlar">Programlar</a></li>
-                <li><a href="/egzersizler" class="active">Egzersizler</a></li>
-                <li><a href="/beslenme">Beslenme</a></li>
-                <li><a href="/topluluk">Topluluk</a></li>
-                <li><a href="/iletisim">İletişim</a></li>
+                <li><a href="/" class="nav-link">Ana Sayfa</a></li>
+                <li><a href="/programlar" class="nav-link">Programlar</a></li>
+                <li><a href="/egzersizler" class="nav-link active">Egzersizler</a></li>
+                <li><a href="/beslenme" class="nav-link">Beslenme</a></li>
+                <li><a href="/topluluk" class="nav-link">Topluluk</a></li>
+                <li><a href="/iletisim" class="nav-link">İletişim</a></li>
             </ul>
-            <div class="auth-buttons">
-                <div id="user-menu" class="user-menu">
-                    <img src="https://source.unsplash.com/random/100x100/?portrait" alt="Profil" class="profile-pic">
-                    <div class="dropdown-menu">
-                        <a href="/profile"><i class="fas fa-user"></i> Profilim</a>
-                        <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Çıkış</a>
-                    </div>
+
+            <div class="auth-buttons" id="authButtons">
+                <a href="giris.html" class="btn btn-primary" id="loginButton">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Giriş Yap
+                </a>
+                <a href="kayitol.html" class="btn btn-outline" id="registerButton">
+                    <i class="fas fa-user-plus"></i>
+                    Kayıt Ol
+                </a>
+            </div>
+
+            <div class="user-menu" id="userMenu" style="display: none;">
+                <button class="user-button">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="userName">Kullanıcı</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="/profile" class="dropdown-item">
+                        <i class="fas fa-user"></i>
+                        Profilim
+                    </a>
+                    <a href="#" class="dropdown-item" id="logoutButton">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Çıkış Yap
+                    </a>
                 </div>
             </div>
-        </nav>
+
+            <button class="mobile-menu-button" id="mobileMenuButton">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
     </header>
 
     <main class="exercises-container">
         <section class="hero-section">
-            <h1>Egzersiz Kütüphanesi</h1>
-            <p>Vücut bölgelerine göre kategorize edilmiş egzersiz hareketleri</p>
-            <div class="search-bar">
-                <input type="text" id="exercise-search" placeholder="Egzersiz ara...">
-                <button><i class="fas fa-search"></i></button>
+            <div class="hero-content">
+                <h1>Egzersiz Kütüphanesi</h1>
+                <p>Vücut bölgelerine göre kategorize edilmiş, detaylı açıklamalı egzersiz hareketleri</p>
+                <div class="search-bar">
+                    <input type="text" id="exercise-search" placeholder="Egzersiz ara...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
             </div>
         </section>
 
@@ -77,72 +361,151 @@
         </section>
 
         <section class="exercise-list" id="exercise-list">
-            <!-- Egzersizler JavaScript ile dinamik olarak yüklenecek -->
+            <!-- Örnek egzersiz kartları -->
+            <div class="exercise-card">
+                <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" alt="Bench Press" class="exercise-image">
+                <div class="exercise-content">
+                    <h3 class="exercise-title">Bench Press</h3>
+                    <p class="exercise-info">Göğüs kaslarını geliştirmek için temel bir egzersiz</p>
+                    <div class="exercise-tags">
+                        <span class="exercise-tag">Göğüs</span>
+                        <span class="exercise-tag">Güç</span>
+                        <span class="exercise-tag">Compound</span>
+                    </div>
+                    <div class="exercise-difficulty">
+                        <span>Zorluk:</span>
+                        <div class="difficulty-dots">
+                            <span class="dot active"></span>
+                            <span class="dot active"></span>
+                            <span class="dot active"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" alt="Pull-ups" class="exercise-image">
+                <div class="exercise-content">
+                    <h3 class="exercise-title">Pull-ups</h3>
+                    <p class="exercise-info">Sırt kaslarını güçlendiren temel bir egzersiz</p>
+                    <div class="exercise-tags">
+                        <span class="exercise-tag">Sırt</span>
+                        <span class="exercise-tag">Vücut Ağırlığı</span>
+                        <span class="exercise-tag">Compound</span>
+                    </div>
+                    <div class="exercise-difficulty">
+                        <span>Zorluk:</span>
+                        <div class="difficulty-dots">
+                            <span class="dot active"></span>
+                            <span class="dot active"></span>
+                            <span class="dot active"></span>
+                            <span class="dot active"></span>
+                            <span class="dot"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" alt="Squat" class="exercise-image">
+                <div class="exercise-content">
+                    <h3 class="exercise-title">Squat</h3>
+                    <p class="exercise-info">Alt vücut için en etkili egzersizlerden biri</p>
+                    <div class="exercise-tags">
+                        <span class="exercise-tag">Bacak</span>
+                        <span class="exercise-tag">Güç</span>
+                        <span class="exercise-tag">Compound</span>
+                    </div>
+                    <div class="exercise-difficulty">
+                        <span>Zorluk:</span>
+                        <div class="difficulty-dots">
+                            <span class="dot active"></span>
+                            <span class="dot active"></span>
+                            <span class="dot active"></span>
+                            <span class="dot active"></span>
+                            <span class="dot active"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
 
     <script>
-        // Sayfa yüklendiğinde çalışacak fonksiyonlar
-        document.addEventListener('DOMContentLoaded', function() {
-            // Aktif menü öğesini işaretle
-            const currentPath = window.location.pathname;
-            document.querySelectorAll('.nav-link').forEach(link => {
-                if (link.getAttribute('href') === currentPath) {
-                    link.classList.add('active');
-                } else {
-                    link.classList.remove('active');
-                }
-            });
-
-            // Kullanıcı durumunu kontrol et
-            checkAuthStatus();
-        });
-
         // Kullanıcı durumunu kontrol et
         function checkAuthStatus() {
             const token = localStorage.getItem('token');
-            const authButtons = document.getElementById('authButtons');
-            const userMenu = document.getElementById('userMenu');
-            const userName = document.getElementById('userName');
-
-            if (token) {
-                // Kullanıcı giriş yapmış
-                authButtons.style.display = 'none';
-                userMenu.style.display = 'flex';
-                
-                // Kullanıcı adını göster
-                const user = JSON.parse(localStorage.getItem('user'));
-                if (user && user.name) {
-                    userName.textContent = user.name;
-                }
+            const user = JSON.parse(localStorage.getItem('user'));
+            
+            if (token && user) {
+                document.getElementById('authButtons').style.display = 'none';
+                document.getElementById('userMenu').style.display = 'block';
+                document.getElementById('userName').textContent = user.username;
             } else {
-                // Kullanıcı giriş yapmamış
-                authButtons.style.display = 'flex';
-                userMenu.style.display = 'none';
+                document.getElementById('authButtons').style.display = 'flex';
+                document.getElementById('userMenu').style.display = 'none';
             }
         }
 
+        // Sayfa yüklendiğinde kullanıcı durumunu kontrol et
+        checkAuthStatus();
+
         // Çıkış işlemi
-        function logout() {
+        document.getElementById('logoutButton').addEventListener('click', (e) => {
+            e.preventDefault();
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             checkAuthStatus();
-        }
-
-        // Event listeners
-        document.getElementById('logoutButton').addEventListener('click', logout);
+            window.location.reload();
+        });
 
         // Egzersiz filtreleme fonksiyonu
         function filterExercises(category) {
             // API'den egzersizleri çek ve listele
             console.log(`${category} kategorisindeki egzersizler filtreleniyor...`);
+            // Örnek olarak kartları filtrele
+            const cards = document.querySelectorAll('.exercise-card');
+            cards.forEach(card => {
+                const tags = card.querySelectorAll('.exercise-tag');
+                const hasCategory = Array.from(tags).some(tag => 
+                    tag.textContent.toLowerCase().includes(category.toLowerCase())
+                );
+                card.style.display = hasCategory ? 'block' : 'none';
+            });
         }
 
         // Arama fonksiyonu
         document.getElementById('exercise-search').addEventListener('input', (e) => {
             const searchTerm = e.target.value.toLowerCase();
-            // API'den arama sonuçlarını çek ve listele
-            console.log(`"${searchTerm}" için arama yapılıyor...`);
+            const cards = document.querySelectorAll('.exercise-card');
+            
+            cards.forEach(card => {
+                const title = card.querySelector('.exercise-title').textContent.toLowerCase();
+                const info = card.querySelector('.exercise-info').textContent.toLowerCase();
+                const tags = Array.from(card.querySelectorAll('.exercise-tag'))
+                    .map(tag => tag.textContent.toLowerCase());
+                
+                const matches = title.includes(searchTerm) || 
+                              info.includes(searchTerm) || 
+                              tags.some(tag => tag.includes(searchTerm));
+                
+                card.style.display = matches ? 'block' : 'none';
+            });
+        });
+
+        // Mobil menü toggle
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const navLinksContainer = document.querySelector('.nav-links');
+        const authButtonsContainer = document.querySelector('.auth-buttons');
+
+        mobileMenuButton.addEventListener('click', () => {
+            navLinksContainer.classList.toggle('active');
+            authButtonsContainer.classList.toggle('mobile');
+            mobileMenuButton.innerHTML = navLinksContainer.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
         });
     </script>
 </body>
