@@ -122,7 +122,7 @@
             <p>Başarı, her gün attığın küçük adımlarla gelir. Hedeflerine ulaşmak için bugün başla ve asla pes etme!</p>
         </div>
         <div class="register-right">
-            <form class="register-form">
+            <form class="register-form" id="registerForm">
                 <h2>Kayıt Ol</h2>
                 <div class="form-group">
                     <label for="name">Ad Soyad</label>
@@ -145,5 +145,56 @@
             </form>
         </div>
     </div>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const [firstName, ...lastNameParts] = name.split(' ');
+            const lastName = lastNameParts.join(' ');
+            
+            const formData = {
+                username: document.getElementById('email').value.split('@')[0],
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+                firstName,
+                lastName
+            };
+
+            if (formData.password !== document.getElementById('password-confirm').value) {
+                alert('Şifreler eşleşmiyor!');
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:3000/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    window.location.href = 'index.html';
+                } else {
+                    if (data.errors) {
+                        const errorMessages = Object.values(data.errors).join('\n');
+                        alert(errorMessages);
+                    } else {
+                        alert(data.message || 'Kayıt başarısız!');
+                    }
+                }
+            } catch (error) {
+                console.error('Kayıt hatası:', error);
+                alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+            }
+        });
+    </script>
 </body>
 </html> 

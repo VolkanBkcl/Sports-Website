@@ -122,7 +122,7 @@
             <p>Her yeni gün, yeni bir başlangıçtır. Hedeflerine ulaşmak için şimdi giriş yap ve yolculuğuna devam et!</p>
         </div>
         <div class="login-right">
-            <form class="login-form">
+            <form class="login-form" id="loginForm">
                 <h2>Giriş Yap</h2>
                 <div class="form-group">
                     <label for="email">E-posta</label>
@@ -137,5 +137,37 @@
             </form>
         </div>
     </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('http://localhost:3000/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    window.location.href = 'index.html';
+                } else {
+                    alert(data.message || 'Giriş başarısız!');
+                }
+            } catch (error) {
+                console.error('Giriş hatası:', error);
+                alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+            }
+        });
+    </script>
 </body>
 </html> 
