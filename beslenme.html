@@ -292,6 +292,341 @@
         .tip-card {
             animation: fadeIn 0.5s ease forwards;
         }
+
+        .supplements-section {
+            margin-top: 4rem;
+            padding: 2rem 0;
+        }
+
+        .supplements-section h2 {
+            font-size: 2rem;
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .supplements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .supplement-card {
+            background: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .supplement-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .supplement-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .supplement-content {
+            padding: 1.5rem;
+        }
+
+        .supplement-content h3 {
+            font-size: 1.25rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .supplement-description {
+            color: var(--light-text);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .supplement-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+
+        .detail-item i {
+            color: var(--secondary-color);
+            font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .supplements-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .supplement-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: var(--light-gray);
+            padding: 0.4rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .tag i {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+        }
+
+        .supplements-list {
+            margin: 1rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .supplement-item {
+            background: var(--light-gray);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .supplement-item h4 {
+            color: var(--primary-color);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .supplement-item h4 i {
+            color: var(--secondary-color);
+        }
+
+        .supplements-details {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .supplements-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .supplements-container h3 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .supplements-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .supplement-item {
+            background: var(--light-gray);
+            padding: 1.5rem;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .supplement-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .supplement-item h4 {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .supplement-item h4 i {
+            color: var(--secondary-color);
+        }
+
+        .supplement-info {
+            margin-top: 0.8rem;
+            color: var(--light-text);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .tip-card {
+            cursor: pointer;
+        }
+
+        .tip-card:hover .read-more i {
+            transform: translateX(4px);
+        }
+
+        .nutrition-details {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .details-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .details-container h3 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .details-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .info-section {
+            background: var(--light-gray);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .info-section h4 {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-section h4 i {
+            color: var(--secondary-color);
+        }
+
+        .benefits-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .benefits-list li {
+            margin-bottom: 0.8rem;
+            padding-left: 1.5rem;
+            position: relative;
+            color: var(--text-color);
+        }
+
+        .benefits-list li:before {
+            content: "•";
+            color: var(--secondary-color);
+            position: absolute;
+            left: 0;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .menu-item {
+            background: var(--white);
+            padding: 1.2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .menu-item h5 {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .menu-item ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu-item li {
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+
+        .protein-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .protein-item {
+            background: var(--white);
+            padding: 1.2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .protein-item h5 {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .protein-item p {
+            color: var(--text-color);
+            font-size: 0.9rem;
+            margin-top: 0.8rem;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .menu-grid,
+            .protein-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -398,43 +733,191 @@
         <section class="nutrition-tips">
             <h2>Beslenme Önerileri</h2>
             <div class="tips-grid">
-                <div class="tip-card">
+                <div class="tip-card" onclick="toggleBreakfast()">
                     <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Sağlıklı Beslenme">
                     <div class="tip-content">
                         <h3>Kahvaltının Önemi</h3>
                         <p>Güne sağlıklı bir kahvaltı ile başlamanın faydaları ve örnek kahvaltı menüleri</p>
-                        <a href="#" class="read-more">
-                            Devamını Oku
+                        <a href="#" class="read-more" onclick="event.preventDefault();">
+                            Detayları Gör
                             <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
                 </div>
 
-                <div class="tip-card">
+                <div class="tip-card" onclick="toggleProtein()">
                     <img src="https://images.unsplash.com/photo-1547592180-85f173990554?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Protein Kaynakları">
                     <div class="tip-content">
                         <h3>Protein Kaynakları</h3>
                         <p>Bitkisel ve hayvansal protein kaynakları, protein ihtiyacı hesaplama</p>
-                        <a href="#" class="read-more">
-                            Devamını Oku
+                        <a href="#" class="read-more" onclick="event.preventDefault();">
+                            Detayları Gör
                             <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
                 </div>
 
-                <div class="tip-card">
-                    <img src="https://images.unsplash.com/photo-1579722821273-0f6c6d44363f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Takviyeler">
+                <div class="tip-card" onclick="toggleSupplements()">
+                    <img src="https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Besin Takviyeleri">
                     <div class="tip-content">
                         <h3>Besin Takviyeleri</h3>
-                        <p>Doğru besin takviyesi kullanımı ve öneriler</p>
-                        <a href="#" class="read-more">
-                            Devamını Oku
+                        <p>Kas gelişimi ve performans artışı için önemli besin takviyeleri</p>
+                        <a href="#" class="read-more" onclick="event.preventDefault();">
+                            Detayları Gör
                             <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
                 </div>
             </div>
         </section>
+
+        <div id="breakfast-details" class="nutrition-details" style="display: none;">
+            <div class="details-container">
+                <h3>Kahvaltının Önemi</h3>
+                <div class="details-content">
+                    <div class="info-section">
+                        <h4><i class="fas fa-check-circle"></i> Kahvaltının Faydaları</h4>
+                        <ul class="benefits-list">
+                            <li>Metabolizmayı hızlandırır ve günlük enerji seviyesini artırır</li>
+                            <li>Konsantrasyonu ve zihinsel performansı iyileştirir</li>
+                            <li>Gün içi aşırı yeme isteğini azaltır</li>
+                            <li>Kas kütlesinin korunmasına yardımcı olur</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-section">
+                        <h4><i class="fas fa-utensils"></i> Örnek Kahvaltı Menüleri</h4>
+                        <div class="menu-grid">
+                            <div class="menu-item">
+                                <h5>Protein Ağırlıklı Kahvaltı</h5>
+                                <ul>
+                                    <li>3-4 yumurta beyazı + 1 tam yumurta</li>
+                                    <li>1 dilim tam buğday ekmeği</li>
+                                    <li>1 avuç ceviz/badem</li>
+                                    <li>Yarım avokado</li>
+                                </ul>
+                            </div>
+                            <div class="menu-item">
+                                <h5>Karbonhidrat Ağırlıklı Kahvaltı</h5>
+                                <ul>
+                                    <li>Yulaf ezmesi (50g)</li>
+                                    <li>Muz veya elma</li>
+                                    <li>1 yemek kaşığı bal</li>
+                                    <li>Tarçın</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="protein-details" class="nutrition-details" style="display: none;">
+            <div class="details-container">
+                <h3>Protein Kaynakları</h3>
+                <div class="details-content">
+                    <div class="info-section">
+                        <h4><i class="fas fa-drumstick-bite"></i> Hayvansal Protein Kaynakları</h4>
+                        <div class="protein-grid">
+                            <div class="protein-item">
+                                <h5>Tavuk Göğsü</h5>
+                                <div class="protein-tags">
+                                    <span class="tag">100g: 31g protein</span>
+                                    <span class="tag">Düşük yağ</span>
+                                </div>
+                                <p>En popüler protein kaynağı. Yağsız ve yüksek protein içeriği ile ideal.</p>
+                            </div>
+                            <div class="protein-item">
+                                <h5>Yumurta</h5>
+                                <div class="protein-tags">
+                                    <span class="tag">1 adet: 6g protein</span>
+                                    <span class="tag">Tam protein</span>
+                                </div>
+                                <p>En kaliteli protein kaynağı. Tüm temel amino asitleri içerir.</p>
+                            </div>
+                            <div class="protein-item">
+                                <h5>Ton Balığı</h5>
+                                <div class="protein-tags">
+                                    <span class="tag">100g: 26g protein</span>
+                                    <span class="tag">Omega-3</span>
+                                </div>
+                                <p>Protein ve sağlıklı yağlar açısından zengin.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-section">
+                        <h4><i class="fas fa-seedling"></i> Bitkisel Protein Kaynakları</h4>
+                        <div class="protein-grid">
+                            <div class="protein-item">
+                                <h5>Mercimek</h5>
+                                <div class="protein-tags">
+                                    <span class="tag">100g: 9g protein</span>
+                                    <span class="tag">Lifli</span>
+                                </div>
+                                <p>Bitkisel protein ve lif açısından zengin.</p>
+                            </div>
+                            <div class="protein-item">
+                                <h5>Kinoa</h5>
+                                <div class="protein-tags">
+                                    <span class="tag">100g: 4g protein</span>
+                                    <span class="tag">Tam protein</span>
+                                </div>
+                                <p>Tüm temel amino asitleri içeren nadir bitkisel kaynak.</p>
+                            </div>
+                            <div class="protein-item">
+                                <h5>Tofu</h5>
+                                <div class="protein-tags">
+                                    <span class="tag">100g: 8g protein</span>
+                                    <span class="tag">Soya bazlı</span>
+                                </div>
+                                <p>Vejetaryenler için mükemmel protein kaynağı.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="supplements-details" class="supplements-details" style="display: none;">
+            <div class="supplements-container">
+                <h3>Besin Takviyeleri Detayları</h3>
+                <div class="supplements-list">
+                    <div class="supplement-item">
+                        <h4><i class="fas fa-capsules"></i> Protein Tozu (Whey Protein)</h4>
+                        <div class="supplement-tags">
+                            <span class="tag"><i class="fas fa-clock"></i> Antrenman öncesi/sonrası</span>
+                            <span class="tag"><i class="fas fa-flask"></i> 20-30g</span>
+                        </div>
+                        <p class="supplement-info">Kas gelişimi ve toparlanma için temel protein takviyesi. Hızlı emilim sağlayarak kas onarımını destekler.</p>
+                    </div>
+                    <div class="supplement-item">
+                        <h4><i class="fas fa-capsules"></i> BCAA</h4>
+                        <div class="supplement-tags">
+                            <span class="tag"><i class="fas fa-clock"></i> Antrenman sırası</span>
+                            <span class="tag"><i class="fas fa-flask"></i> 5-10g</span>
+                        </div>
+                        <p class="supplement-info">Kas yıkımını önleyen ve performansı artıran amino asit kompleksi. Yorgunluğu azaltır ve kas koruması sağlar.</p>
+                    </div>
+                    <div class="supplement-item">
+                        <h4><i class="fas fa-capsules"></i> Kreatin Monohidrat</h4>
+                        <div class="supplement-tags">
+                            <span class="tag"><i class="fas fa-clock"></i> Her gün</span>
+                            <span class="tag"><i class="fas fa-flask"></i> 3-5g</span>
+                        </div>
+                        <p class="supplement-info">Güç ve performans artışı sağlayan en etkili takviye. ATP üretimini artırarak güç artışı sağlar.</p>
+                    </div>
+                    <div class="supplement-item">
+                        <h4><i class="fas fa-capsules"></i> Pre-Workout</h4>
+                        <div class="supplement-tags">
+                            <span class="tag"><i class="fas fa-clock"></i> Antrenman öncesi</span>
+                            <span class="tag"><i class="fas fa-flask"></i> 1 servis</span>
+                        </div>
+                        <p class="supplement-info">Antrenman performansını artıran enerji ve odaklanma takviyesi. Enerji seviyesini ve pompayı artırır.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <script>
@@ -495,6 +978,51 @@
                 card.querySelector('.category-icon').style.transform = 'scale(1)';
             });
         });
+
+        function toggleBreakfast() {
+            const details = document.getElementById('breakfast-details');
+            const isVisible = details.style.display === 'block';
+            
+            // Diğer detayları kapat
+            document.getElementById('protein-details').style.display = 'none';
+            document.getElementById('supplements-details').style.display = 'none';
+            
+            details.style.display = isVisible ? 'none' : 'block';
+            
+            if (!isVisible) {
+                details.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function toggleProtein() {
+            const details = document.getElementById('protein-details');
+            const isVisible = details.style.display === 'block';
+            
+            // Diğer detayları kapat
+            document.getElementById('breakfast-details').style.display = 'none';
+            document.getElementById('supplements-details').style.display = 'none';
+            
+            details.style.display = isVisible ? 'none' : 'block';
+            
+            if (!isVisible) {
+                details.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function toggleSupplements() {
+            const details = document.getElementById('supplements-details');
+            const isVisible = details.style.display === 'block';
+            
+            // Diğer detayları kapat
+            document.getElementById('breakfast-details').style.display = 'none';
+            document.getElementById('protein-details').style.display = 'none';
+            
+            details.style.display = isVisible ? 'none' : 'block';
+            
+            if (!isVisible) {
+                details.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
     </script>
 </body>
 </html> 
