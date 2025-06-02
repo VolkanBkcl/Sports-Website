@@ -1160,21 +1160,33 @@
                 document.getElementById('userMenu').style.display = 'block';
                 document.getElementById('userName').textContent = user.username;
             } else {
-                document.getElementById('authButtons').style.display = 'flex';
-                document.getElementById('userMenu').style.display = 'none';
+                // Kullanıcı giriş yapmamışsa kayıt sayfasına yönlendir
+                window.location.href = 'kayitol.html';
             }
         }
 
         // Sayfa yüklendiğinde kullanıcı durumunu kontrol et
-        checkAuthStatus();
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthStatus();
+
+            // Tüm nav linklerini kontrol et
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const token = localStorage.getItem('token');
+                    if (!token) {
+                        e.preventDefault();
+                        window.location.href = 'kayitol.html';
+                    }
+                });
+            });
+        });
 
         // Çıkış işlemi
         document.getElementById('logoutButton').addEventListener('click', (e) => {
             e.preventDefault();
             localStorage.removeItem('token');
             localStorage.removeItem('user');
-            checkAuthStatus();
-            window.location.reload();
+            window.location.href = 'kayitol.html';
         });
 
         // Mobil menü toggle
