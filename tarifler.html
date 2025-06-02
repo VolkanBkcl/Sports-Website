@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sağlıklı Tarifler - ByteForce</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1a1a1a;
+            --secondary-color: #ff4d4d;
+            --accent-color: #ff6b6b;
+            --text-color: #333;
+            --light-text: #666;
+            --white: #fff;
+            --light-gray: #f5f5f5;
+            --border-color: #ddd;
+            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        .recipes-container {
+            max-width: 1200px;
+            margin: 6rem auto 2rem;
+            padding: 0 2rem;
+        }
+
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1498837167922-ddd27525d352?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 40vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+            margin-bottom: 3rem;
+            border-radius: 15px;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .recipes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .recipe-card {
+            background: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .recipe-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .recipe-content {
+            padding: 1.5rem;
+        }
+
+        .recipe-content h3 {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .recipe-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin: 0.8rem 0;
+            flex-wrap: wrap;
+        }
+
+        .recipe-tag {
+            background: var(--light-gray);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            color: var(--text-color);
+        }
+
+        .recipe-info {
+            display: flex;
+            justify-content: space-between;
+            margin: 1rem 0;
+            color: var(--light-text);
+            font-size: 0.9rem;
+        }
+
+        .recipe-info span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .recipe-info i {
+            color: var(--secondary-color);
+        }
+
+        .recipe-description {
+            color: var(--light-text);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .recipe-button {
+            background: var(--secondary-color);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .recipe-button:hover {
+            background: var(--accent-color);
+        }
+
+        .filter-section {
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-button {
+            background: var(--light-gray);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+
+        .filter-button.active {
+            background: var(--secondary-color);
+            color: var(--white);
+        }
+
+        .filter-button:hover {
+            background: var(--secondary-color);
+            color: var(--white);
+        }
+
+        @media (max-width: 768px) {
+            .recipes-container {
+                padding: 1rem;
+                margin-top: 5rem;
+            }
+
+            .hero-section {
+                height: 30vh;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .recipes-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Modal Styles */
+        .recipe-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: var(--white);
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            border-radius: 15px;
+            position: relative;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h2 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--secondary-color);
+        }
+
+        .recipe-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .ingredients-section, .instructions-section {
+            background: var(--light-gray);
+            padding: 1.5rem;
+            border-radius: 10px;
+        }
+
+        .ingredients-section h3, .instructions-section h3 {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .ingredients-section h3 i, .instructions-section h3 i {
+            color: var(--secondary-color);
+        }
+
+        .ingredients-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .ingredients-list li {
+            margin-bottom: 0.8rem;
+            padding-left: 1.5rem;
+            position: relative;
+            color: var(--text-color);
+        }
+
+        .ingredients-list li:before {
+            content: "•";
+            color: var(--secondary-color);
+            position: absolute;
+            left: 0;
+        }
+
+        .instructions-list {
+            list-style: none;
+            padding: 0;
+            counter-reset: step-counter;
+        }
+
+        .instructions-list li {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+            position: relative;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .instructions-list li:before {
+            counter-increment: step-counter;
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            width: 1.5rem;
+            height: 1.5rem;
+            background: var(--secondary-color);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .nutrition-info {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .nutrition-item {
+            text-align: center;
+        }
+
+        .nutrition-item i {
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .nutrition-item span {
+            display: block;
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+
+            .recipe-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <i class="fas fa-dumbbell"></i>
+                <span>ByteForce</span>
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="/" class="nav-link">Ana Sayfa</a></li>
+                <li><a href="/programlar" class="nav-link">Programlar</a></li>
+                <li><a href="/egzersizler" class="nav-link">Egzersizler</a></li>
+                <li><a href="/beslenme" class="nav-link">Beslenme</a></li>
+                <li><a href="/topluluk" class="nav-link">Topluluk</a></li>
+                <li><a href="/iletisim" class="nav-link">İletişim</a></li>
+            </ul>
+
+            <div class="auth-buttons" id="authButtons">
+                <a href="giris.html" class="btn btn-primary" id="loginButton">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Giriş Yap
+                </a>
+                <a href="kayitol.html" class="btn btn-outline" id="registerButton">
+                    <i class="fas fa-user-plus"></i>
+                    Kayıt Ol
+                </a>
+            </div>
+
+            <div class="user-menu" id="userMenu" style="display: none;">
+                <button class="user-button">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="userName">Kullanıcı</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="/profile" class="dropdown-item">
+                        <i class="fas fa-user"></i>
+                        Profilim
+                    </a>
+                    <a href="#" class="dropdown-item" id="logoutButton">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Çıkış Yap
+                    </a>
+                </div>
+            </div>
+
+            <button class="mobile-menu-button" id="mobileMenuButton">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="recipes-container">
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1>Sağlıklı Tarifler</h1>
+                <p>Protein bakımından zengin, düşük kalorili ve lezzetli tarifler</p>
+            </div>
+        </section>
+
+        <div class="filter-section">
+            <button class="filter-button active" data-filter="all">Tümü</button>
+            <button class="filter-button" data-filter="protein">Protein Ağırlıklı</button>
+            <button class="filter-button" data-filter="low-carb">Düşük Karbonhidrat</button>
+            <button class="filter-button" data-filter="vegetarian">Vejetaryen</button>
+            <button class="filter-button" data-filter="breakfast">Kahvaltı</button>
+        </div>
+
+        <div class="recipes-grid">
+            <!-- Protein Ağırlıklı Tarifler -->
+            <div class="recipe-card" data-category="protein" data-recipe-id="protein-salata">
+                <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Protein Salata" class="recipe-image">
+                <div class="recipe-content">
+                    <h3>Protein Salata</h3>
+                    <div class="recipe-tags">
+                        <span class="recipe-tag">Protein</span>
+                        <span class="recipe-tag">Salata</span>
+                        <span class="recipe-tag">Düşük Kalori</span>
+                    </div>
+                    <div class="recipe-info">
+                        <span><i class="fas fa-fire"></i> 350 kcal</span>
+                        <span><i class="fas fa-drumstick-bite"></i> 35g protein</span>
+                        <span><i class="fas fa-clock"></i> 15 dk</span>
+                    </div>
+                    <p class="recipe-description">Izgara tavuk, avokado, kinoa ve taze sebzelerle hazırlanan protein dolu salata.</p>
+                    <button class="recipe-button">Tarifi Gör</button>
+                </div>
+            </div>
+
+            <div class="recipe-card" data-category="protein" data-recipe-id="protein-smoothie">
+                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Protein Smoothie" class="recipe-image">
+                <div class="recipe-content">
+                    <h3>Protein Smoothie</h3>
+                    <div class="recipe-tags">
+                        <span class="recipe-tag">Protein</span>
+                        <span class="recipe-tag">İçecek</span>
+                        <span class="recipe-tag">Hızlı</span>
+                    </div>
+                    <div class="recipe-info">
+                        <span><i class="fas fa-fire"></i> 280 kcal</span>
+                        <span><i class="fas fa-drumstick-bite"></i> 25g protein</span>
+                        <span><i class="fas fa-clock"></i> 5 dk</span>
+                    </div>
+                    <p class="recipe-description">Muz, protein tozu, badem sütü ve chia tohumu ile hazırlanan besleyici smoothie.</p>
+                    <button class="recipe-button">Tarifi Gör</button>
+                </div>
+            </div>
+
+            <!-- Düşük Karbonhidrat Tarifler -->
+            <div class="recipe-card" data-category="low-carb">
+                <img src="https://images.unsplash.com/photo-1547592180-85f173990554?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Karnabahar Pilavı" class="recipe-image">
+                <div class="recipe-content">
+                    <h3>Karnabahar Pilavı</h3>
+                    <div class="recipe-tags">
+                        <span class="recipe-tag">Düşük Karbonhidrat</span>
+                        <span class="recipe-tag">Vejetaryen</span>
+                        <span class="recipe-tag">Glutensiz</span>
+                    </div>
+                    <div class="recipe-info">
+                        <span><i class="fas fa-fire"></i> 220 kcal</span>
+                        <span><i class="fas fa-drumstick-bite"></i> 8g protein</span>
+                        <span><i class="fas fa-clock"></i> 20 dk</span>
+                    </div>
+                    <p class="recipe-description">Karnabahar, sebzeler ve baharatlarla hazırlanan düşük karbonhidratlı pilav alternatifi.</p>
+                    <button class="recipe-button">Tarifi Gör</button>
+                </div>
+            </div>
+
+            <!-- Vejetaryen Tarifler -->
+            <div class="recipe-card" data-category="vegetarian">
+                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Mercimek Köftesi" class="recipe-image">
+                <div class="recipe-content">
+                    <h3>Mercimek Köftesi</h3>
+                    <div class="recipe-tags">
+                        <span class="recipe-tag">Vejetaryen</span>
+                        <span class="recipe-tag">Protein</span>
+                        <span class="recipe-tag">Glutensiz</span>
+                    </div>
+                    <div class="recipe-info">
+                        <span><i class="fas fa-fire"></i> 180 kcal</span>
+                        <span><i class="fas fa-drumstick-bite"></i> 12g protein</span>
+                        <span><i class="fas fa-clock"></i> 25 dk</span>
+                    </div>
+                    <p class="recipe-description">Kırmızı mercimek, bulgur ve baharatlarla hazırlanan protein dolu vejetaryen köfte.</p>
+                    <button class="recipe-button">Tarifi Gör</button>
+                </div>
+            </div>
+
+            <!-- Kahvaltı Tarifleri -->
+            <div class="recipe-card" data-category="breakfast">
+                <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Protein Omlet" class="recipe-image">
+                <div class="recipe-content">
+                    <h3>Protein Omlet</h3>
+                    <div class="recipe-tags">
+                        <span class="recipe-tag">Kahvaltı</span>
+                        <span class="recipe-tag">Protein</span>
+                        <span class="recipe-tag">Düşük Kalori</span>
+                    </div>
+                    <div class="recipe-info">
+                        <span><i class="fas fa-fire"></i> 320 kcal</span>
+                        <span><i class="fas fa-drumstick-bite"></i> 28g protein</span>
+                        <span><i class="fas fa-clock"></i> 10 dk</span>
+                    </div>
+                    <p class="recipe-description">Yumurta beyazı, sebzeler ve az yağlı peynirle hazırlanan protein dolu omlet.</p>
+                    <button class="recipe-button">Tarifi Gör</button>
+                </div>
+            </div>
+
+            <!-- Protein Ağırlıklı Tarifler (Devam) -->
+            <div class="recipe-card" data-category="protein">
+                <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Izgara Somon" class="recipe-image">
+                <div class="recipe-content">
+                    <h3>Izgara Somon</h3>
+                    <div class="recipe-tags">
+                        <span class="recipe-tag">Protein</span>
+                        <span class="recipe-tag">Omega-3</span>
+                        <span class="recipe-tag">Balık</span>
+                    </div>
+                    <div class="recipe-info">
+                        <span><i class="fas fa-fire"></i> 420 kcal</span>
+                        <span><i class="fas fa-drumstick-bite"></i> 40g protein</span>
+                        <span><i class="fas fa-clock"></i> 20 dk</span>
+                    </div>
+                    <p class="recipe-description">Sebzelerle servis edilen, omega-3 açısından zengin ızgara somon balığı.</p>
+                    <button class="recipe-button">Tarifi Gör</button>
+                </div>
+            </div>
+
+            <div class="recipe-card" data-category="protein">
+                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Tavuk Şiş" class="recipe-image">
+                <div class="recipe-content">
+                    <h3>Tavuk Şiş</h3>
+                    <div class="recipe-tags">
+                        <span class="recipe-tag">Protein</span>
+                        <span class="recipe-tag">Izgara</span>
+                        <span class="recipe-tag">Düşük Yağ</span>
+                    </div>
+                    <div class="recipe-info">
+                        <span><i class="fas fa-fire"></i> 380 kcal</span>
+                        <span><i class="fas fa-drumstick-bite"></i> 45g protein</span>
+                        <span><i class="fas fa-clock"></i> 25 dk</span>
+                    </div>
+                    <p class="recipe-description">Marine edilmiş tavuk göğsü ve sebzelerle hazırlanan protein dolu şiş.</p>
+                    <button class="recipe-button">Tarifi Gör</button>
+                </div>
+            </div>
+
+            <!-- Düşük Karbonhidrat Tarifler (Devam) -->
+            <div class="recipe-card" data-category="low-carb">
+                <img src="https://images.unsplash.com/photo-1547592180-85f173990554?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Kabak Makarna" class="recipe-image">
+                <div class="recipe-content">
+                    <h3>Kabak Makarna</h3>
+                    <div class="recipe-tags">
+                        <span class="recipe-tag">Düşük Karbonhidrat</span>
+                        <span class="recipe-tag">Vejetaryen</span>
+                        <span class="recipe-tag">Glutensiz</span>
+                    </div>
+                    <div class="recipe-info">
+                        <span><i class="fas fa-fire"></i> 250 kcal</span>
+                        <span><i class="fas fa-drumstick-bite"></i> 15g protein</span>
+                        <span><i class="fas fa-clock"></i> 15 dk</span>
+                    </div>
+                    <p class="recipe-description">Kabak dilimleri, domates sos ve parmesan peyniri ile hazırlanan düşük karbonhidratlı makarna.</p>
+                    <button class="recipe-button">Tarifi Gör</button>
+                </div>
+            </div>
+
+            <div class="recipe-card" data-category="low-carb">
+                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Avokado Salatası" class="recipe-image">
+                <div class="recipe-content">
+                    <h3>Avokado Salatası</h3>
+                    <div class="recipe-tags">
+                        <span class="recipe-tag">Düşük Karbonhidrat</span>
+                        <span class="recipe-tag">Vejetaryen</span>
+                        <span class="recipe-tag">Sağlıklı Yağ</span>
+                    </div>
+                    <div class="recipe-info">
+                        <span><i class="fas fa-fire"></i> 280 kcal</span>
+                        <span><i class="fas fa-drumstick-bite"></i> 8g protein</span>
+                        <span><i class="fas fa-clock"></i> 10 dk</span>
+                    </div>
+                    <p class="recipe-description">Avokado, domates, soğan ve limon suyu ile hazırlanan besleyici salata.</p>
+                    <button class="recipe-button">Tarifi Gör</button>
+                </div>
+            </div>
+
+            <!-- Vejetaryen Tarifler (Devam) -->
+            <div class="recipe-card" data-category="vegetarian">
+                <img src="https://images.unsplash.com/photo-1547592180-85f173990554?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Kinoa Salatası" class="recipe-image">
+                <div class="recipe-content">
+                    <h3>Kinoa Salatası</h3>
+                    <div class="recipe-tags">
+                        <span class="recipe-tag">Vejetaryen</span>
+                        <span class="recipe-tag">Protein</span>
+                        <span class="recipe-tag">Glutensiz</span>
+                    </div>
+                    <div class="recipe-info">
+                        <span><i class="fas fa-fire"></i> 320 kcal</span>
+                        <span><i class="fas fa-drumstick-bite"></i> 12g protein</span>
+                        <span><i class="fas fa-clock"></i> 20 dk</span>
+                    </div>
+                    <p class="recipe-description">Kinoa, sebzeler ve fındık ile hazırlanan protein dolu vejetaryen salata.</p>
+                    <button class="recipe-button">Tarifi Gör</button>
+                </div>
+            </div>
+
+            <div class="recipe-card" data-category="vegetarian">
+                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Tofu Stir-Fry" class="recipe-image">
+                <div class="recipe-content">
+                    <h3>Tofu Stir-Fry</h3>
+                    <div class="recipe-tags">
+                        <span class="recipe-tag">Vejetaryen</span>
+                        <span class="recipe-tag">Protein</span>
+                        <span class="recipe-tag">Asya Mutfağı</span>
+                    </div>
+                    <div class="recipe-info">
+                        <span><i class="fas fa-fire"></i> 350 kcal</span>
+                        <span><i class="fas fa-drumstick-bite"></i> 20g protein</span>
+                        <span><i class="fas fa-clock"></i> 15 dk</span>
+                    </div>
+                    <p class="recipe-description">Tofu ve sebzelerle hazırlanan protein dolu Asya tarzı wok yemeği.</p>
+                    <button class="recipe-button">Tarifi Gör</button>
+                </div>
+            </div>
+
+            <!-- Kahvaltı Tarifleri (Devam) -->
+            <div class="recipe-card" data-category="breakfast">
+                <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Yulaf Ezmesi" class="recipe-image">
+                <div class="recipe-content">
+                    <h3>Proteinli Yulaf Ezmesi</h3>
+                    <div class="recipe-tags">
+                        <span class="recipe-tag">Kahvaltı</span>
+                        <span class="recipe-tag">Protein</span>
+                        <span class="recipe-tag">Lifli</span>
+                    </div>
+                    <div class="recipe-info">
+                        <span><i class="fas fa-fire"></i> 380 kcal</span>
+                        <span><i class="fas fa-drumstick-bite"></i> 22g protein</span>
+                        <span><i class="fas fa-clock"></i> 10 dk</span>
+                    </div>
+                    <p class="recipe-description">Yulaf ezmesi, protein tozu, muz ve fıstık ezmesi ile hazırlanan besleyici kahvaltı.</p>
+                    <button class="recipe-button">Tarifi Gör</button>
+                </div>
+            </div>
+
+            <div class="recipe-card" data-category="breakfast">
+                <img src="https://images.unsplash.com/photo-1547592180-85f173990554?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Avokado Tost" class="recipe-image">
+                <div class="recipe-content">
+                    <h3>Avokado Tost</h3>
+                    <div class="recipe-tags">
+                        <span class="recipe-tag">Kahvaltı</span>
+                        <span class="recipe-tag">Vejetaryen</span>
+                        <span class="recipe-tag">Sağlıklı Yağ</span>
+                    </div>
+                    <div class="recipe-info">
+                        <span><i class="fas fa-fire"></i> 320 kcal</span>
+                        <span><i class="fas fa-drumstick-bite"></i> 12g protein</span>
+                        <span><i class="fas fa-clock"></i> 8 dk</span>
+                    </div>
+                    <p class="recipe-description">Tam buğday ekmeği üzerine avokado, yumurta ve baharatlarla hazırlanan tost.</p>
+                    <button class="recipe-button">Tarifi Gör</button>
+                </div>
+            </div>
+
+            <!-- Protein Ağırlıklı Tarifler (Devam) -->
+            <div class="recipe-card" data-category="protein">
+                <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Hindi Göğsü" class="recipe-image">
+                <div class="recipe-content">
+                    <h3>Izgara Hindi Göğsü</h3>
+                    <div class="recipe-tags">
+                        <span class="recipe-tag">Protein</span>
+                        <span class="recipe-tag">Düşük Yağ</span>
+                        <span class="recipe-tag">Izgara</span>
+                    </div>
+                    <div class="recipe-info">
+                        <span><i class="fas fa-fire"></i> 290 kcal</span>
+                        <span><i class="fas fa-drumstick-bite"></i> 42g protein</span>
+                        <span><i class="fas fa-clock"></i> 25 dk</span>
+                    </div>
+                    <p class="recipe-description">Marine edilmiş hindi göğsü ve sebzelerle hazırlanan protein dolu yemek.</p>
+                    <button class="recipe-button">Tarifi Gör</button>
+                </div>
+            </div>
+
+            <div class="recipe-card" data-category="protein">
+                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Ton Balıklı Salata" class="recipe-image">
+                <div class="recipe-content">
+                    <h3>Ton Balıklı Salata</h3>
+                    <div class="recipe-tags">
+                        <span class="recipe-tag">Protein</span>
+                        <span class="recipe-tag">Omega-3</span>
+                        <span class="recipe-tag">Hızlı</span>
+                    </div>
+                    <div class="recipe-info">
+                        <span><i class="fas fa-fire"></i> 310 kcal</span>
+                        <span><i class="fas fa-drumstick-bite"></i> 38g protein</span>
+                        <span><i class="fas fa-clock"></i> 10 dk</span>
+                    </div>
+                    <p class="recipe-description">Ton balığı, yumurta ve sebzelerle hazırlanan protein dolu salata.</p>
+                    <button class="recipe-button">Tarifi Gör</button>
+                </div>
+            </div>
+
+            <!-- Düşük Karbonhidrat Tarifler (Devam) -->
+            <div class="recipe-card" data-category="low-carb">
+                <img src="https://images.unsplash.com/photo-1547592180-85f173990554?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Brokoli Çorbası" class="recipe-image">
+                <div class="recipe-content">
+                    <h3>Brokoli Çorbası</h3>
+                    <div class="recipe-tags">
+                        <span class="recipe-tag">Düşük Karbonhidrat</span>
+                        <span class="recipe-tag">Vejetaryen</span>
+                        <span class="recipe-tag">Çorba</span>
+                    </div>
+                    <div class="recipe-info">
+                        <span><i class="fas fa-fire"></i> 180 kcal</span>
+                        <span><i class="fas fa-drumstick-bite"></i> 10g protein</span>
+                        <span><i class="fas fa-clock"></i> 20 dk</span>
+                    </div>
+                    <p class="recipe-description">Brokoli, soğan ve baharatlarla hazırlanan kremalı çorba.</p>
+                    <button class="recipe-button">Tarifi Gör</button>
+                </div>
+            </div>
+
+            <div class="recipe-card" data-category="low-carb">
+                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Mantarlı Omlet" class="recipe-image">
+                <div class="recipe-content">
+                    <h3>Mantarlı Omlet</h3>
+                    <div class="recipe-tags">
+                        <span class="recipe-tag">Düşük Karbonhidrat</span>
+                        <span class="recipe-tag">Protein</span>
+                        <span class="recipe-tag">Kahvaltı</span>
+                    </div>
+                    <div class="recipe-info">
+                        <span><i class="fas fa-fire"></i> 280 kcal</span>
+                        <span><i class="fas fa-drumstick-bite"></i> 24g protein</span>
+                        <span><i class="fas fa-clock"></i> 12 dk</span>
+                    </div>
+                    <p class="recipe-description">Mantar, soğan ve baharatlarla hazırlanan protein dolu omlet.</p>
+                    <button class="recipe-button">Tarifi Gör</button>
+                </div>
+            </div>
+
+            <!-- Vejetaryen Tarifler (Devam) -->
+            <div class="recipe-card" data-category="vegetarian">
+                <img src="https://images.unsplash.com/photo-1547592180-85f173990554?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Humus" class="recipe-image">
+                <div class="recipe-content">
+                    <h3>Proteinli Humus</h3>
+                    <div class="recipe-tags">
+                        <span class="recipe-tag">Vejetaryen</span>
+                        <span class="recipe-tag">Protein</span>
+                        <span class="recipe-tag">Aperatif</span>
+                    </div>
+                    <div class="recipe-info">
+                        <span><i class="fas fa-fire"></i> 220 kcal</span>
+                        <span><i class="fas fa-drumstick-bite"></i> 8g protein</span>
+                        <span><i class="fas fa-clock"></i> 15 dk</span>
+                    </div>
+                    <p class="recipe-description">Nohut, tahin ve baharatlarla hazırlanan protein dolu humus.</p>
+                    <button class="recipe-button">Tarifi Gör</button>
+                </div>
+            </div>
+
+            <div class="recipe-card" data-category="vegetarian">
+                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Sebze Çorbası" class="recipe-image">
+                <div class="recipe-content">
+                    <h3>Sebze Çorbası</h3>
+                    <div class="recipe-tags">
+                        <span class="recipe-tag">Vejetaryen</span>
+                        <span class="recipe-tag">Düşük Kalori</span>
+                        <span class="recipe-tag">Çorba</span>
+                    </div>
+                    <div class="recipe-info">
+                        <span><i class="fas fa-fire"></i> 150 kcal</span>
+                        <span><i class="fas fa-drumstick-bite"></i> 6g protein</span>
+                        <span><i class="fas fa-clock"></i> 30 dk</span>
+                    </div>
+                    <p class="recipe-description">Çeşitli sebzeler ve baharatlarla hazırlanan besleyici çorba.</p>
+                    <button class="recipe-button">Tarifi Gör</button>
+                </div>
+            </div>
+
+            <!-- Kahvaltı Tarifleri (Devam) -->
+            <div class="recipe-card" data-category="breakfast">
+                <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Protein Pancake" class="recipe-image">
+                <div class="recipe-content">
+                    <h3>Protein Pancake</h3>
+                    <div class="recipe-tags">
+                        <span class="recipe-tag">Kahvaltı</span>
+                        <span class="recipe-tag">Protein</span>
+                        <span class="recipe-tag">Tatlı</span>
+                    </div>
+                    <div class="recipe-info">
+                        <span><i class="fas fa-fire"></i> 350 kcal</span>
+                        <span><i class="fas fa-drumstick-bite"></i> 25g protein</span>
+                        <span><i class="fas fa-clock"></i> 15 dk</span>
+                    </div>
+                    <p class="recipe-description">Protein tozu, yulaf ve muz ile hazırlanan sağlıklı pancake.</p>
+                    <button class="recipe-button">Tarifi Gör</button>
+                </div>
+            </div>
+
+            <div class="recipe-card" data-category="breakfast">
+                <img src="https://images.unsplash.com/photo-1547592180-85f173990554?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Chia Pudding" class="recipe-image">
+                <div class="recipe-content">
+                    <h3>Chia Pudding</h3>
+                    <div class="recipe-tags">
+                        <span class="recipe-tag">Kahvaltı</span>
+                        <span class="recipe-tag">Vejetaryen</span>
+                        <span class="recipe-tag">Protein</span>
+                    </div>
+                    <div class="recipe-info">
+                        <span><i class="fas fa-fire"></i> 280 kcal</span>
+                        <span><i class="fas fa-drumstick-bite"></i> 12g protein</span>
+                        <span><i class="fas fa-clock"></i> 5 dk + 4 saat</span>
+                    </div>
+                    <p class="recipe-description">Chia tohumu, badem sütü ve meyvelerle hazırlanan besleyici puding.</p>
+                    <button class="recipe-button">Tarifi Gör</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal yapısı -->
+    <div id="recipeModal" class="recipe-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalRecipeTitle"></h2>
+                <button class="close-modal" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="recipe-details">
+                <div class="ingredients-section">
+                    <h3><i class="fas fa-shopping-basket"></i> Malzemeler</h3>
+                    <ul id="modalIngredients" class="ingredients-list"></ul>
+                </div>
+                <div class="instructions-section">
+                    <h3><i class="fas fa-tasks"></i> Hazırlanışı</h3>
+                    <ol id="modalInstructions" class="instructions-list"></ol>
+                </div>
+            </div>
+            <div class="nutrition-info">
+                <div class="nutrition-item">
+                    <i class="fas fa-fire"></i>
+                    <span id="modalCalories"></span>
+                </div>
+                <div class="nutrition-item">
+                    <i class="fas fa-drumstick-bite"></i>
+                    <span id="modalProtein"></span>
+                </div>
+                <div class="nutrition-item">
+                    <i class="fas fa-clock"></i>
+                    <span id="modalTime"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Kullanıcı durumunu kontrol et
+        function checkAuthStatus() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user'));
+            
+            if (token && user) {
+                document.getElementById('authButtons').style.display = 'none';
+                document.getElementById('userMenu').style.display = 'block';
+                document.getElementById('userName').textContent = user.username;
+            } else {
+                document.getElementById('authButtons').style.display = 'flex';
+                document.getElementById('userMenu').style.display = 'none';
+            }
+        }
+
+        // Sayfa yüklendiğinde kullanıcı durumunu kontrol et
+        checkAuthStatus();
+
+        // Çıkış işlemi
+        document.getElementById('logoutButton').addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            checkAuthStatus();
+            window.location.reload();
+        });
+
+        // Filtreleme işlemi
+        const filterButtons = document.querySelectorAll('.filter-button');
+        const recipeCards = document.querySelectorAll('.recipe-card');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Aktif buton stilini güncelle
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                const filter = button.getAttribute('data-filter');
+
+                recipeCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Mobil menü toggle
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const navLinksContainer = document.querySelector('.nav-links');
+        const authButtonsContainer = document.querySelector('.auth-buttons');
+
+        mobileMenuButton.addEventListener('click', () => {
+            navLinksContainer.classList.toggle('active');
+            authButtonsContainer.classList.toggle('mobile');
+            mobileMenuButton.innerHTML = navLinksContainer.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+
+        // Tarif detayları için veri
+        const recipeDetails = {
+            'protein-salata': {
+                title: 'Protein Salata',
+                ingredients: [
+                    '200g ızgara tavuk göğsü',
+                    '1 su bardağı haşlanmış kinoa',
+                    '1 adet avokado',
+                    '1 adet salatalık',
+                    '1 adet domates',
+                    '1 adet kırmızı soğan',
+                    '2 yemek kaşığı zeytinyağı',
+                    '1 limon suyu',
+                    'Tuz ve karabiber'
+                ],
+                instructions: [
+                    'Kinoayı suda haşlayın ve soğumaya bırakın.',
+                    'Tavuk göğsünü ızgarada pişirin ve dilimleyin.',
+                    'Avokado, salatalık ve domatesi küp şeklinde doğrayın.',
+                    'Kırmızı soğanı ince halkalar halinde doğrayın.',
+                    'Tüm malzemeleri büyük bir kapta karıştırın.',
+                    'Zeytinyağı, limon suyu, tuz ve karabiberi ekleyip karıştırın.',
+                    'Servis yapmadan önce 5 dakika bekletin.'
+                ],
+                calories: '350 kcal',
+                protein: '35g protein',
+                time: '15 dakika'
+            },
+            'protein-smoothie': {
+                title: 'Protein Smoothie',
+                ingredients: [
+                    '1 ölçek protein tozu',
+                    '1 adet muz',
+                    '1 su bardağı badem sütü',
+                    '1 yemek kaşığı chia tohumu',
+                    '1 yemek kaşığı fıstık ezmesi',
+                    'Buz küpleri'
+                ],
+                instructions: [
+                    'Tüm malzemeleri blender kabına koyun.',
+                    'Yüksek hızda 1-2 dakika karıştırın.',
+                    'Kıvamı koyu olursa biraz daha badem sütü ekleyin.',
+                    'Hemen servis yapın.'
+                ],
+                calories: '280 kcal',
+                protein: '25g protein',
+                time: '5 dakika'
+            },
+            'karnabahar-pilavi': {
+                title: 'Karnabahar Pilavı',
+                ingredients: [
+                    '1 adet orta boy karnabahar',
+                    '1 adet soğan',
+                    '2 diş sarımsak',
+                    '1 yemek kaşığı zeytinyağı',
+                    '1 çay kaşığı kimyon',
+                    '1 çay kaşığı karabiber',
+                    'Tuz',
+                    'İsteğe bağlı: 1 avuç maydanoz'
+                ],
+                instructions: [
+                    'Karnabaharı yıkayın ve küçük parçalara ayırın.',
+                    'Soğanı ve sarımsağı ince ince doğrayın.',
+                    'Zeytinyağını tavada ısıtın, soğanları ekleyip yumuşayana kadar kavurun.',
+                    'Sarımsakları ekleyip 1 dakika daha kavurun.',
+                    'Karnabahar parçalarını ekleyip orta ateşte 5-7 dakika pişirin.',
+                    'Kimyon, karabiber ve tuzu ekleyip karıştırın.',
+                    'Karnabahar yumuşayana kadar pişirmeye devam edin.',
+                    'İsteğe bağlı olarak ince kıyılmış maydanoz ekleyip servis yapın.'
+                ],
+                calories: '220 kcal',
+                protein: '8g protein',
+                time: '20 dakika'
+            },
+            'mercimek-kofte': {
+                title: 'Mercimek Köftesi',
+                ingredients: [
+                    '1 su bardağı kırmızı mercimek',
+                    '1 su bardağı ince bulgur',
+                    '1 adet soğan',
+                    '2 diş sarımsak',
+                    '1 demet maydanoz',
+                    '1 yemek kaşığı domates salçası',
+                    '1 yemek kaşığı biber salçası',
+                    '1 çay kaşığı kimyon',
+                    '1 çay kaşığı karabiber',
+                    'Tuz',
+                    'Zeytinyağı'
+                ],
+                instructions: [
+                    'Mercimeği yıkayıp süzün ve 2 su bardağı su ile haşlayın.',
+                    'Haşlanan mercimeği süzün ve sıcakken bulgur ile karıştırın.',
+                    'Soğanı ve sarımsağı rendeleyin, maydanozu ince ince kıyın.',
+                    'Tüm malzemeleri mercimek-bulgur karışımına ekleyin.',
+                    'Salça, baharatlar ve tuzu ekleyip yoğurun.',
+                    'Zeytinyağı ekleyip tekrar yoğurun.',
+                    'Köfte kıvamına gelince buzdolabında 30 dakika bekletin.',
+                    'Köfte şekli verip servis yapın.'
+                ],
+                calories: '180 kcal',
+                protein: '12g protein',
+                time: '25 dakika'
+            },
+            'protein-omlet': {
+                title: 'Protein Omlet',
+                ingredients: [
+                    '4 yumurta beyazı',
+                    '1 tam yumurta',
+                    '50g az yağlı peynir',
+                    '1 adet domates',
+                    '1 adet yeşil biber',
+                    '1 adet soğan',
+                    'Tuz ve karabiber',
+                    '1 yemek kaşığı zeytinyağı'
+                ],
+                instructions: [
+                    'Yumurta beyazlarını ve tam yumurtayı bir kapta çırpın.',
+                    'Sebzeleri küp küp doğrayın.',
+                    'Tavada zeytinyağını ısıtın, sebzeleri ekleyip yumuşayana kadar pişirin.',
+                    'Çırpılmış yumurtaları ekleyin.',
+                    'Peyniri üzerine serpin.',
+                    'Orta ateşte pişirin, altı kızardığında ters çevirin.',
+                    'Diğer tarafı da pişince servis yapın.'
+                ],
+                calories: '320 kcal',
+                protein: '28g protein',
+                time: '10 dakika'
+            },
+            'izgara-somon': {
+                title: 'Izgara Somon',
+                ingredients: [
+                    '200g somon filetosu',
+                    '2 yemek kaşığı zeytinyağı',
+                    '1 limon suyu',
+                    '2 diş sarımsak',
+                    'Taze kekik',
+                    'Tuz ve karabiber',
+                    'Yanında servis için:',
+                    'Buharda pişmiş sebzeler',
+                    'Limon dilimleri'
+                ],
+                instructions: [
+                    'Somonu marine etmek için zeytinyağı, limon suyu, dövülmüş sarımsak, kekik, tuz ve karabiberi karıştırın.',
+                    'Somonu marine sosuna bulayıp 30 dakika buzdolabında bekletin.',
+                    'Izgarayı orta ateşte ısıtın.',
+                    'Somonu ızgaraya yerleştirin ve her iki tarafını 4-5 dakika pişirin.',
+                    'Sebzeleri buharda pişirin.',
+                    'Somonu sebzelerle birlikte, yanında limon dilimleri ile servis yapın.'
+                ],
+                calories: '420 kcal',
+                protein: '40g protein',
+                time: '20 dakika'
+            },
+            'tavuk-sis': {
+                title: 'Tavuk Şiş',
+                ingredients: [
+                    '400g tavuk göğsü',
+                    '1 adet kırmızı biber',
+                    '1 adet yeşil biber',
+                    '1 adet soğan',
+                    '2 yemek kaşığı zeytinyağı',
+                    '2 diş sarımsak',
+                    '1 çay kaşığı kekik',
+                    '1 çay kaşığı pul biber',
+                    'Tuz ve karabiber'
+                ],
+                instructions: [
+                    'Tavuk göğsünü küp şeklinde doğrayın.',
+                    'Sebzeleri büyük parçalar halinde doğrayın.',
+                    'Zeytinyağı, dövülmüş sarımsak, baharatlar ve tuzu karıştırın.',
+                    'Tavuk ve sebzeleri marine sosuna bulayın.',
+                    'Şişlere tavuk ve sebzeleri sırayla dizin.',
+                    'Izgarada her yüzünü 4-5 dakika pişirin.',
+                    'Sıcak servis yapın.'
+                ],
+                calories: '380 kcal',
+                protein: '45g protein',
+                time: '25 dakika'
+            },
+            'kabak-makarna': {
+                title: 'Kabak Makarna',
+                ingredients: [
+                    '2 adet kabak',
+                    '2 yemek kaşığı zeytinyağı',
+                    '2 diş sarımsak',
+                    '1 adet soğan',
+                    '1 su bardağı domates sosu',
+                    '2 yemek kaşığı parmesan peyniri',
+                    'Taze fesleğen',
+                    'Tuz ve karabiber'
+                ],
+                instructions: [
+                    'Kabakları spiral makinesi ile makarna şeklinde doğrayın.',
+                    'Soğanı ve sarımsağı ince ince doğrayın.',
+                    'Zeytinyağını tavada ısıtın, soğanları ekleyip yumuşayana kadar kavurun.',
+                    'Sarımsakları ekleyip 1 dakika daha kavurun.',
+                    'Domates sosunu ekleyip 5 dakika pişirin.',
+                    'Kabak makarnayı ekleyip 2-3 dakika pişirin.',
+                    'Parmesan peyniri, fesleğen, tuz ve karabiberi ekleyip karıştırın.',
+                    'Sıcak servis yapın.'
+                ],
+                calories: '250 kcal',
+                protein: '15g protein',
+                time: '15 dakika'
+            },
+            'avokado-salatasi': {
+                title: 'Avokado Salatası',
+                ingredients: [
+                    '2 adet olgun avokado',
+                    '1 adet domates',
+                    '1 adet kırmızı soğan',
+                    '1 adet limon',
+                    '2 yemek kaşığı zeytinyağı',
+                    'Taze kişniş veya maydanoz',
+                    'Tuz ve karabiber'
+                ],
+                instructions: [
+                    'Avokadoları soyup küp şeklinde doğrayın.',
+                    'Domatesi ve soğanı küp küp doğrayın.',
+                    'Tüm malzemeleri büyük bir kapta karıştırın.',
+                    'Limon suyu, zeytinyağı, tuz ve karabiberi ekleyip karıştırın.',
+                    'İnce kıyılmış kişniş veya maydanozu ekleyin.',
+                    'Hemen servis yapın.'
+                ],
+                calories: '280 kcal',
+                protein: '8g protein',
+                time: '10 dakika'
+            },
+            'kinoa-salatasi': {
+                title: 'Kinoa Salatası',
+                ingredients: [
+                    '1 su bardağı kinoa',
+                    '1 adet salatalık',
+                    '1 adet domates',
+                    '1 adet avokado',
+                    '1 adet kırmızı soğan',
+                    '1 avuç fındık',
+                    '2 yemek kaşığı zeytinyağı',
+                    '1 limon suyu',
+                    'Taze maydanoz',
+                    'Tuz ve karabiber'
+                ],
+                instructions: [
+                    'Kinoayı suda haşlayın ve soğumaya bırakın.',
+                    'Sebzeleri küp şeklinde doğrayın.',
+                    'Fındıkları kavurun ve iri parçalara bölün.',
+                    'Tüm malzemeleri büyük bir kapta karıştırın.',
+                    'Zeytinyağı, limon suyu, tuz ve karabiberi ekleyip karıştırın.',
+                    'İnce kıyılmış maydanozu ekleyin.',
+                    'Servis yapmadan önce 10 dakika bekletin.'
+                ],
+                calories: '320 kcal',
+                protein: '12g protein',
+                time: '20 dakika'
+            },
+            'tofu-stir-fry': {
+                title: 'Tofu Stir-Fry',
+                ingredients: [
+                    '200g tofu',
+                    '1 adet brokoli',
+                    '1 adet havuç',
+                    '1 adet kırmızı biber',
+                    '2 diş sarımsak',
+                    '2 yemek kaşığı soya sosu',
+                    '1 yemek kaşığı susam yağı',
+                    '1 çay kaşığı zencefil',
+                    'Susam tohumu',
+                    'Taze kişniş'
+                ],
+                instructions: [
+                    'Tofuyu küp şeklinde doğrayın ve kağıt havlu ile kurulayın.',
+                    'Sebzeleri iri parçalar halinde doğrayın.',
+                    'Sarımsak ve zencefili ince ince doğrayın.',
+                    'Sesame yağını wok tavada ısıtın, tofuyu ekleyip altın sarısı olana kadar kızartın.',
+                    'Sebzeleri ekleyip yüksek ateşte 3-4 dakika pişirin.',
+                    'Soya sosunu ekleyip karıştırın.',
+                    'Susam tohumu ve ince kıyılmış kişnişi ekleyip servis yapın.'
+                ],
+                calories: '350 kcal',
+                protein: '20g protein',
+                time: '15 dakika'
+            },
+            'proteinli-yulaf': {
+                title: 'Proteinli Yulaf Ezmesi',
+                ingredients: [
+                    '1 su bardağı yulaf ezmesi',
+                    '1 ölçek protein tozu',
+                    '1 adet muz',
+                    '1 yemek kaşığı fıstık ezmesi',
+                    '1 su bardağı badem sütü',
+                    '1 çay kaşığı tarçın',
+                    '1 yemek kaşığı bal',
+                    'İsteğe bağlı: Chia tohumu'
+                ],
+                instructions: [
+                    'Yulaf ezmesini badem sütü ile pişirin.',
+                    'Protein tozunu ekleyip karıştırın.',
+                    'Muzu dilimleyin ve üzerine ekleyin.',
+                    'Fıstık ezmesi, tarçın ve balı ekleyip karıştırın.',
+                    'İsteğe bağlı olarak chia tohumu ekleyin.',
+                    'Sıcak servis yapın.'
+                ],
+                calories: '380 kcal',
+                protein: '22g protein',
+                time: '10 dakika'
+            },
+            'avokado-tost': {
+                title: 'Avokado Tost',
+                ingredients: [
+                    '2 dilim tam buğday ekmeği',
+                    '1 adet olgun avokado',
+                    '1 adet yumurta',
+                    '1 yemek kaşığı zeytinyağı',
+                    'Kırmızı pul biber',
+                    'Tuz ve karabiber',
+                    'İsteğe bağlı: Az yağlı peynir'
+                ],
+                instructions: [
+                    'Ekmekleri tost makinesinde kızartın.',
+                    'Avokadoyu ezin ve baharatlarla karıştırın.',
+                    'Yumurtayı tavada pişirin.',
+                    'Kızarmış ekmeklerin üzerine avokado ezmesini sürün.',
+                    'Üzerine pişmiş yumurtayı koyun.',
+                    'İsteğe bağlı olarak peynir ekleyin.',
+                    'Sıcak servis yapın.'
+                ],
+                calories: '320 kcal',
+                protein: '12g protein',
+                time: '8 dakika'
+            },
+            'protein-pancake': {
+                title: 'Protein Pancake',
+                ingredients: [
+                    '1 ölçek protein tozu',
+                    '1 su bardağı yulaf ezmesi',
+                    '1 adet muz',
+                    '1 yumurta',
+                    '1 su bardağı badem sütü',
+                    '1 çay kaşığı kabartma tozu',
+                    '1 yemek kaşığı bal',
+                    'İsteğe bağlı: Çikolata parçacıkları'
+                ],
+                instructions: [
+                    'Tüm malzemeleri blenderda pürüzsüz olana kadar karıştırın.',
+                    'Teflon tavayı orta ateşte ısıtın.',
+                    'Hamurdan küçük porsiyonlar dökün.',
+                    'Her iki tarafını da altın sarısı olana kadar pişirin.',
+                    'Bal ile servis yapın.',
+                    'İsteğe bağlı olarak çikolata parçacıkları ekleyin.'
+                ],
+                calories: '350 kcal',
+                protein: '25g protein',
+                time: '15 dakika'
+            },
+            'chia-pudding': {
+                title: 'Chia Pudding',
+                ingredients: [
+                    '3 yemek kaşığı chia tohumu',
+                    '1 su bardağı badem sütü',
+                    '1 yemek kaşığı bal',
+                    '1 çay kaşığı vanilya özü',
+                    'İsteğe bağlı:',
+                    'Taze meyveler',
+                    'Fındık ezmesi',
+                    'Tarçın'
+                ],
+                instructions: [
+                    'Chia tohumlarını badem sütü ile karıştırın.',
+                    'Bal ve vanilya özünü ekleyip karıştırın.',
+                    'Buzdolabında en az 4 saat bekletin.',
+                    'Servis yapmadan önce karıştırın.',
+                    'İsteğe bağlı olarak meyve, fındık ezmesi ve tarçın ekleyin.'
+                ],
+                calories: '280 kcal',
+                protein: '12g protein',
+                time: '5 dakika + 4 saat'
+            }
+        };
+
+        // Modal açma fonksiyonu
+        function openRecipeModal(recipeId) {
+            const recipe = recipeDetails[recipeId];
+            if (!recipe) return;
+
+            document.getElementById('modalRecipeTitle').textContent = recipe.title;
+            
+            const ingredientsList = document.getElementById('modalIngredients');
+            ingredientsList.innerHTML = recipe.ingredients.map(ing => `<li>${ing}</li>`).join('');
+            
+            const instructionsList = document.getElementById('modalInstructions');
+            instructionsList.innerHTML = recipe.instructions.map(inst => `<li>${inst}</li>`).join('');
+            
+            document.getElementById('modalCalories').textContent = recipe.calories;
+            document.getElementById('modalProtein').textContent = recipe.protein;
+            document.getElementById('modalTime').textContent = recipe.time;
+            
+            document.getElementById('recipeModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Modal kapatma fonksiyonu
+        function closeModal() {
+            document.getElementById('recipeModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Modal dışına tıklandığında kapatma
+        window.onclick = function(event) {
+            const modal = document.getElementById('recipeModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Tarif kartlarındaki butonlara tıklama olayı ekleme
+        document.querySelectorAll('.recipe-button').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const recipeCard = e.target.closest('.recipe-card');
+                const recipeId = recipeCard.getAttribute('data-recipe-id');
+                openRecipeModal(recipeId);
+            });
+        });
+    </script>
+</body>
+</html> 
