@@ -1022,20 +1022,67 @@
         // Arama fonksiyonu
         document.getElementById('exercise-search').addEventListener('input', (e) => {
             const searchTerm = e.target.value.toLowerCase();
-            const cards = document.querySelectorAll('.exercise-card');
             
-            cards.forEach(card => {
-                const title = card.querySelector('.exercise-title').textContent.toLowerCase();
-                const info = card.querySelector('.exercise-info').textContent.toLowerCase();
-                const tags = Array.from(card.querySelectorAll('.exercise-tag'))
-                    .map(tag => tag.textContent.toLowerCase());
+            // Tüm egzersiz listelerini kontrol et
+            document.querySelectorAll('.exercise-list').forEach(list => {
+                const cards = list.querySelectorAll('.exercise-card');
+                let hasVisibleCards = false;
                 
-                const matches = title.includes(searchTerm) || 
-                              info.includes(searchTerm) || 
-                              tags.some(tag => tag.includes(searchTerm));
-                
-                card.style.display = matches ? 'block' : 'none';
+                cards.forEach(card => {
+                    const title = card.querySelector('.exercise-title').textContent.toLowerCase();
+                    const info = card.querySelector('.exercise-info').textContent.toLowerCase();
+                    const tags = Array.from(card.querySelectorAll('.exercise-tag'))
+                        .map(tag => tag.textContent.toLowerCase());
+                    
+                    const matches = title.includes(searchTerm) || 
+                                  info.includes(searchTerm) || 
+                                  tags.some(tag => tag.includes(searchTerm));
+                    
+                    card.style.display = matches ? 'block' : 'none';
+                    if (matches) hasVisibleCards = true;
+                });
+
+                // Eğer arama yapılıyorsa ve bu listede eşleşen kart varsa listeyi göster
+                if (searchTerm && hasVisibleCards) {
+                    list.style.display = 'grid';
+                } else if (searchTerm) {
+                    list.style.display = 'none';
+                } else {
+                    // Arama yapılmıyorsa tüm listeleri gizle
+                    list.style.display = 'none';
+                }
             });
+
+            // Eğer arama yapılmıyorsa kategori kartlarını göster
+            const categoriesSection = document.querySelector('.exercise-categories');
+            categoriesSection.style.display = searchTerm ? 'none' : 'grid';
+        });
+
+        // Arama çubuğunu temizleme fonksiyonu
+        function clearSearch() {
+            const searchInput = document.getElementById('exercise-search');
+            searchInput.value = '';
+            
+            // Tüm egzersiz listelerini gizle
+            document.querySelectorAll('.exercise-list').forEach(list => {
+                list.style.display = 'none';
+            });
+            
+            // Kategori kartlarını göster
+            document.querySelector('.exercise-categories').style.display = 'grid';
+        }
+
+        // Arama çubuğuna temizleme butonu ekle
+        const searchBar = document.querySelector('.search-bar');
+        const clearButton = document.createElement('button');
+        clearButton.innerHTML = '<i class="fas fa-times"></i>';
+        clearButton.style.display = 'none';
+        clearButton.onclick = clearSearch;
+        searchBar.appendChild(clearButton);
+
+        // Arama çubuğu değiştiğinde temizleme butonunu göster/gizle
+        document.getElementById('exercise-search').addEventListener('input', (e) => {
+            clearButton.style.display = e.target.value ? 'block' : 'none';
         });
 
         // Mobil menü toggle
