@@ -514,7 +514,7 @@
                     <i class="fas fa-chevron-right"></i>
                 </button>
             </div>
-            <button class="add-food-btn" onclick="openSearchModal()">
+            <button class="add-food-btn" onclick="openSearchModal('kahvalti')">
                 <i class="fas fa-plus"></i>
                 Besin Ekle
             </button>
@@ -714,10 +714,27 @@
         }
 
         // Besin arama modalını aç
-        function openSearchModal(mealType = '') {
+        let selectedMealType = ''; // Seçilen öğün tipini saklamak için global değişken
+
+        function openSearchModal(mealType) {
+            selectedMealType = mealType; // Seçilen öğün tipini kaydet
             document.getElementById('searchModal').style.display = 'block';
+            // Modal başlığını güncelle
+            const modalTitle = document.querySelector('.search-header h3');
+            modalTitle.textContent = `${getMealTypeName(mealType)} için Besin Ara`;
             // Modal açıldığında mevcut besinleri yükle
             loadFoodDatabase();
+        }
+
+        // Öğün tipine göre Türkçe isim döndür
+        function getMealTypeName(mealType) {
+            const mealTypes = {
+                'kahvalti': 'Kahvaltı',
+                'ogle': 'Öğle Yemeği',
+                'aksam': 'Akşam Yemeği',
+                'atistirma': 'Atıştırmalıklar'
+            };
+            return mealTypes[mealType] || 'Besin';
         }
 
         // Besin arama modalını kapat
@@ -997,7 +1014,7 @@
             const foodDatabase = JSON.parse(localStorage.getItem('foodDatabase')) || [];
             const food = foodDatabase.find(f => f.id === parseInt(foodId));
             
-            if (food) {
+            if (food && selectedMealType) {
                 const foodItem = `
                     <div class="food-item">
                         <div class="food-info">
@@ -1018,9 +1035,11 @@
                     </div>
                 `;
                 
-                // Seçili öğüne besini ekle
-                const mealItems = document.querySelector('.food-items');
-                mealItems.insertAdjacentHTML('beforeend', foodItem);
+                // Seçili öğün tipine göre doğru container'a besini ekle
+                const mealContainer = document.getElementById(`${selectedMealType}-items`);
+                if (mealContainer) {
+                    mealContainer.insertAdjacentHTML('beforeend', foodItem);
+                }
                 
                 // Modalı kapat
                 closeSearchModal();
@@ -1048,24 +1067,47 @@
 
         // Günlük özeti güncelle
         function updateDailySummary() {
-            // Tüm besinlerin toplam kalori ve makrolarını hesapla
             let totalCalories = 0;
             let totalProtein = 0;
             let totalCarbs = 0;
             let totalFat = 0;
 
-            document.querySelectorAll('.food-item').forEach(item => {
-                const quantity = parseInt(item.querySelector('.food-quantity span').textContent);
-                const calories = parseInt(item.querySelector('.food-details p').textContent.match(/\d+/)[0]);
-                // Makro değerlerini de benzer şekilde hesapla
-
-                totalCalories += calories * quantity;
-                // Diğer makroları da ekle
+            // Tüm öğün tiplerini kontrol et
+            const mealTypes = ['kahvalti', 'ogle', 'aksam', 'atistirma'];
+            
+            mealTypes.forEach(mealType => {
+                const container = document.getElementById(`${mealType}-items`);
+                if (container) {
+                    container.querySelectorAll('.food-item').forEach(item => {
+                        const quantity = parseInt(item.querySelector('.food-quantity span').textContent);
+                        const calories = parseInt(item.querySelector('.food-details p').textContent.match(/\d+/)[0]);
+                        
+                        // Besin veritabanından makro değerlerini bul
+                        const foodName = item.querySelector('.food-details h4').textContent;
+                        const foodDatabase = JSON.parse(localStorage.getItem('foodDatabase')) || [];
+                        const food = foodDatabase.find(f => f.name === foodName);
+                        
+                        if (food) {
+                            totalCalories += food.calories * quantity;
+                            totalProtein += food.protein * quantity;
+                            totalCarbs += food.carbs * quantity;
+                            totalFat += food.fat * quantity;
+                        }
+                    });
+                }
             });
 
             // Özeti güncelle
             document.querySelector('.calories-consumed').textContent = totalCalories;
-            // Diğer makro değerlerini de güncelle
+            document.querySelector('.macro-item:nth-child(1) .macro-value').textContent = `${Math.round(totalProtein)}g`;
+            document.querySelector('.macro-item:nth-child(2) .macro-value').textContent = `${Math.round(totalCarbs)}g`;
+            document.querySelector('.macro-item:nth-child(3) .macro-value').textContent = `${Math.round(totalFat)}g`;
+
+            // Kalori dairesini güncelle
+            const calorieGoal = 2000; // Hedef kalori
+            const percentage = Math.min((totalCalories / calorieGoal) * 100, 100);
+            document.querySelector('.calorie-progress').style.background = 
+                `conic-gradient(var(--secondary-color) 0% ${percentage}%, var(--light-gray) ${percentage}% 100%)`;
         }
 
         // Sayfa yüklendiğinde besin veritabanını yükle
