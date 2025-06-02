@@ -323,13 +323,83 @@
             position: relative;
         }
 
-        .chart-placeholder {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: var(--light-text);
-            text-align: center;
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .history-table th,
+        .history-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .history-table th {
+            background: var(--light-gray);
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .history-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .history-table tr:hover {
+            background: var(--light-gray);
+        }
+
+        .history-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .history-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background: var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .history-btn:hover {
+            background: var(--light-gray);
+        }
+
+        .history-btn.active {
+            background: var(--secondary-color);
+            color: var(--white);
+            border-color: var(--secondary-color);
+        }
+
+        .save-notification {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--success-color);
+            color: var(--white);
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            box-shadow: var(--box-shadow);
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
 
         .search-modal {
@@ -641,16 +711,33 @@
                     <div class="chart-header">
                         <h3>Beslenme Geçmişi</h3>
                         <div class="chart-period">
-                            <button class="period-btn active">Günlük</button>
-                            <button class="period-btn">Haftalık</button>
-                            <button class="period-btn">Aylık</button>
+                            <button class="period-btn active" onclick="changeHistoryPeriod('daily')">Günlük</button>
+                            <button class="period-btn" onclick="changeHistoryPeriod('weekly')">Haftalık</button>
+                            <button class="period-btn" onclick="changeHistoryPeriod('monthly')">Aylık</button>
                         </div>
                     </div>
                     <div class="chart-container">
-                        <div class="chart-placeholder">
-                            <i class="fas fa-chart-line"></i>
-                            <p>Beslenme geçmişi grafiği burada görüntülenecek</p>
-                        </div>
+                        <canvas id="nutritionChart"></canvas>
+                    </div>
+                    <div class="history-actions">
+                        <button class="history-btn active" onclick="showHistoryView('chart')">Grafik</button>
+                        <button class="history-btn" onclick="showHistoryView('table')">Tablo</button>
+                    </div>
+                    <div class="history-table-container" style="display: none;">
+                        <table class="history-table">
+                            <thead>
+                                <tr>
+                                    <th>Tarih</th>
+                                    <th>Toplam Kalori</th>
+                                    <th>Protein</th>
+                                    <th>Karbonhidrat</th>
+                                    <th>Yağ</th>
+                                    <th>Detay</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyTableBody">
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -672,6 +759,13 @@
             </div>
         </div>
     </div>
+
+    <div class="save-notification" id="saveNotification">
+        Günlük beslenme kaydedildi!
+    </div>
+
+    <!-- Chart.js kütüphanesini ekle -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
         // Kullanıcı durumunu kontrol et
@@ -1110,10 +1204,251 @@
                 `conic-gradient(var(--secondary-color) 0% ${percentage}%, var(--light-gray) ${percentage}% 100%)`;
         }
 
-        // Sayfa yüklendiğinde besin veritabanını yükle
+        // Besin geçmişini kaydet
+        function saveDailyNutrition() {
+            const currentDate = document.getElementById('currentDate').textContent;
+            const nutritionData = {
+                date: currentDate,
+                meals: {
+                    kahvalti: getMealData('kahvalti'),
+                    ogle: getMealData('ogle'),
+                    aksam: getMealData('aksam'),
+                    atistirma: getMealData('atistirma')
+                },
+                summary: {
+                    calories: parseInt(document.querySelector('.calories-consumed').textContent),
+                    protein: parseInt(document.querySelector('.macro-item:nth-child(1) .macro-value').textContent),
+                    carbs: parseInt(document.querySelector('.macro-item:nth-child(2) .macro-value').textContent),
+                    fat: parseInt(document.querySelector('.macro-item:nth-child(3) .macro-value').textContent)
+                }
+            };
+
+            // Mevcut geçmişi al
+            let nutritionHistory = JSON.parse(localStorage.getItem('nutritionHistory')) || [];
+            
+            // Aynı tarih için kayıt varsa güncelle, yoksa yeni ekle
+            const existingIndex = nutritionHistory.findIndex(item => item.date === currentDate);
+            if (existingIndex !== -1) {
+                nutritionHistory[existingIndex] = nutritionData;
+            } else {
+                nutritionHistory.push(nutritionData);
+            }
+
+            // Geçmişi kaydet
+            localStorage.setItem('nutritionHistory', JSON.stringify(nutritionHistory));
+
+            // Bildirim göster
+            showSaveNotification();
+        }
+
+        // Öğün verilerini al
+        function getMealData(mealType) {
+            const container = document.getElementById(`${mealType}-items`);
+            const foods = [];
+            
+            if (container) {
+                container.querySelectorAll('.food-item').forEach(item => {
+                    const name = item.querySelector('.food-details h4').textContent;
+                    const quantity = parseInt(item.querySelector('.food-quantity span').textContent);
+                    const calories = parseInt(item.querySelector('.food-details p').textContent.match(/\d+/)[0]);
+                    
+                    foods.push({
+                        name,
+                        quantity,
+                        calories
+                    });
+                });
+            }
+            
+            return foods;
+        }
+
+        // Kaydetme bildirimi göster
+        function showSaveNotification() {
+            const notification = document.getElementById('saveNotification');
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        // Geçmiş görünümünü değiştir
+        function showHistoryView(view) {
+            const chartContainer = document.querySelector('.chart-container');
+            const tableContainer = document.querySelector('.history-table-container');
+            const buttons = document.querySelectorAll('.history-btn');
+            
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            if (view === 'chart') {
+                chartContainer.style.display = 'block';
+                tableContainer.style.display = 'none';
+                updateNutritionChart();
+            } else {
+                chartContainer.style.display = 'none';
+                tableContainer.style.display = 'block';
+                updateHistoryTable();
+            }
+        }
+
+        // Geçmiş periyodunu değiştir
+        function changeHistoryPeriod(period) {
+            const buttons = document.querySelectorAll('.period-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            updateNutritionChart(period);
+            updateHistoryTable(period);
+        }
+
+        // Beslenme grafiğini güncelle
+        function updateNutritionChart(period = 'daily') {
+            const nutritionHistory = JSON.parse(localStorage.getItem('nutritionHistory')) || [];
+            const ctx = document.getElementById('nutritionChart').getContext('2d');
+            
+            // Grafik verilerini hazırla
+            let labels = [];
+            let calories = [];
+            let protein = [];
+            let carbs = [];
+            let fat = [];
+
+            // Periyoda göre verileri filtrele
+            const filteredData = filterHistoryData(nutritionHistory, period);
+            
+            filteredData.forEach(item => {
+                labels.push(item.date);
+                calories.push(item.summary.calories);
+                protein.push(item.summary.protein);
+                carbs.push(item.summary.carbs);
+                fat.push(item.summary.fat);
+            });
+
+            // Mevcut grafiği temizle
+            if (window.nutritionChart) {
+                window.nutritionChart.destroy();
+            }
+
+            // Yeni grafik oluştur
+            window.nutritionChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Kalori',
+                            data: calories,
+                            borderColor: '#ff4d4d',
+                            tension: 0.1
+                        },
+                        {
+                            label: 'Protein',
+                            data: protein,
+                            borderColor: '#4CAF50',
+                            tension: 0.1
+                        },
+                        {
+                            label: 'Karbonhidrat',
+                            data: carbs,
+                            borderColor: '#2196F3',
+                            tension: 0.1
+                        },
+                        {
+                            label: 'Yağ',
+                            data: fat,
+                            borderColor: '#FFC107',
+                            tension: 0.1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // Geçmiş tablosunu güncelle
+        function updateHistoryTable(period = 'daily') {
+            const nutritionHistory = JSON.parse(localStorage.getItem('nutritionHistory')) || [];
+            const tableBody = document.getElementById('historyTableBody');
+            const filteredData = filterHistoryData(nutritionHistory, period);
+            
+            tableBody.innerHTML = filteredData.map(item => `
+                <tr>
+                    <td>${item.date}</td>
+                    <td>${item.summary.calories} kcal</td>
+                    <td>${item.summary.protein}g</td>
+                    <td>${item.summary.carbs}g</td>
+                    <td>${item.summary.fat}g</td>
+                    <td>
+                        <button class="history-btn" onclick="showMealDetails('${item.date}')">
+                            Detay
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Geçmiş verilerini periyoda göre filtrele
+        function filterHistoryData(history, period) {
+            const today = new Date();
+            const filteredData = history.filter(item => {
+                const itemDate = new Date(item.date);
+                switch (period) {
+                    case 'daily':
+                        return itemDate.toDateString() === today.toDateString();
+                    case 'weekly':
+                        const weekAgo = new Date(today.setDate(today.getDate() - 7));
+                        return itemDate >= weekAgo;
+                    case 'monthly':
+                        const monthAgo = new Date(today.setMonth(today.getMonth() - 1));
+                        return itemDate >= monthAgo;
+                    default:
+                        return true;
+                }
+            });
+            return filteredData;
+        }
+
+        // Öğün detaylarını göster
+        function showMealDetails(date) {
+            const nutritionHistory = JSON.parse(localStorage.getItem('nutritionHistory')) || [];
+            const dayData = nutritionHistory.find(item => item.date === date);
+            
+            if (dayData) {
+                let details = `Tarih: ${date}\n\n`;
+                Object.entries(dayData.meals).forEach(([mealType, foods]) => {
+                    if (foods.length > 0) {
+                        details += `${getMealTypeName(mealType)}:\n`;
+                        foods.forEach(food => {
+                            details += `- ${food.name} (${food.quantity} adet, ${food.calories} kcal)\n`;
+                        });
+                        details += '\n';
+                    }
+                });
+                alert(details);
+            }
+        }
+
+        // Sayfa yüklendiğinde
         document.addEventListener('DOMContentLoaded', () => {
             loadFoodDatabase();
             updateDailySummary();
+            updateNutritionChart();
+            
+            // Her gün sonunda otomatik kaydet
+            const saveButton = document.createElement('button');
+            saveButton.className = 'add-food-btn';
+            saveButton.innerHTML = '<i class="fas fa-save"></i> Günü Kaydet';
+            saveButton.onclick = saveDailyNutrition;
+            document.querySelector('.diary-header').appendChild(saveButton);
         });
     </script>
 </body>
