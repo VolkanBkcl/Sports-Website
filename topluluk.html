@@ -21,7 +21,7 @@
         }
 
         .community-container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 6rem auto 2rem;
             padding: 0 2rem;
         }
@@ -30,13 +30,13 @@
             background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1571902943202-507ec2618e8f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
             background-size: cover;
             background-position: center;
-            height: 50vh;
+            height: 40vh;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             color: var(--white);
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
             border-radius: 15px;
             position: relative;
         }
@@ -65,6 +65,201 @@
             border-radius: 15px;
             box-shadow: var(--box-shadow);
             padding: 2rem;
+            display: grid;
+            grid-template-columns: 300px 1fr; /* Sol taraf 300px, sağ taraf kalan alan */
+            gap: 2rem;
+        }
+
+        .online-users {
+            background: var(--light-gray);
+            border-radius: 10px;
+            padding: 1.5rem;
+            height: 75vh;
+            max-height: 800px;
+            overflow-y: auto;
+        }
+
+        .online-users h3 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--secondary-color);
+            font-size: 1.2rem;
+        }
+
+        .user-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .user-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem;
+            background: var(--white);
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .user-item:hover {
+            transform: translateX(5px);
+            background: var(--secondary-color);
+            color: var(--white);
+        }
+
+        .user-status {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #4CAF50; /* Online durumu için yeşil */
+        }
+
+        .user-status.offline {
+            background: #9e9e9e; /* Offline durumu için gri */
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-info h4 {
+            margin: 0;
+            font-size: 1rem;
+            color: inherit;
+        }
+
+        .user-info span {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .chat-main {
+            display: flex;
+            flex-direction: column;
+            height: 75vh;
+            width: 100%;
+            max-height: 800px;
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .chat-header {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--secondary-color);
+            color: var(--white);
+            border-radius: 10px 10px 0 0;
+        }
+
+        .chat-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            background: var(--white);
+        }
+
+        .message {
+            max-width: 85%;
+            padding: 1.2rem;
+            border-radius: 12px;
+            position: relative;
+            background: var(--light-gray);
+            margin-bottom: 0.8rem;
+        }
+
+        .message .message-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--light-text);
+        }
+
+        .message .message-sender {
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        .message .message-time {
+            font-size: 0.8rem;
+        }
+
+        .message .message-content {
+            color: var(--text-color);
+            line-height: 1.4;
+        }
+
+        .chat-input {
+            padding: 1.2rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 1rem;
+            background: var(--white);
+            border-radius: 0 0 10px 10px;
+        }
+
+        .chat-input textarea {
+            flex: 1;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 25px;
+            resize: none;
+            height: 50px;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .chat-input textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+        }
+
+        .send-btn {
+            background: var(--secondary-color);
+            color: var(--white);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .send-btn:hover {
+            background: var(--accent-color);
+            transform: scale(1.1);
+        }
+
+        .no-chat-selected {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--light-text);
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .no-chat-selected i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--border-color);
         }
 
         .content-header {
@@ -333,9 +528,13 @@
                 margin-top: 5rem;
             }
 
+            .chat-main {
+                height: calc(100vh - 200px);
+                max-height: none;
+            }
+
             .hero-section {
-                height: 40vh;
-                margin-bottom: 2rem;
+                height: 30vh;
             }
 
             .hero-section h1 {
@@ -363,6 +562,14 @@
             .modal-content {
                 width: 95%;
                 margin: 1rem;
+            }
+
+            .community-content {
+                grid-template-columns: 1fr;
+            }
+
+            .online-users {
+                display: none; /* Mobilde gizle */
             }
         }
 
@@ -438,63 +645,36 @@
         <section class="hero-section">
             <div class="hero-content">
                 <h1>Fitness Topluluğu</h1>
-                <p>Deneyimlerinizi paylaşın, motivasyon bulun</p>
+                <p>Diğer üyelerle sohbet edin, deneyimlerinizi paylaşın</p>
             </div>
         </section>
 
         <section class="community-content">
-            <div class="content-header">
-                <div class="tab-buttons">
-                    <button class="tab-btn active" data-tab="posts">Gönderiler</button>
-                    <button class="tab-btn" data-tab="challenges">Meydan Okumalar</button>
-                    <button class="tab-btn" data-tab="events">Etkinlikler</button>
+            <div class="online-users">
+                <h3>Çevrimiçi Kullanıcılar</h3>
+                <div class="user-list" id="userList">
+                    <!-- Kullanıcı listesi JavaScript ile doldurulacak -->
                 </div>
-                <button class="new-post-btn" onclick="showNewPostModal()">
-                    <i class="fas fa-plus"></i> Yeni Gönderi
-                </button>
             </div>
 
-            <div class="posts-container" id="posts">
-                <div class="post-card">
-                    <div class="post-header">
-                        <img src="https://source.unsplash.com/random/50x50/?portrait" alt="Kullanıcı">
-                        <div class="post-info">
-                            <h3>Ahmet Yılmaz</h3>
-                            <span>2 saat önce</span>
-                        </div>
-                    </div>
-                    <div class="post-content">
-                        <p>Bugün bacak antrenmanı yaptım. İşte programım:</p>
-                        <ul>
-                            <li>Squat: 4x12</li>
-                            <li>Leg Press: 3x15</li>
-                            <li>Lunges: 3x12</li>
-                        </ul>
-                    </div>
-                    <div class="post-actions">
-                        <button><i class="far fa-heart"></i> 24</button>
-                        <button><i class="far fa-comment"></i> 8</button>
-                        <button><i class="far fa-share-square"></i></button>
-                    </div>
+            <div class="chat-main">
+                <div class="chat-header">
+                    <h3>Genel Sohbet Odası</h3>
                 </div>
 
-                <div class="post-card">
-                    <div class="post-header">
-                        <img src="https://source.unsplash.com/random/50x50/?woman" alt="Kullanıcı">
-                        <div class="post-info">
-                            <h3>Ayşe Demir</h3>
-                            <span>5 saat önce</span>
-                        </div>
-                    </div>
-                    <div class="post-content">
-                        <p>Yeni başlayanlar için beslenme önerileri 🥗</p>
-                        <img src="https://source.unsplash.com/random/400x300/?healthy-meal" alt="Sağlıklı Yemek">
-                    </div>
-                    <div class="post-actions">
-                        <button><i class="far fa-heart"></i> 42</button>
-                        <button><i class="far fa-comment"></i> 15</button>
-                        <button><i class="far fa-share-square"></i></button>
-                    </div>
+                <div class="chat-messages" id="chatMessages">
+                    <!-- Mesajlar JavaScript ile doldurulacak -->
+                </div>
+
+                <div class="chat-input">
+                    <textarea 
+                        id="messageInput" 
+                        placeholder="Mesajınızı yazın..." 
+                        onkeypress="handleMessageInput(event)"
+                    ></textarea>
+                    <button class="send-btn" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
                 </div>
             </div>
         </section>
@@ -530,14 +710,106 @@
                 document.getElementById('authButtons').style.display = 'none';
                 document.getElementById('userMenu').style.display = 'block';
                 document.getElementById('userName').textContent = user.username;
+                loadMessages(); // Mesajları yükle
             } else {
                 document.getElementById('authButtons').style.display = 'flex';
                 document.getElementById('userMenu').style.display = 'none';
+                window.location.href = 'giris.html'; // Giriş yapmamış kullanıcıları yönlendir
             }
         }
 
-        // Sayfa yüklendiğinde kullanıcı durumunu kontrol et
-        checkAuthStatus();
+        // Mesajları yükle
+        function loadMessages() {
+            const chatMessages = document.getElementById('chatMessages');
+            const messages = JSON.parse(localStorage.getItem('generalMessages')) || [];
+            
+            // Mesajları göster
+            chatMessages.innerHTML = messages.map(msg => `
+                <div class="message">
+                    <div class="message-header">
+                        <span class="message-sender">${msg.sender}</span>
+                        <span class="message-time">${new Date(msg.timestamp).toLocaleTimeString()}</span>
+                    </div>
+                    <div class="message-content">${msg.content}</div>
+                </div>
+            `).join('');
+
+            // En son mesaja scroll
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Mesaj gönder
+        function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            const content = messageInput.value.trim();
+            const currentUser = JSON.parse(localStorage.getItem('user'));
+
+            if (content) {
+                const message = {
+                    sender: currentUser.username,
+                    content: content,
+                    timestamp: new Date().toISOString()
+                };
+
+                // Mesajı kaydet
+                const messages = JSON.parse(localStorage.getItem('generalMessages')) || [];
+                messages.push(message);
+                localStorage.setItem('generalMessages', JSON.stringify(messages));
+
+                // Mesajları yeniden yükle
+                loadMessages();
+
+                // Input'u temizle
+                messageInput.value = '';
+            }
+        }
+
+        // Enter tuşu ile mesaj gönder
+        function handleMessageInput(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        // Online kullanıcıları yükle
+        function loadOnlineUsers() {
+            const userList = document.getElementById('userList');
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const currentUser = JSON.parse(localStorage.getItem('user'));
+
+            // Mevcut kullanıcıyı listeden çıkar
+            const otherUsers = users.filter(user => user.username !== currentUser.username);
+
+            // Rastgele online/offline durumu ata (gerçek uygulamada sunucudan gelecek)
+            const onlineUsers = otherUsers.map(user => ({
+                ...user,
+                isOnline: Math.random() > 0.3, // %70 ihtimalle online
+                lastSeen: user.isOnline ? 'Şu an çevrimiçi' : 'Son görülme: ' + new Date().toLocaleTimeString()
+            }));
+
+            userList.innerHTML = onlineUsers.map(user => `
+                <div class="user-item">
+                    <div class="user-status ${user.isOnline ? '' : 'offline'}"></div>
+                    <div class="user-info">
+                        <h4>${user.username}</h4>
+                        <span>${user.lastSeen}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Sayfa yüklendiğinde
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuthStatus();
+            loadOnlineUsers();
+            
+            // Her 5 saniyede bir mesajları ve online kullanıcıları güncelle
+            setInterval(() => {
+                loadMessages();
+                loadOnlineUsers();
+            }, 5000);
+        });
 
         // Çıkış işlemi
         document.getElementById('logoutButton').addEventListener('click', (e) => {
