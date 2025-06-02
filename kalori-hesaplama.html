@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalori Takibi - ByteForce</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1a1a1a;
+            --secondary-color: #ff4d4d;
+            --accent-color: #ff6b6b;
+            --text-color: #333;
+            --light-text: #666;
+            --white: #fff;
+            --light-gray: #f5f5f5;
+            --border-color: #ddd;
+            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --success-color: #4CAF50;
+            --warning-color: #FFC107;
+            --danger-color: #f44336;
+        }
+
+        .diary-container {
+            max-width: 1200px;
+            margin: 6rem auto 2rem;
+            padding: 0 2rem;
+        }
+
+        .diary-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .date-navigation {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .date-btn {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .date-btn:hover {
+            background: var(--light-gray);
+        }
+
+        .current-date {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .diary-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .meals-section {
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+        }
+
+        .meal-card {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1.5rem;
+        }
+
+        .meal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .meal-title {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .meal-title i {
+            color: var(--secondary-color);
+        }
+
+        .add-food-btn {
+            background: var(--secondary-color);
+            color: var(--white);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .add-food-btn:hover {
+            background: var(--accent-color);
+        }
+
+        .food-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: var(--light-gray);
+            border-radius: 8px;
+            margin-bottom: 0.8rem;
+        }
+
+        .food-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .food-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+            object-fit: cover;
+        }
+
+        .food-details h4 {
+            color: var(--text-color);
+            margin-bottom: 0.3rem;
+        }
+
+        .food-details p {
+            color: var(--light-text);
+            font-size: 0.9rem;
+        }
+
+        .food-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .food-quantity {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .quantity-btn {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            width: 25px;
+            height: 25px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .quantity-btn:hover {
+            background: var(--light-gray);
+        }
+
+        .delete-btn {
+            color: var(--danger-color);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .delete-btn:hover {
+            color: var(--accent-color);
+        }
+
+        .summary-section {
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+        }
+
+        .summary-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-header h2 {
+            color: var(--text-color);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-header p {
+            color: var(--light-text);
+            font-size: 0.9rem;
+        }
+
+        .calorie-circle {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 2rem;
+            position: relative;
+        }
+
+        .calorie-progress {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(var(--secondary-color) 0% 70%, var(--light-gray) 70% 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .calorie-center {
+            width: 80%;
+            height: 80%;
+            background: var(--white);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .calories-consumed {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .calories-goal {
+            font-size: 0.9rem;
+            color: var(--light-text);
+        }
+
+        .macros-summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .macro-item {
+            text-align: center;
+            padding: 1rem;
+            background: var(--light-gray);
+            border-radius: 8px;
+        }
+
+        .macro-item h4 {
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .macro-value {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--secondary-color);
+        }
+
+        .macro-goal {
+            font-size: 0.8rem;
+            color: var(--light-text);
+        }
+
+        .nutrition-chart {
+            margin-top: 2rem;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .chart-header h3 {
+            color: var(--text-color);
+            font-size: 1.1rem;
+        }
+
+        .chart-period {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .period-btn {
+            padding: 0.3rem 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .period-btn.active {
+            background: var(--secondary-color);
+            color: var(--white);
+            border-color: var(--secondary-color);
+        }
+
+        .chart-container {
+            height: 200px;
+            background: var(--light-gray);
+            border-radius: 8px;
+            padding: 1rem;
+            position: relative;
+        }
+
+        .chart-placeholder {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--light-text);
+            text-align: center;
+        }
+
+        .search-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .search-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+        }
+
+        .search-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-header h3 {
+            color: var(--text-color);
+            font-size: 1.3rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--light-text);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--secondary-color);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+        }
+
+        .search-results {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .search-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .search-item:hover {
+            background: var(--light-gray);
+        }
+
+        .search-item img {
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            object-fit: cover;
+        }
+
+        .search-item-info h4 {
+            color: var(--text-color);
+            margin-bottom: 0.3rem;
+        }
+
+        .search-item-info p {
+            color: var(--light-text);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .diary-container {
+                padding: 1rem;
+                margin-top: 5rem;
+            }
+
+            .diary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .diary-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .macros-summary {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <i class="fas fa-dumbbell"></i>
+                <span>ByteForce</span>
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="/" class="nav-link">Ana Sayfa</a></li>
+                <li><a href="/programlar" class="nav-link">Programlar</a></li>
+                <li><a href="/egzersizler" class="nav-link">Egzersizler</a></li>
+                <li><a href="/beslenme" class="nav-link">Beslenme</a></li>
+                <li><a href="/topluluk" class="nav-link">Topluluk</a></li>
+                <li><a href="/iletisim" class="nav-link">İletişim</a></li>
+            </ul>
+
+            <div class="auth-buttons" id="authButtons">
+                <a href="giris.html" class="btn btn-primary" id="loginButton">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Giriş Yap
+                </a>
+                <a href="kayitol.html" class="btn btn-outline" id="registerButton">
+                    <i class="fas fa-user-plus"></i>
+                    Kayıt Ol
+                </a>
+            </div>
+
+            <div class="user-menu" id="userMenu" style="display: none;">
+                <button class="user-button">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="userName">Kullanıcı</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="/profile" class="dropdown-item">
+                        <i class="fas fa-user"></i>
+                        Profilim
+                    </a>
+                    <a href="#" class="dropdown-item" id="logoutButton">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Çıkış Yap
+                    </a>
+                </div>
+            </div>
+
+            <button class="mobile-menu-button" id="mobileMenuButton">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="diary-container">
+        <div class="diary-header">
+            <div class="date-navigation">
+                <button class="date-btn" onclick="changeDate(-1)">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <span class="current-date" id="currentDate">23 Mart 2024</span>
+                <button class="date-btn" onclick="changeDate(1)">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            <button class="add-food-btn" onclick="openSearchModal()">
+                <i class="fas fa-plus"></i>
+                Besin Ekle
+            </button>
+        </div>
+
+        <div class="diary-grid">
+            <div class="meals-section">
+                <div class="meal-card">
+                    <div class="meal-header">
+                        <h3 class="meal-title">
+                            <i class="fas fa-coffee"></i>
+                            Kahvaltı
+                        </h3>
+                        <button class="add-food-btn" onclick="openSearchModal('kahvalti')">
+                            <i class="fas fa-plus"></i>
+                            Besin Ekle
+                        </button>
+                    </div>
+                    <div class="food-items" id="kahvalti-items">
+                        <!-- Örnek besin öğesi -->
+                        <div class="food-item">
+                            <div class="food-info">
+                                <img src="https://images.unsplash.com/photo-1525351484163-7529414344d8?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="Yulaf Ezmesi" class="food-image">
+                                <div class="food-details">
+                                    <h4>Yulaf Ezmesi</h4>
+                                    <p>100g - 389 kcal</p>
+                                </div>
+                            </div>
+                            <div class="food-actions">
+                                <div class="food-quantity">
+                                    <button class="quantity-btn" onclick="updateQuantity(this, -1)">-</button>
+                                    <span>1</span>
+                                    <button class="quantity-btn" onclick="updateQuantity(this, 1)">+</button>
+                                </div>
+                                <i class="fas fa-trash delete-btn" onclick="deleteFood(this)"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="meal-card">
+                    <div class="meal-header">
+                        <h3 class="meal-title">
+                            <i class="fas fa-utensils"></i>
+                            Öğle Yemeği
+                        </h3>
+                        <button class="add-food-btn" onclick="openSearchModal('ogle')">
+                            <i class="fas fa-plus"></i>
+                            Besin Ekle
+                        </button>
+                    </div>
+                    <div class="food-items" id="ogle-items">
+                        <!-- Besin öğeleri buraya eklenecek -->
+                    </div>
+                </div>
+
+                <div class="meal-card">
+                    <div class="meal-header">
+                        <h3 class="meal-title">
+                            <i class="fas fa-moon"></i>
+                            Akşam Yemeği
+                        </h3>
+                        <button class="add-food-btn" onclick="openSearchModal('aksam')">
+                            <i class="fas fa-plus"></i>
+                            Besin Ekle
+                        </button>
+                    </div>
+                    <div class="food-items" id="aksam-items">
+                        <!-- Besin öğeleri buraya eklenecek -->
+                    </div>
+                </div>
+
+                <div class="meal-card">
+                    <div class="meal-header">
+                        <h3 class="meal-title">
+                            <i class="fas fa-cookie"></i>
+                            Atıştırmalıklar
+                        </h3>
+                        <button class="add-food-btn" onclick="openSearchModal('atistirma')">
+                            <i class="fas fa-plus"></i>
+                            Besin Ekle
+                        </button>
+                    </div>
+                    <div class="food-items" id="atistirma-items">
+                        <!-- Besin öğeleri buraya eklenecek -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-section">
+                <div class="summary-header">
+                    <h2>Günlük Özet</h2>
+                    <p>Hedef: 2000 kcal</p>
+                </div>
+
+                <div class="calorie-circle">
+                    <div class="calorie-progress">
+                        <div class="calorie-center">
+                            <span class="calories-consumed">1400</span>
+                            <span class="calories-goal">/ 2000 kcal</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="macros-summary">
+                    <div class="macro-item">
+                        <h4>Protein</h4>
+                        <div class="macro-value">70g</div>
+                        <div class="macro-goal">Hedef: 120g</div>
+                    </div>
+                    <div class="macro-item">
+                        <h4>Karbonhidrat</h4>
+                        <div class="macro-value">180g</div>
+                        <div class="macro-goal">Hedef: 250g</div>
+                    </div>
+                    <div class="macro-item">
+                        <h4>Yağ</h4>
+                        <div class="macro-value">45g</div>
+                        <div class="macro-goal">Hedef: 65g</div>
+                    </div>
+                </div>
+
+                <div class="nutrition-chart">
+                    <div class="chart-header">
+                        <h3>Beslenme Geçmişi</h3>
+                        <div class="chart-period">
+                            <button class="period-btn active">Günlük</button>
+                            <button class="period-btn">Haftalık</button>
+                            <button class="period-btn">Aylık</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-placeholder">
+                            <i class="fas fa-chart-line"></i>
+                            <p>Beslenme geçmişi grafiği burada görüntülenecek</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Besin Arama Modal -->
+    <div class="search-modal" id="searchModal">
+        <div class="search-content">
+            <div class="search-header">
+                <h3>Besin Ara</h3>
+                <button class="close-modal" onclick="closeSearchModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <input type="text" class="search-input" placeholder="Besin adı yazın..." onkeyup="searchFood(this.value)">
+            <div class="search-results" id="searchResults">
+                <!-- Arama sonuçları buraya eklenecek -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Kullanıcı durumunu kontrol et
+        function checkAuthStatus() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user'));
+            
+            if (token && user) {
+                document.getElementById('authButtons').style.display = 'none';
+                document.getElementById('userMenu').style.display = 'block';
+                document.getElementById('userName').textContent = user.username;
+            } else {
+                document.getElementById('authButtons').style.display = 'flex';
+                document.getElementById('userMenu').style.display = 'none';
+            }
+        }
+
+        // Sayfa yüklendiğinde kullanıcı durumunu kontrol et
+        checkAuthStatus();
+
+        // Çıkış işlemi
+        document.getElementById('logoutButton').addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            checkAuthStatus();
+            window.location.reload();
+        });
+
+        // Tarih değiştirme fonksiyonu
+        function changeDate(days) {
+            const currentDate = new Date(document.getElementById('currentDate').textContent);
+            currentDate.setDate(currentDate.getDate() + days);
+            document.getElementById('currentDate').textContent = currentDate.toLocaleDateString('tr-TR', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+            // Burada yeni tarih için besin verilerini yükle
+        }
+
+        // Besin arama modalını aç
+        function openSearchModal(mealType = '') {
+            document.getElementById('searchModal').style.display = 'block';
+            // Modal açıldığında mevcut besinleri yükle
+            loadFoodDatabase();
+        }
+
+        // Besin arama modalını kapat
+        function closeSearchModal() {
+            document.getElementById('searchModal').style.display = 'none';
+        }
+
+        // Besin veritabanını yükle
+        function loadFoodDatabase() {
+            // Popüler restoran ve fast food yemekleri veritabanı
+            const foodDatabase = [
+                // McDonald's
+                {
+                    id: 1,
+                    name: 'Big Mac',
+                    calories: 550,
+                    protein: 25,
+                    carbs: 45,
+                    fat: 30,
+                    image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'
+                },
+                {
+                    id: 2,
+                    name: 'McChicken',
+                    calories: 400,
+                    protein: 15,
+                    carbs: 40,
+                    fat: 22,
+                    image: 'https://images.unsplash.com/photo-1606755962773-d324e0a13086?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'
+                },
+                {
+                    id: 3,
+                    name: 'McRoyal',
+                    calories: 520,
+                    protein: 28,
+                    carbs: 42,
+                    fat: 28,
+                    image: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'
+                },
+                // Burger King
+                {
+                    id: 4,
+                    name: 'Whopper',
+                    calories: 660,
+                    protein: 28,
+                    carbs: 49,
+                    fat: 40,
+                    image: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'
+                },
+                {
+                    id: 5,
+                    name: 'Chicken Royale',
+                    calories: 470,
+                    protein: 20,
+                    carbs: 45,
+                    fat: 25,
+                    image: 'https://images.unsplash.com/photo-1606755962773-d324e0a13086?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'
+                },
+                // Popeyes
+                {
+                    id: 6,
+                    name: 'Popeyes Chicken Burger',
+                    calories: 450,
+                    protein: 22,
+                    carbs: 38,
+                    fat: 24,
+                    image: 'https://images.unsplash.com/photo-1606755962773-d324e0a13086?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'
+                },
+                {
+                    id: 7,
+                    name: 'Popeyes Chicken Tenders (6 adet)',
+                    calories: 380,
+                    protein: 35,
+                    carbs: 25,
+                    fat: 18,
+                    image: 'https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'
+                },
+                // KFC
+                {
+                    id: 8,
+                    name: 'KFC Zinger Burger',
+                    calories: 480,
+                    protein: 24,
+                    carbs: 42,
+                    fat: 26,
+                    image: 'https://images.unsplash.com/photo-1606755962773-d324e0a13086?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'
+                },
+                {
+                    id: 9,
+                    name: 'KFC Hot Wings (6 adet)',
+                    calories: 420,
+                    protein: 32,
+                    carbs: 18,
+                    fat: 24,
+                    image: 'https://images.unsplash.com/photo-1567620832903-9fc6debc209f?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'
+                },
+                // Subway
+                {
+                    id: 10,
+                    name: 'Subway Chicken Teriyaki (30cm)',
+                    calories: 580,
+                    protein: 35,
+                    carbs: 85,
+                    fat: 12,
+                    image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'
+                },
+                {
+                    id: 11,
+                    name: 'Subway Italian BMT (30cm)',
+                    calories: 620,
+                    protein: 38,
+                    carbs: 82,
+                    fat: 22,
+                    image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'
+                },
+                // Pizza Hut
+                {
+                    id: 12,
+                    name: 'Pizza Hut Margarita (Orta Boy)',
+                    calories: 266,
+                    protein: 11,
+                    carbs: 33,
+                    fat: 10,
+                    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'
+                },
+                {
+                    id: 13,
+                    name: 'Pizza Hut Pepperoni (Orta Boy)',
+                    calories: 300,
+                    protein: 14,
+                    carbs: 33,
+                    fat: 15,
+                    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'
+                },
+                // Domino's
+                {
+                    id: 14,
+                    name: 'Domino\'s Karışık Pizza (Orta Boy)',
+                    calories: 280,
+                    protein: 12,
+                    carbs: 35,
+                    fat: 12,
+                    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'
+                },
+                {
+                    id: 15,
+                    name: 'Domino\'s Tavuklu Pizza (Orta Boy)',
+                    calories: 290,
+                    protein: 15,
+                    carbs: 34,
+                    fat: 13,
+                    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'
+                },
+                // Gözlemeci
+                {
+                    id: 16,
+                    name: 'Kaşarlı Gözleme',
+                    calories: 350,
+                    protein: 12,
+                    carbs: 45,
+                    fat: 15,
+                    image: 'https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'
+                },
+                {
+                    id: 17,
+                    name: 'Kıymalı Gözleme',
+                    calories: 400,
+                    protein: 18,
+                    carbs: 42,
+                    fat: 20,
+                    image: 'https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'
+                },
+                // Dönerci
+                {
+                    id: 18,
+                    name: 'Tavuk Döner Porsiyon',
+                    calories: 450,
+                    protein: 35,
+                    carbs: 45,
+                    fat: 18,
+                    image: 'https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'
+                },
+                {
+                    id: 19,
+                    name: 'Et Döner Porsiyon',
+                    calories: 550,
+                    protein: 40,
+                    carbs: 45,
+                    fat: 25,
+                    image: 'https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'
+                },
+                // Köfteci
+                {
+                    id: 20,
+                    name: 'Izgara Köfte Porsiyon',
+                    calories: 480,
+                    protein: 38,
+                    carbs: 40,
+                    fat: 22,
+                    image: 'https://images.unsplash.com/photo-1544025162-d76694265947?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'
+                },
+                {
+                    id: 21,
+                    name: 'Adana Kebap Porsiyon',
+                    calories: 520,
+                    protein: 42,
+                    carbs: 35,
+                    fat: 28,
+                    image: 'https://images.unsplash.com/photo-1544025162-d76694265947?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'
+                },
+                // Lahmacun
+                {
+                    id: 22,
+                    name: 'Lahmacun (1 adet)',
+                    calories: 280,
+                    protein: 12,
+                    carbs: 38,
+                    fat: 10,
+                    image: 'https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'
+                },
+                // Pide
+                {
+                    id: 23,
+                    name: 'Kaşarlı Pide',
+                    calories: 450,
+                    protein: 18,
+                    carbs: 55,
+                    fat: 20,
+                    image: 'https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'
+                },
+                {
+                    id: 24,
+                    name: 'Kıymalı Pide',
+                    calories: 500,
+                    protein: 22,
+                    carbs: 52,
+                    fat: 25,
+                    image: 'https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'
+                },
+                // Mantı
+                {
+                    id: 25,
+                    name: 'Kayseri Mantısı (1 porsiyon)',
+                    calories: 380,
+                    protein: 15,
+                    carbs: 45,
+                    fat: 18,
+                    image: 'https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'
+                }
+            ];
+
+            // Besinleri localStorage'a kaydet
+            localStorage.setItem('foodDatabase', JSON.stringify(foodDatabase));
+        }
+
+        // Besin ara
+        function searchFood(query) {
+            const foodDatabase = JSON.parse(localStorage.getItem('foodDatabase')) || [];
+            const results = foodDatabase.filter(food => 
+                food.name.toLowerCase().includes(query.toLowerCase())
+            );
+
+            const searchResults = document.getElementById('searchResults');
+            searchResults.innerHTML = results.map(food => `
+                <div class="search-item" onclick="addFood('${food.id}')">
+                    <img src="${food.image}" alt="${food.name}">
+                    <div class="search-item-info">
+                        <h4>${food.name}</h4>
+                        <p>${food.calories} kcal - P: ${food.protein}g, K: ${food.carbs}g, Y: ${food.fat}g</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Besin ekle
+        function addFood(foodId) {
+            const foodDatabase = JSON.parse(localStorage.getItem('foodDatabase')) || [];
+            const food = foodDatabase.find(f => f.id === parseInt(foodId));
+            
+            if (food) {
+                const foodItem = `
+                    <div class="food-item">
+                        <div class="food-info">
+                            <img src="${food.image}" alt="${food.name}" class="food-image">
+                            <div class="food-details">
+                                <h4>${food.name}</h4>
+                                <p>100g - ${food.calories} kcal</p>
+                            </div>
+                        </div>
+                        <div class="food-actions">
+                            <div class="food-quantity">
+                                <button class="quantity-btn" onclick="updateQuantity(this, -1)">-</button>
+                                <span>1</span>
+                                <button class="quantity-btn" onclick="updateQuantity(this, 1)">+</button>
+                            </div>
+                            <i class="fas fa-trash delete-btn" onclick="deleteFood(this)"></i>
+                        </div>
+                    </div>
+                `;
+                
+                // Seçili öğüne besini ekle
+                const mealItems = document.querySelector('.food-items');
+                mealItems.insertAdjacentHTML('beforeend', foodItem);
+                
+                // Modalı kapat
+                closeSearchModal();
+                
+                // Günlük özeti güncelle
+                updateDailySummary();
+            }
+        }
+
+        // Besin miktarını güncelle
+        function updateQuantity(button, change) {
+            const quantitySpan = button.parentElement.querySelector('span');
+            let quantity = parseInt(quantitySpan.textContent);
+            quantity = Math.max(1, quantity + change);
+            quantitySpan.textContent = quantity;
+            updateDailySummary();
+        }
+
+        // Besini sil
+        function deleteFood(button) {
+            const foodItem = button.closest('.food-item');
+            foodItem.remove();
+            updateDailySummary();
+        }
+
+        // Günlük özeti güncelle
+        function updateDailySummary() {
+            // Tüm besinlerin toplam kalori ve makrolarını hesapla
+            let totalCalories = 0;
+            let totalProtein = 0;
+            let totalCarbs = 0;
+            let totalFat = 0;
+
+            document.querySelectorAll('.food-item').forEach(item => {
+                const quantity = parseInt(item.querySelector('.food-quantity span').textContent);
+                const calories = parseInt(item.querySelector('.food-details p').textContent.match(/\d+/)[0]);
+                // Makro değerlerini de benzer şekilde hesapla
+
+                totalCalories += calories * quantity;
+                // Diğer makroları da ekle
+            });
+
+            // Özeti güncelle
+            document.querySelector('.calories-consumed').textContent = totalCalories;
+            // Diğer makro değerlerini de güncelle
+        }
+
+        // Sayfa yüklendiğinde besin veritabanını yükle
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFoodDatabase();
+            updateDailySummary();
+        });
+    </script>
+</body>
+</html> 
