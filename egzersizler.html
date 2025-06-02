@@ -328,104 +328,647 @@
         </section>
 
         <section class="exercise-categories">
-            <div class="category-card" onclick="filterExercises('göğüs')">
+            <div class="category-card" onclick="showExercises('gogus')">
                 <i class="fas fa-dumbbell"></i>
                 <h3>Göğüs</h3>
-                <p>15 Hareket</p>
+                <p>Göğüs kaslarınızı güçlendirin ve geliştirin</p>
             </div>
-            <div class="category-card" onclick="filterExercises('sırt')">
+            <div class="category-card" onclick="showExercises('sirt')">
                 <i class="fas fa-dumbbell"></i>
                 <h3>Sırt</h3>
-                <p>18 Hareket</p>
+                <p>Sırt kaslarınızı güçlendirin ve geliştirin</p>
             </div>
-            <div class="category-card" onclick="filterExercises('bacak')">
+            <div class="category-card" onclick="showExercises('bacak')">
                 <i class="fas fa-running"></i>
                 <h3>Bacak</h3>
-                <p>12 Hareket</p>
+                <p>Bacak kaslarınızı güçlendirin ve geliştirin</p>
             </div>
-            <div class="category-card" onclick="filterExercises('omuz')">
+            <div class="category-card" onclick="showExercises('omuz')">
                 <i class="fas fa-dumbbell"></i>
                 <h3>Omuz</h3>
-                <p>10 Hareket</p>
+                <p>Omuz kaslarınızı güçlendirin ve geliştirin</p>
             </div>
-            <div class="category-card" onclick="filterExercises('kol')">
+            <div class="category-card" onclick="showExercises('kol')">
                 <i class="fas fa-dumbbell"></i>
                 <h3>Kol</h3>
-                <p>14 Hareket</p>
+                <p>Kol kaslarınızı güçlendirin ve geliştirin</p>
             </div>
-            <div class="category-card" onclick="filterExercises('karın')">
+            <div class="category-card" onclick="showExercises('karn')">
                 <i class="fas fa-dumbbell"></i>
                 <h3>Karın</h3>
-                <p>8 Hareket</p>
+                <p>Karın kaslarınızı güçlendirin ve geliştirin</p>
             </div>
         </section>
 
-        <section class="exercise-list" id="exercise-list">
-            <!-- Örnek egzersiz kartları -->
+        <section id="gogus-exercises" class="exercise-list" style="display: none;">
             <div class="exercise-card">
-                <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" alt="Bench Press" class="exercise-image">
+                <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Bench Press" class="exercise-image">
                 <div class="exercise-content">
-                    <h3 class="exercise-title">Bench Press</h3>
-                    <p class="exercise-info">Göğüs kaslarını geliştirmek için temel bir egzersiz</p>
+                    <h3 class="exercise-title">Bench Press (Bench Press)</h3>
+                    <p class="exercise-info">Temel göğüs egzersizi, göğüs kaslarını güçlendirir</p>
                     <div class="exercise-tags">
                         <span class="exercise-tag">Göğüs</span>
-                        <span class="exercise-tag">Güç</span>
-                        <span class="exercise-tag">Compound</span>
+                        <span class="exercise-tag">Omuz</span>
+                        <span class="exercise-tag">Triceps</span>
                     </div>
                     <div class="exercise-difficulty">
                         <span>Zorluk:</span>
                         <div class="difficulty-dots">
-                            <span class="dot active"></span>
-                            <span class="dot active"></span>
-                            <span class="dot active"></span>
-                            <span class="dot"></span>
-                            <span class="dot"></span>
+                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle"></i>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="exercise-card">
-                <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" alt="Pull-ups" class="exercise-image">
+                <img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Dumbbell Fly" class="exercise-image">
                 <div class="exercise-content">
-                    <h3 class="exercise-title">Pull-ups</h3>
-                    <p class="exercise-info">Sırt kaslarını güçlendiren temel bir egzersiz</p>
+                    <h3 class="exercise-title">Dumbbell Fly (Dambıl Fly)</h3>
+                    <p class="exercise-info">Göğüs kaslarını izole eden etkili bir egzersiz</p>
+                    <div class="exercise-tags">
+                        <span class="exercise-tag">Göğüs</span>
+                        <span class="exercise-tag">İzole</span>
+                    </div>
+                    <div class="exercise-difficulty">
+                        <span>Zorluk:</span>
+                        <div class="difficulty-dots">
+                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle"></i>
+                            <i class="far fa-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <img src="https://images.unsplash.com/photo-1598971639058-fab3c3109a00?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Push-up" class="exercise-image">
+                <div class="exercise-content">
+                    <h3 class="exercise-title">Push-up (Şınav)</h3>
+                    <p class="exercise-info">Vücut ağırlığı ile yapılan temel göğüs egzersizi</p>
+                    <div class="exercise-tags">
+                        <span class="exercise-tag">Göğüs</span>
+                        <span class="exercise-tag">Triceps</span>
+                        <span class="exercise-tag">Omuz</span>
+                    </div>
+                    <div class="exercise-difficulty">
+                        <span>Zorluk:</span>
+                        <div class="difficulty-dots">
+                            <i class="fas fa-circle"></i>
+                            <i class="far fa-circle"></i>
+                            <i class="far fa-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Incline Bench Press" class="exercise-image">
+                <div class="exercise-content">
+                    <h3 class="exercise-title">Incline Bench Press (Eğimli Bench Press)</h3>
+                    <p class="exercise-info">Üst göğüs kaslarını hedefleyen etkili bir egzersiz</p>
+                    <div class="exercise-tags">
+                        <span class="exercise-tag">Üst Göğüs</span>
+                        <span class="exercise-tag">Omuz</span>
+                    </div>
+                    <div class="exercise-difficulty">
+                        <span>Zorluk:</span>
+                        <div class="difficulty-dots">
+                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Cable Crossover" class="exercise-image">
+                <div class="exercise-content">
+                    <h3 class="exercise-title">Cable Crossover (Kablo Çapraz)</h3>
+                    <p class="exercise-info">Göğüs kaslarını izole eden ve şekillendiren egzersiz</p>
+                    <div class="exercise-tags">
+                        <span class="exercise-tag">Göğüs</span>
+                        <span class="exercise-tag">İzole</span>
+                    </div>
+                    <div class="exercise-difficulty">
+                        <span>Zorluk:</span>
+                        <div class="difficulty-dots">
+                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle"></i>
+                            <i class="far fa-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Dumbbell Pullover" class="exercise-image">
+                <div class="exercise-content">
+                    <h3 class="exercise-title">Dumbbell Pullover (Dambıl Pullover)</h3>
+                    <p class="exercise-info">Göğüs ve sırt kaslarını çalıştıran etkili bir egzersiz</p>
+                    <div class="exercise-tags">
+                        <span class="exercise-tag">Göğüs</span>
+                        <span class="exercise-tag">Sırt</span>
+                    </div>
+                    <div class="exercise-difficulty">
+                        <span>Zorluk:</span>
+                        <div class="difficulty-dots">
+                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle"></i>
+                            <i class="far fa-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <img src="https://images.unsplash.com/photo-1598971639058-fab3c3109a00?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Chest Dip" class="exercise-image">
+                <div class="exercise-content">
+                    <h3 class="exercise-title">Chest Dip (Göğüs Dips)</h3>
+                    <p class="exercise-info">Vücut ağırlığı ile yapılan alt göğüs egzersizi</p>
+                    <div class="exercise-tags">
+                        <span class="exercise-tag">Alt Göğüs</span>
+                        <span class="exercise-tag">Triceps</span>
+                    </div>
+                    <div class="exercise-difficulty">
+                        <span>Zorluk:</span>
+                        <div class="difficulty-dots">
+                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Decline Bench Press" class="exercise-image">
+                <div class="exercise-content">
+                    <h3 class="exercise-title">Decline Bench Press (Decline Bench Press)</h3>
+                    <p class="exercise-info">Alt göğüs kaslarını hedefleyen etkili bir egzersiz</p>
+                    <div class="exercise-tags">
+                        <span class="exercise-tag">Alt Göğüs</span>
+                        <span class="exercise-tag">Triceps</span>
+                    </div>
+                    <div class="exercise-difficulty">
+                        <span>Zorluk:</span>
+                        <div class="difficulty-dots">
+                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sirt-exercises" class="exercise-list" style="display: none;">
+            <div class="exercise-card">
+                <img src="https://images.unsplash.com/photo-1599058917765-a780eda07a3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Seated Cable Row" class="exercise-image">
+                <div class="exercise-content">
+                    <h3 class="exercise-title">Seated Cable Row (Oturarak Kablo Çekme)</h3>
+                    <p class="exercise-info">Orta sırt kaslarını hedefleyen etkili bir egzersiz</p>
+                    <div class="exercise-tags">
+                        <span class="exercise-tag">Orta Sırt</span>
+                        <span class="exercise-tag">Latissimus</span>
+                    </div>
+                    <div class="exercise-difficulty">
+                        <span>Zorluk:</span>
+                        <div class="difficulty-dots">
+                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle"></i>
+                            <i class="far fa-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <img src="https://images.unsplash.com/photo-1599058917212-d750089bc07e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Dumbbell Row" class="exercise-image">
+                <div class="exercise-content">
+                    <h3 class="exercise-title">Dumbbell Row (Dambıl Row)</h3>
+                    <p class="exercise-info">Tek kol ile yapılan etkili sırt egzersizi</p>
                     <div class="exercise-tags">
                         <span class="exercise-tag">Sırt</span>
-                        <span class="exercise-tag">Vücut Ağırlığı</span>
-                        <span class="exercise-tag">Compound</span>
+                        <span class="exercise-tag">Latissimus</span>
                     </div>
                     <div class="exercise-difficulty">
                         <span>Zorluk:</span>
                         <div class="difficulty-dots">
-                            <span class="dot active"></span>
-                            <span class="dot active"></span>
-                            <span class="dot active"></span>
-                            <span class="dot active"></span>
-                            <span class="dot"></span>
+                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle"></i>
+                            <i class="far fa-circle"></i>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="exercise-card">
-                <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" alt="Squat" class="exercise-image">
+                <img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Bent Over Reverse Fly" class="exercise-image">
                 <div class="exercise-content">
-                    <h3 class="exercise-title">Squat</h3>
-                    <p class="exercise-info">Alt vücut için en etkili egzersizlerden biri</p>
+                    <h3 class="exercise-title">Bent Over Reverse Fly (Eğilerek Ters Fly)</h3>
+                    <p class="exercise-info">Üst sırt kaslarını hedefleyen izole egzersiz</p>
                     <div class="exercise-tags">
-                        <span class="exercise-tag">Bacak</span>
-                        <span class="exercise-tag">Güç</span>
-                        <span class="exercise-tag">Compound</span>
+                        <span class="exercise-tag">Üst Sırt</span>
+                        <span class="exercise-tag">Trapez</span>
                     </div>
                     <div class="exercise-difficulty">
                         <span>Zorluk:</span>
                         <div class="difficulty-dots">
-                            <span class="dot active"></span>
-                            <span class="dot active"></span>
-                            <span class="dot active"></span>
-                            <span class="dot active"></span>
-                            <span class="dot active"></span>
+                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle"></i>
+                            <i class="far fa-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <img src="https://images.unsplash.com/photo-1598971639058-fab3c3109a00?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Back Extension" class="exercise-image">
+                <div class="exercise-content">
+                    <h3 class="exercise-title">Back Extension (Sırt Ekstansiyonu)</h3>
+                    <p class="exercise-info">Alt sırt kaslarını güçlendiren temel egzersiz</p>
+                    <div class="exercise-tags">
+                        <span class="exercise-tag">Alt Sırt</span>
+                        <span class="exercise-tag">Core</span>
+                    </div>
+                    <div class="exercise-difficulty">
+                        <span>Zorluk:</span>
+                        <div class="difficulty-dots">
+                            <i class="fas fa-circle"></i>
+                            <i class="far fa-circle"></i>
+                            <i class="far fa-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Assisted Pull Up" class="exercise-image">
+                <div class="exercise-content">
+                    <h3 class="exercise-title">Assisted Pull Up (Destekli Pull Up)</h3>
+                    <p class="exercise-info">Sırt kaslarını güçlendiren temel vücut ağırlığı egzersizi</p>
+                    <div class="exercise-tags">
+                        <span class="exercise-tag">Sırt</span>
+                        <span class="exercise-tag">Latissimus</span>
+                    </div>
+                    <div class="exercise-difficulty">
+                        <span>Zorluk:</span>
+                        <div class="difficulty-dots">
+                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle"></i>
+                            <i class="far fa-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <img src="https://images.unsplash.com/photo-1599058917765-a780eda07a3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Assisted Chin Up" class="exercise-image">
+                <div class="exercise-content">
+                    <h3 class="exercise-title">Assisted Chin Up (Destekli Chin Up)</h3>
+                    <p class="exercise-info">Sırt ve kol kaslarını çalıştıran etkili egzersiz</p>
+                    <div class="exercise-tags">
+                        <span class="exercise-tag">Sırt</span>
+                        <span class="exercise-tag">Biceps</span>
+                    </div>
+                    <div class="exercise-difficulty">
+                        <span>Zorluk:</span>
+                        <div class="difficulty-dots">
+                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle"></i>
+                            <i class="far fa-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="bacak-exercises" class="exercise-list" style="display: none;">
+            <div class="exercise-card">
+                <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Squat" class="exercise-image">
+                <div class="exercise-content">
+                    <h3 class="exercise-title">Squat (Squat)</h3>
+                    <p class="exercise-info">Temel bacak egzersizi, tüm alt vücut kaslarını çalıştırır</p>
+                    <div class="exercise-tags">
+                        <span class="exercise-tag">Quadriceps</span>
+                        <span class="exercise-tag">Hamstring</span>
+                        <span class="exercise-tag">Gluteus</span>
+                    </div>
+                    <div class="exercise-difficulty">
+                        <span>Zorluk:</span>
+                        <div class="difficulty-dots">
+                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <img src="https://images.unsplash.com/photo-1598971639058-fab3c3109a00?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Leg Press" class="exercise-image">
+                <div class="exercise-content">
+                    <h3 class="exercise-title">Leg Press (Bacak Pres)</h3>
+                    <p class="exercise-info">Bacak kaslarını güçlendiren makine egzersizi</p>
+                    <div class="exercise-tags">
+                        <span class="exercise-tag">Quadriceps</span>
+                        <span class="exercise-tag">Hamstring</span>
+                    </div>
+                    <div class="exercise-difficulty">
+                        <span>Zorluk:</span>
+                        <div class="difficulty-dots">
+                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle"></i>
+                            <i class="far fa-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Romanian Deadlift" class="exercise-image">
+                <div class="exercise-content">
+                    <h3 class="exercise-title">Romanian Deadlift (Romen Deadlift)</h3>
+                    <p class="exercise-info">Hamstring ve kalça kaslarını hedefleyen egzersiz</p>
+                    <div class="exercise-tags">
+                        <span class="exercise-tag">Hamstring</span>
+                        <span class="exercise-tag">Gluteus</span>
+                    </div>
+                    <div class="exercise-difficulty">
+                        <span>Zorluk:</span>
+                        <div class="difficulty-dots">
+                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <img src="https://images.unsplash.com/photo-1599058917765-a780eda07a3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Lunges" class="exercise-image">
+                <div class="exercise-content">
+                    <h3 class="exercise-title">Lunges (Lunges)</h3>
+                    <p class="exercise-info">Tek bacak ile yapılan denge ve güç egzersizi</p>
+                    <div class="exercise-tags">
+                        <span class="exercise-tag">Quadriceps</span>
+                        <span class="exercise-tag">Gluteus</span>
+                    </div>
+                    <div class="exercise-difficulty">
+                        <span>Zorluk:</span>
+                        <div class="difficulty-dots">
+                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle"></i>
+                            <i class="far fa-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="omuz-exercises" class="exercise-list" style="display: none;">
+            <div class="exercise-card">
+                <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Overhead Press" class="exercise-image">
+                <div class="exercise-content">
+                    <h3 class="exercise-title">Overhead Press (Overhead Press)</h3>
+                    <p class="exercise-info">Temel omuz egzersizi, deltoid kaslarını güçlendirir</p>
+                    <div class="exercise-tags">
+                        <span class="exercise-tag">Ön Deltoid</span>
+                        <span class="exercise-tag">Orta Deltoid</span>
+                    </div>
+                    <div class="exercise-difficulty">
+                        <span>Zorluk:</span>
+                        <div class="difficulty-dots">
+                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <img src="https://images.unsplash.com/photo-1598971639058-fab3c3109a00?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Lateral Raise" class="exercise-image">
+                <div class="exercise-content">
+                    <h3 class="exercise-title">Lateral Raise (Yan Kaldırma)</h3>
+                    <p class="exercise-info">Orta deltoid kaslarını izole eden egzersiz</p>
+                    <div class="exercise-tags">
+                        <span class="exercise-tag">Orta Deltoid</span>
+                        <span class="exercise-tag">İzole</span>
+                    </div>
+                    <div class="exercise-difficulty">
+                        <span>Zorluk:</span>
+                        <div class="difficulty-dots">
+                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle"></i>
+                            <i class="far fa-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Front Raise" class="exercise-image">
+                <div class="exercise-content">
+                    <h3 class="exercise-title">Front Raise (Ön Kaldırma)</h3>
+                    <p class="exercise-info">Ön deltoid kaslarını izole eden egzersiz</p>
+                    <div class="exercise-tags">
+                        <span class="exercise-tag">Ön Deltoid</span>
+                        <span class="exercise-tag">İzole</span>
+                    </div>
+                    <div class="exercise-difficulty">
+                        <span>Zorluk:</span>
+                        <div class="difficulty-dots">
+                            <i class="fas fa-circle"></i>
+                            <i class="far fa-circle"></i>
+                            <i class="far fa-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <img src="https://images.unsplash.com/photo-1599058917765-a780eda07a3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Reverse Fly" class="exercise-image">
+                <div class="exercise-content">
+                    <h3 class="exercise-title">Reverse Fly (Ters Fly)</h3>
+                    <p class="exercise-info">Arka deltoid kaslarını izole eden egzersiz</p>
+                    <div class="exercise-tags">
+                        <span class="exercise-tag">Arka Deltoid</span>
+                        <span class="exercise-tag">İzole</span>
+                    </div>
+                    <div class="exercise-difficulty">
+                        <span>Zorluk:</span>
+                        <div class="difficulty-dots">
+                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle"></i>
+                            <i class="far fa-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="kol-exercises" class="exercise-list" style="display: none;">
+            <div class="exercise-card">
+                <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Bicep Curl" class="exercise-image">
+                <div class="exercise-content">
+                    <h3 class="exercise-title">Bicep Curl (Biceps Curl)</h3>
+                    <p class="exercise-info">Biceps kaslarını izole eden temel egzersiz</p>
+                    <div class="exercise-tags">
+                        <span class="exercise-tag">Biceps</span>
+                        <span class="exercise-tag">İzole</span>
+                    </div>
+                    <div class="exercise-difficulty">
+                        <span>Zorluk:</span>
+                        <div class="difficulty-dots">
+                            <i class="fas fa-circle"></i>
+                            <i class="far fa-circle"></i>
+                            <i class="far fa-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <img src="https://images.unsplash.com/photo-1598971639058-fab3c3109a00?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Tricep Pushdown" class="exercise-image">
+                <div class="exercise-content">
+                    <h3 class="exercise-title">Tricep Pushdown (Triceps Pushdown)</h3>
+                    <p class="exercise-info">Triceps kaslarını izole eden makine egzersizi</p>
+                    <div class="exercise-tags">
+                        <span class="exercise-tag">Triceps</span>
+                        <span class="exercise-tag">İzole</span>
+                    </div>
+                    <div class="exercise-difficulty">
+                        <span>Zorluk:</span>
+                        <div class="difficulty-dots">
+                            <i class="fas fa-circle"></i>
+                            <i class="far fa-circle"></i>
+                            <i class="far fa-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Hammer Curl" class="exercise-image">
+                <div class="exercise-content">
+                    <h3 class="exercise-title">Hammer Curl (Çekiç Curl)</h3>
+                    <p class="exercise-info">Biceps ve ön kol kaslarını çalıştıran egzersiz</p>
+                    <div class="exercise-tags">
+                        <span class="exercise-tag">Biceps</span>
+                        <span class="exercise-tag">Ön Kol</span>
+                    </div>
+                    <div class="exercise-difficulty">
+                        <span>Zorluk:</span>
+                        <div class="difficulty-dots">
+                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle"></i>
+                            <i class="far fa-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <img src="https://images.unsplash.com/photo-1599058917765-a780eda07a3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Skull Crusher" class="exercise-image">
+                <div class="exercise-content">
+                    <h3 class="exercise-title">Skull Crusher (Skull Crusher)</h3>
+                    <p class="exercise-info">Triceps kaslarını izole eden etkili egzersiz</p>
+                    <div class="exercise-tags">
+                        <span class="exercise-tag">Triceps</span>
+                        <span class="exercise-tag">İzole</span>
+                    </div>
+                    <div class="exercise-difficulty">
+                        <span>Zorluk:</span>
+                        <div class="difficulty-dots">
+                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle"></i>
+                            <i class="far fa-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="karn-exercises" class="exercise-list" style="display: none;">
+            <div class="exercise-card">
+                <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Crunches" class="exercise-image">
+                <div class="exercise-content">
+                    <h3 class="exercise-title">Crunches (Mekik)</h3>
+                    <p class="exercise-info">Üst karın kaslarını hedefleyen temel egzersiz</p>
+                    <div class="exercise-tags">
+                        <span class="exercise-tag">Üst Karın</span>
+                        <span class="exercise-tag">Core</span>
+                    </div>
+                    <div class="exercise-difficulty">
+                        <span>Zorluk:</span>
+                        <div class="difficulty-dots">
+                            <i class="fas fa-circle"></i>
+                            <i class="far fa-circle"></i>
+                            <i class="far fa-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <img src="https://images.unsplash.com/photo-1598971639058-fab3c3109a00?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Plank" class="exercise-image">
+                <div class="exercise-content">
+                    <h3 class="exercise-title">Plank (Plank)</h3>
+                    <p class="exercise-info">Tüm core kaslarını çalıştıran statik egzersiz</p>
+                    <div class="exercise-tags">
+                        <span class="exercise-tag">Core</span>
+                        <span class="exercise-tag">Stabilite</span>
+                    </div>
+                    <div class="exercise-difficulty">
+                        <span>Zorluk:</span>
+                        <div class="difficulty-dots">
+                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle"></i>
+                            <i class="far fa-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Leg Raises" class="exercise-image">
+                <div class="exercise-content">
+                    <h3 class="exercise-title">Leg Raises (Bacak Kaldırma)</h3>
+                    <p class="exercise-info">Alt karın kaslarını hedefleyen etkili egzersiz</p>
+                    <div class="exercise-tags">
+                        <span class="exercise-tag">Alt Karın</span>
+                        <span class="exercise-tag">Core</span>
+                    </div>
+                    <div class="exercise-difficulty">
+                        <span>Zorluk:</span>
+                        <div class="difficulty-dots">
+                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle"></i>
+                            <i class="far fa-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <img src="https://images.unsplash.com/photo-1599058917765-a780eda07a3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Russian Twist" class="exercise-image">
+                <div class="exercise-content">
+                    <h3 class="exercise-title">Russian Twist (Rus Dönüşü)</h3>
+                    <p class="exercise-info">Yan karın kaslarını hedefleyen dönme egzersizi</p>
+                    <div class="exercise-tags">
+                        <span class="exercise-tag">Yan Karın</span>
+                        <span class="exercise-tag">Core</span>
+                    </div>
+                    <div class="exercise-difficulty">
+                        <span>Zorluk:</span>
+                        <div class="difficulty-dots">
+                            <i class="fas fa-circle"></i>
+                            <i class="fas fa-circle"></i>
+                            <i class="far fa-circle"></i>
                         </div>
                     </div>
                 </div>
@@ -507,6 +1050,35 @@
                 ? '<i class="fas fa-times"></i>' 
                 : '<i class="fas fa-bars"></i>';
         });
+
+        function showExercises(category) {
+            // Tüm egzersiz listelerini gizle
+            document.querySelectorAll('.exercise-list').forEach(list => {
+                list.style.display = 'none';
+            });
+            
+            // Seçilen kategoriyi göster
+            switch(category) {
+                case 'gogus':
+                    document.getElementById('gogus-exercises').style.display = 'grid';
+                    break;
+                case 'sirt':
+                    document.getElementById('sirt-exercises').style.display = 'grid';
+                    break;
+                case 'bacak':
+                    document.getElementById('bacak-exercises').style.display = 'grid';
+                    break;
+                case 'omuz':
+                    document.getElementById('omuz-exercises').style.display = 'grid';
+                    break;
+                case 'kol':
+                    document.getElementById('kol-exercises').style.display = 'grid';
+                    break;
+                case 'karn':
+                    document.getElementById('karn-exercises').style.display = 'grid';
+                    break;
+            }
+        }
     </script>
 </body>
 </html> 
