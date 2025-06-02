@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haftalık Beslenme Planı - ByteForce</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .plan-container {
+            max-width: 1200px;
+            margin: 6rem auto 2rem;
+            padding: 0 2rem;
+        }
+
+        .plan-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .plan-header h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .plan-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .plan-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .day-card {
+            background: var(--white);
+            border-radius: 15px;
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .day-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .day-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .day-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .day-header p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        .meals-list {
+            padding: 1.5rem;
+        }
+
+        .meal-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .meal-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .meal-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .meal-title i {
+            color: var(--secondary-color);
+        }
+
+        .meal-content {
+            background: var(--light-gray);
+            padding: 1rem;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .meal-content .edit-button {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.3rem 0.6rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            display: none;
+            transition: var(--transition);
+        }
+
+        .meal-content:hover .edit-button {
+            display: block;
+        }
+
+        .edit-button:hover {
+            background: var(--accent-color);
+        }
+
+        .meal-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .meal-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h3 {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .meal-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            padding: 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .save-meal {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .save-meal:hover {
+            background: var(--accent-color);
+        }
+
+        .snack-section {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .snack-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .snack-title i {
+            color: var(--secondary-color);
+        }
+
+        .add-snack {
+            background: var(--light-gray);
+            border: 2px dashed var(--border-color);
+            padding: 0.8rem;
+            border-radius: 8px;
+            color: var(--text-light);
+            cursor: pointer;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .add-snack:hover {
+            border-color: var(--secondary-color);
+            color: var(--secondary-color);
+        }
+
+        .water-tracker {
+            background: var(--light-gray);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+
+        .water-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .water-header i {
+            color: var(--secondary-color);
+        }
+
+        .water-progress {
+            background: white;
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .water-bar {
+            background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .water-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .water-amount {
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+
+        .add-water {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .add-water:hover {
+            background: var(--accent-color);
+        }
+
+        .notes-section {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--light-gray);
+            border-radius: 10px;
+        }
+
+        .notes-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .notes-header i {
+            color: var(--secondary-color);
+        }
+
+        .notes-content {
+            color: var(--text-color);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .edit-notes {
+            background: none;
+            border: none;
+            color: var(--secondary-color);
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 0.3rem 0.6rem;
+            border-radius: 5px;
+            transition: var(--transition);
+        }
+
+        .edit-notes:hover {
+            background: rgba(255, 77, 77, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .plan-container {
+                padding: 1rem;
+                margin-top: 5rem;
+            }
+
+            .plan-header h1 {
+                font-size: 2rem;
+            }
+
+            .plan-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <i class="fas fa-dumbbell"></i>
+                <span>ByteForce</span>
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="/" class="nav-link">Ana Sayfa</a></li>
+                <li><a href="/programlar" class="nav-link">Programlar</a></li>
+                <li><a href="/egzersizler" class="nav-link">Egzersizler</a></li>
+                <li><a href="/beslenme" class="nav-link active">Beslenme</a></li>
+                <li><a href="/topluluk" class="nav-link">Topluluk</a></li>
+                <li><a href="/iletisim" class="nav-link">İletişim</a></li>
+            </ul>
+
+            <div class="auth-buttons" id="authButtons">
+                <a href="giris.html" class="btn btn-primary" id="loginButton">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Giriş Yap
+                </a>
+                <a href="kayitol.html" class="btn btn-outline" id="registerButton">
+                    <i class="fas fa-user-plus"></i>
+                    Kayıt Ol
+                </a>
+            </div>
+
+            <div class="user-menu" id="userMenu" style="display: none;">
+                <button class="user-button">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="userName">Kullanıcı</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="/profile" class="dropdown-item">
+                        <i class="fas fa-user"></i>
+                        Profilim
+                    </a>
+                    <a href="#" class="dropdown-item" id="logoutButton">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Çıkış Yap
+                    </a>
+                </div>
+            </div>
+
+            <button class="mobile-menu-button" id="mobileMenuButton">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="plan-container">
+        <div class="plan-header">
+            <h1>Haftalık Beslenme Planı</h1>
+            <p>Size özel hazırlanmış, dengeli ve sağlıklı beslenme programı</p>
+        </div>
+
+        <div class="plan-grid">
+            <!-- Pazartesi -->
+            <div class="day-card">
+                <div class="day-header">
+                    <h3>Pazartesi</h3>
+                    <p>Günlük Hedef: 2200 kcal</p>
+                </div>
+                <div class="meals-list">
+                    <div class="meal-item">
+                        <div class="meal-title">
+                            <i class="fas fa-coffee"></i>
+                            <h4>Kahvaltı</h4>
+                        </div>
+                        <div class="meal-content">
+                            <button class="edit-button" onclick="openMealModal('pazartesi', 'kahvalti')">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </button>
+                            <ul id="pazartesi-kahvalti">
+                                <li><i class="fas fa-check"></i> 3 yumurta beyazı + 1 tam yumurta</li>
+                                <li><i class="fas fa-check"></i> 1 dilim tam buğday ekmeği</li>
+                                <li><i class="fas fa-check"></i> 1 avokado</li>
+                                <li><i class="fas fa-check"></i> 1 bardak yeşil çay</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <div class="meal-title">
+                            <i class="fas fa-utensils"></i>
+                            <h4>Öğle Yemeği</h4>
+                        </div>
+                        <div class="meal-content">
+                            <button class="edit-button" onclick="openMealModal('pazartesi', 'ogle')">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </button>
+                            <ul id="pazartesi-ogle">
+                                <li><i class="fas fa-check"></i> 150g ızgara tavuk göğsü</li>
+                                <li><i class="fas fa-check"></i> 1 kase kinoa salatası</li>
+                                <li><i class="fas fa-check"></i> Zeytinyağlı sebze yemeği</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <div class="meal-title">
+                            <i class="fas fa-moon"></i>
+                            <h4>Akşam Yemeği</h4>
+                        </div>
+                        <div class="meal-content">
+                            <button class="edit-button" onclick="openMealModal('pazartesi', 'aksam')">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </button>
+                            <ul id="pazartesi-aksam">
+                                <li><i class="fas fa-check"></i> 200g somon balığı</li>
+                                <li><i class="fas fa-check"></i> Buharda pişmiş sebzeler</li>
+                                <li><i class="fas fa-check"></i> 1 kase mercimek çorbası</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="snack-section">
+                        <div class="snack-title">
+                            <i class="fas fa-apple-alt"></i>
+                            <h4>Ara Öğünler</h4>
+                        </div>
+                        <div class="add-snack" onclick="openMealModal('pazartesi', 'ara-ogun')">
+                            <i class="fas fa-plus"></i> Ara Öğün Ekle
+                        </div>
+                    </div>
+                    <div class="water-tracker">
+                        <div class="water-header">
+                            <i class="fas fa-tint"></i>
+                            <h4>Su Takibi</h4>
+                        </div>
+                        <div class="water-progress">
+                            <div class="water-bar" id="pazartesi-su"></div>
+                        </div>
+                        <div class="water-controls">
+                            <span class="water-amount">0/2.5 Litre</span>
+                            <button class="add-water" onclick="addWater('pazartesi')">+ 250ml</button>
+                        </div>
+                    </div>
+                    <div class="notes-section">
+                        <div class="notes-header">
+                            <i class="fas fa-sticky-note"></i>
+                            <h4>Notlar</h4>
+                        </div>
+                        <div class="notes-content" id="pazartesi-notlar">
+                            Günlük beslenme notlarınızı buraya ekleyebilirsiniz.
+                        </div>
+                        <button class="edit-notes" onclick="editNotes('pazartesi')">
+                            <i class="fas fa-edit"></i> Notları Düzenle
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Salı -->
+            <div class="day-card">
+                <div class="day-header">
+                    <h3>Salı</h3>
+                    <p>Günlük Hedef: 2200 kcal</p>
+                </div>
+                <div class="meals-list">
+                    <div class="meal-item">
+                        <div class="meal-title">
+                            <i class="fas fa-coffee"></i>
+                            <h4>Kahvaltı</h4>
+                        </div>
+                        <div class="meal-content">
+                            <button class="edit-button" onclick="openMealModal('salı', 'kahvalti')">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </button>
+                            <ul id="salı-kahvalti">
+                                <li><i class="fas fa-check"></i> Yulaf ezmesi (50g)</li>
+                                <li><i class="fas fa-check"></i> 1 muz</li>
+                                <li><i class="fas fa-check"></i> 1 yemek kaşığı bal</li>
+                                <li><i class="fas fa-check"></i> 1 bardak süt</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <div class="meal-title">
+                            <i class="fas fa-utensils"></i>
+                            <h4>Öğle Yemeği</h4>
+                        </div>
+                        <div class="meal-content">
+                            <button class="edit-button" onclick="openMealModal('salı', 'ogle')">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </button>
+                            <ul id="salı-ogle">
+                                <li><i class="fas fa-check"></i> Ton balıklı salata</li>
+                                <li><i class="fas fa-check"></i> 1 dilim tam buğday ekmeği</li>
+                                <li><i class="fas fa-check"></i> 1 avuç ceviz</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <div class="meal-title">
+                            <i class="fas fa-moon"></i>
+                            <h4>Akşam Yemeği</h4>
+                        </div>
+                        <div class="meal-content">
+                            <button class="edit-button" onclick="openMealModal('salı', 'aksam')">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </button>
+                            <ul id="salı-aksam">
+                                <li><i class="fas fa-check"></i> 150g kırmızı et</li>
+                                <li><i class="fas fa-check"></i> Bulgur pilavı</li>
+                                <li><i class="fas fa-check"></i> Mevsim salata</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="snack-section">
+                        <div class="snack-title">
+                            <i class="fas fa-apple-alt"></i>
+                            <h4>Ara Öğünler</h4>
+                        </div>
+                        <div class="add-snack" onclick="openMealModal('salı', 'ara-ogun')">
+                            <i class="fas fa-plus"></i> Ara Öğün Ekle
+                        </div>
+                    </div>
+                    <div class="water-tracker">
+                        <div class="water-header">
+                            <i class="fas fa-tint"></i>
+                            <h4>Su Takibi</h4>
+                        </div>
+                        <div class="water-progress">
+                            <div class="water-bar" id="salı-su"></div>
+                        </div>
+                        <div class="water-controls">
+                            <span class="water-amount">0/2.5 Litre</span>
+                            <button class="add-water" onclick="addWater('salı')">+ 250ml</button>
+                        </div>
+                    </div>
+                    <div class="notes-section">
+                        <div class="notes-header">
+                            <i class="fas fa-sticky-note"></i>
+                            <h4>Notlar</h4>
+                        </div>
+                        <div class="notes-content" id="salı-notlar">
+                            Günlük beslenme notlarınızı buraya ekleyebilirsiniz.
+                        </div>
+                        <button class="edit-notes" onclick="editNotes('salı')">
+                            <i class="fas fa-edit"></i> Notları Düzenle
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Çarşamba -->
+            <div class="day-card">
+                <div class="day-header">
+                    <h3>Çarşamba</h3>
+                    <p>Günlük Hedef: 2200 kcal</p>
+                </div>
+                <div class="meals-list">
+                    <div class="meal-item">
+                        <div class="meal-title">
+                            <i class="fas fa-coffee"></i>
+                            <h4>Kahvaltı</h4>
+                        </div>
+                        <div class="meal-content">
+                            <button class="edit-button" onclick="openMealModal('carsamba', 'kahvalti')">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </button>
+                            <ul id="carsamba-kahvalti">
+                                <li><i class="fas fa-check"></i> Omlet (3 yumurta)</li>
+                                <li><i class="fas fa-check"></i> 2 dilim tam buğday ekmeği</li>
+                                <li><i class="fas fa-check"></i> 1 avuç badem</li>
+                                <li><i class="fas fa-check"></i> 1 bardak süt</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <div class="meal-title">
+                            <i class="fas fa-utensils"></i>
+                            <h4>Öğle Yemeği</h4>
+                        </div>
+                        <div class="meal-content">
+                            <button class="edit-button" onclick="openMealModal('carsamba', 'ogle')">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </button>
+                            <ul id="carsamba-ogle">
+                                <li><i class="fas fa-check"></i> 200g ızgara somon</li>
+                                <li><i class="fas fa-check"></i> Buharda pişmiş sebzeler</li>
+                                <li><i class="fas fa-check"></i> 1 kase mercimek çorbası</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <div class="meal-title">
+                            <i class="fas fa-moon"></i>
+                            <h4>Akşam Yemeği</h4>
+                        </div>
+                        <div class="meal-content">
+                            <button class="edit-button" onclick="openMealModal('carsamba', 'aksam')">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </button>
+                            <ul id="carsamba-aksam">
+                                <li><i class="fas fa-check"></i> 150g tavuk göğsü</li>
+                                <li><i class="fas fa-check"></i> Kinoa salatası</li>
+                                <li><i class="fas fa-check"></i> Zeytinyağlı sebze yemeği</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="snack-section">
+                        <div class="snack-title">
+                            <i class="fas fa-apple-alt"></i>
+                            <h4>Ara Öğünler</h4>
+                        </div>
+                        <div class="add-snack" onclick="openMealModal('carsamba', 'ara-ogun')">
+                            <i class="fas fa-plus"></i> Ara Öğün Ekle
+                        </div>
+                    </div>
+                    <div class="water-tracker">
+                        <div class="water-header">
+                            <i class="fas fa-tint"></i>
+                            <h4>Su Takibi</h4>
+                        </div>
+                        <div class="water-progress">
+                            <div class="water-bar" id="carsamba-su"></div>
+                        </div>
+                        <div class="water-controls">
+                            <span class="water-amount">0/2.5 Litre</span>
+                            <button class="add-water" onclick="addWater('carsamba')">+ 250ml</button>
+                        </div>
+                    </div>
+                    <div class="notes-section">
+                        <div class="notes-header">
+                            <i class="fas fa-sticky-note"></i>
+                            <h4>Notlar</h4>
+                        </div>
+                        <div class="notes-content" id="carsamba-notlar">
+                            Günlük beslenme notlarınızı buraya ekleyebilirsiniz.
+                        </div>
+                        <button class="edit-notes" onclick="editNotes('carsamba')">
+                            <i class="fas fa-edit"></i> Notları Düzenle
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Perşembe -->
+            <div class="day-card">
+                <div class="day-header">
+                    <h3>Perşembe</h3>
+                    <p>Günlük Hedef: 2200 kcal</p>
+                </div>
+                <div class="meals-list">
+                    <div class="meal-item">
+                        <div class="meal-title">
+                            <i class="fas fa-coffee"></i>
+                            <h4>Kahvaltı</h4>
+                        </div>
+                        <div class="meal-content">
+                            <button class="edit-button" onclick="openMealModal('persembe', 'kahvalti')">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </button>
+                            <ul id="persembe-kahvalti">
+                                <li><i class="fas fa-check"></i> Yulaf ezmesi (50g)</li>
+                                <li><i class="fas fa-check"></i> 1 muz</li>
+                                <li><i class="fas fa-check"></i> 1 yemek kaşığı bal</li>
+                                <li><i class="fas fa-check"></i> 1 bardak süt</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <div class="meal-title">
+                            <i class="fas fa-utensils"></i>
+                            <h4>Öğle Yemeği</h4>
+                        </div>
+                        <div class="meal-content">
+                            <button class="edit-button" onclick="openMealModal('persembe', 'ogle')">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </button>
+                            <ul id="persembe-ogle">
+                                <li><i class="fas fa-check"></i> Ton balıklı salata</li>
+                                <li><i class="fas fa-check"></i> 1 dilim tam buğday ekmeği</li>
+                                <li><i class="fas fa-check"></i> 1 avuç ceviz</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <div class="meal-title">
+                            <i class="fas fa-moon"></i>
+                            <h4>Akşam Yemeği</h4>
+                        </div>
+                        <div class="meal-content">
+                            <button class="edit-button" onclick="openMealModal('persembe', 'aksam')">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </button>
+                            <ul id="persembe-aksam">
+                                <li><i class="fas fa-check"></i> 150g kırmızı et</li>
+                                <li><i class="fas fa-check"></i> Bulgur pilavı</li>
+                                <li><i class="fas fa-check"></i> Mevsim salata</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="snack-section">
+                        <div class="snack-title">
+                            <i class="fas fa-apple-alt"></i>
+                            <h4>Ara Öğünler</h4>
+                        </div>
+                        <div class="add-snack" onclick="openMealModal('persembe', 'ara-ogun')">
+                            <i class="fas fa-plus"></i> Ara Öğün Ekle
+                        </div>
+                    </div>
+                    <div class="water-tracker">
+                        <div class="water-header">
+                            <i class="fas fa-tint"></i>
+                            <h4>Su Takibi</h4>
+                        </div>
+                        <div class="water-progress">
+                            <div class="water-bar" id="persembe-su"></div>
+                        </div>
+                        <div class="water-controls">
+                            <span class="water-amount">0/2.5 Litre</span>
+                            <button class="add-water" onclick="addWater('persembe')">+ 250ml</button>
+                        </div>
+                    </div>
+                    <div class="notes-section">
+                        <div class="notes-header">
+                            <i class="fas fa-sticky-note"></i>
+                            <h4>Notlar</h4>
+                        </div>
+                        <div class="notes-content" id="persembe-notlar">
+                            Günlük beslenme notlarınızı buraya ekleyebilirsiniz.
+                        </div>
+                        <button class="edit-notes" onclick="editNotes('persembe')">
+                            <i class="fas fa-edit"></i> Notları Düzenle
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cuma -->
+            <div class="day-card">
+                <div class="day-header">
+                    <h3>Cuma</h3>
+                    <p>Günlük Hedef: 2200 kcal</p>
+                </div>
+                <div class="meals-list">
+                    <div class="meal-item">
+                        <div class="meal-title">
+                            <i class="fas fa-coffee"></i>
+                            <h4>Kahvaltı</h4>
+                        </div>
+                        <div class="meal-content">
+                            <button class="edit-button" onclick="openMealModal('cuma', 'kahvalti')">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </button>
+                            <ul id="cuma-kahvalti">
+                                <li><i class="fas fa-check"></i> 3 yumurta beyazı + 1 tam yumurta</li>
+                                <li><i class="fas fa-check"></i> 1 dilim tam buğday ekmeği</li>
+                                <li><i class="fas fa-check"></i> 1 avokado</li>
+                                <li><i class="fas fa-check"></i> 1 bardak yeşil çay</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <div class="meal-title">
+                            <i class="fas fa-utensils"></i>
+                            <h4>Öğle Yemeği</h4>
+                        </div>
+                        <div class="meal-content">
+                            <button class="edit-button" onclick="openMealModal('cuma', 'ogle')">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </button>
+                            <ul id="cuma-ogle">
+                                <li><i class="fas fa-check"></i> 150g ızgara tavuk göğsü</li>
+                                <li><i class="fas fa-check"></i> 1 kase kinoa salatası</li>
+                                <li><i class="fas fa-check"></i> Zeytinyağlı sebze yemeği</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <div class="meal-title">
+                            <i class="fas fa-moon"></i>
+                            <h4>Akşam Yemeği</h4>
+                        </div>
+                        <div class="meal-content">
+                            <button class="edit-button" onclick="openMealModal('cuma', 'aksam')">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </button>
+                            <ul id="cuma-aksam">
+                                <li><i class="fas fa-check"></i> 200g somon balığı</li>
+                                <li><i class="fas fa-check"></i> Buharda pişmiş sebzeler</li>
+                                <li><i class="fas fa-check"></i> 1 kase mercimek çorbası</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="snack-section">
+                        <div class="snack-title">
+                            <i class="fas fa-apple-alt"></i>
+                            <h4>Ara Öğünler</h4>
+                        </div>
+                        <div class="add-snack" onclick="openMealModal('cuma', 'ara-ogun')">
+                            <i class="fas fa-plus"></i> Ara Öğün Ekle
+                        </div>
+                    </div>
+                    <div class="water-tracker">
+                        <div class="water-header">
+                            <i class="fas fa-tint"></i>
+                            <h4>Su Takibi</h4>
+                        </div>
+                        <div class="water-progress">
+                            <div class="water-bar" id="cuma-su"></div>
+                        </div>
+                        <div class="water-controls">
+                            <span class="water-amount">0/2.5 Litre</span>
+                            <button class="add-water" onclick="addWater('cuma')">+ 250ml</button>
+                        </div>
+                    </div>
+                    <div class="notes-section">
+                        <div class="notes-header">
+                            <i class="fas fa-sticky-note"></i>
+                            <h4>Notlar</h4>
+                        </div>
+                        <div class="notes-content" id="cuma-notlar">
+                            Günlük beslenme notlarınızı buraya ekleyebilirsiniz.
+                        </div>
+                        <button class="edit-notes" onclick="editNotes('cuma')">
+                            <i class="fas fa-edit"></i> Notları Düzenle
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cumartesi -->
+            <div class="day-card">
+                <div class="day-header">
+                    <h3>Cumartesi</h3>
+                    <p>Günlük Hedef: 2200 kcal</p>
+                </div>
+                <div class="meals-list">
+                    <div class="meal-item">
+                        <div class="meal-title">
+                            <i class="fas fa-coffee"></i>
+                            <h4>Kahvaltı</h4>
+                        </div>
+                        <div class="meal-content">
+                            <button class="edit-button" onclick="openMealModal('cumartesi', 'kahvalti')">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </button>
+                            <ul id="cumartesi-kahvalti">
+                                <li><i class="fas fa-check"></i> Omlet (3 yumurta)</li>
+                                <li><i class="fas fa-check"></i> 2 dilim tam buğday ekmeği</li>
+                                <li><i class="fas fa-check"></i> 1 avuç badem</li>
+                                <li><i class="fas fa-check"></i> 1 bardak süt</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <div class="meal-title">
+                            <i class="fas fa-utensils"></i>
+                            <h4>Öğle Yemeği</h4>
+                        </div>
+                        <div class="meal-content">
+                            <button class="edit-button" onclick="openMealModal('cumartesi', 'ogle')">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </button>
+                            <ul id="cumartesi-ogle">
+                                <li><i class="fas fa-check"></i> 200g ızgara somon</li>
+                                <li><i class="fas fa-check"></i> Buharda pişmiş sebzeler</li>
+                                <li><i class="fas fa-check"></i> 1 kase mercimek çorbası</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <div class="meal-title">
+                            <i class="fas fa-moon"></i>
+                            <h4>Akşam Yemeği</h4>
+                        </div>
+                        <div class="meal-content">
+                            <button class="edit-button" onclick="openMealModal('cumartesi', 'aksam')">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </button>
+                            <ul id="cumartesi-aksam">
+                                <li><i class="fas fa-check"></i> 150g tavuk göğsü</li>
+                                <li><i class="fas fa-check"></i> Kinoa salatası</li>
+                                <li><i class="fas fa-check"></i> Zeytinyağlı sebze yemeği</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="snack-section">
+                        <div class="snack-title">
+                            <i class="fas fa-apple-alt"></i>
+                            <h4>Ara Öğünler</h4>
+                        </div>
+                        <div class="add-snack" onclick="openMealModal('cumartesi', 'ara-ogun')">
+                            <i class="fas fa-plus"></i> Ara Öğün Ekle
+                        </div>
+                    </div>
+                    <div class="water-tracker">
+                        <div class="water-header">
+                            <i class="fas fa-tint"></i>
+                            <h4>Su Takibi</h4>
+                        </div>
+                        <div class="water-progress">
+                            <div class="water-bar" id="cumartesi-su"></div>
+                        </div>
+                        <div class="water-controls">
+                            <span class="water-amount">0/2.5 Litre</span>
+                            <button class="add-water" onclick="addWater('cumartesi')">+ 250ml</button>
+                        </div>
+                    </div>
+                    <div class="notes-section">
+                        <div class="notes-header">
+                            <i class="fas fa-sticky-note"></i>
+                            <h4>Notlar</h4>
+                        </div>
+                        <div class="notes-content" id="cumartesi-notlar">
+                            Günlük beslenme notlarınızı buraya ekleyebilirsiniz.
+                        </div>
+                        <button class="edit-notes" onclick="editNotes('cumartesi')">
+                            <i class="fas fa-edit"></i> Notları Düzenle
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pazar -->
+            <div class="day-card">
+                <div class="day-header">
+                    <h3>Pazar</h3>
+                    <p>Günlük Hedef: 2200 kcal</p>
+                </div>
+                <div class="meals-list">
+                    <div class="meal-item">
+                        <div class="meal-title">
+                            <i class="fas fa-coffee"></i>
+                            <h4>Kahvaltı</h4>
+                        </div>
+                        <div class="meal-content">
+                            <button class="edit-button" onclick="openMealModal('pazar', 'kahvalti')">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </button>
+                            <ul id="pazar-kahvalti">
+                                <li><i class="fas fa-check"></i> Yulaf ezmesi (50g)</li>
+                                <li><i class="fas fa-check"></i> 1 muz</li>
+                                <li><i class="fas fa-check"></i> 1 yemek kaşığı bal</li>
+                                <li><i class="fas fa-check"></i> 1 bardak süt</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <div class="meal-title">
+                            <i class="fas fa-utensils"></i>
+                            <h4>Öğle Yemeği</h4>
+                        </div>
+                        <div class="meal-content">
+                            <button class="edit-button" onclick="openMealModal('pazar', 'ogle')">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </button>
+                            <ul id="pazar-ogle">
+                                <li><i class="fas fa-check"></i> Ton balıklı salata</li>
+                                <li><i class="fas fa-check"></i> 1 dilim tam buğday ekmeği</li>
+                                <li><i class="fas fa-check"></i> 1 avuç ceviz</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <div class="meal-title">
+                            <i class="fas fa-moon"></i>
+                            <h4>Akşam Yemeği</h4>
+                        </div>
+                        <div class="meal-content">
+                            <button class="edit-button" onclick="openMealModal('pazar', 'aksam')">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </button>
+                            <ul id="pazar-aksam">
+                                <li><i class="fas fa-check"></i> 150g kırmızı et</li>
+                                <li><i class="fas fa-check"></i> Bulgur pilavı</li>
+                                <li><i class="fas fa-check"></i> Mevsim salata</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="snack-section">
+                        <div class="snack-title">
+                            <i class="fas fa-apple-alt"></i>
+                            <h4>Ara Öğünler</h4>
+                        </div>
+                        <div class="add-snack" onclick="openMealModal('pazar', 'ara-ogun')">
+                            <i class="fas fa-plus"></i> Ara Öğün Ekle
+                        </div>
+                    </div>
+                    <div class="water-tracker">
+                        <div class="water-header">
+                            <i class="fas fa-tint"></i>
+                            <h4>Su Takibi</h4>
+                        </div>
+                        <div class="water-progress">
+                            <div class="water-bar" id="pazar-su"></div>
+                        </div>
+                        <div class="water-controls">
+                            <span class="water-amount">0/2.5 Litre</span>
+                            <button class="add-water" onclick="addWater('pazar')">+ 250ml</button>
+                        </div>
+                    </div>
+                    <div class="notes-section">
+                        <div class="notes-header">
+                            <i class="fas fa-sticky-note"></i>
+                            <h4>Notlar</h4>
+                        </div>
+                        <div class="notes-content" id="pazar-notlar">
+                            Günlük beslenme notlarınızı buraya ekleyebilirsiniz.
+                        </div>
+                        <button class="edit-notes" onclick="editNotes('pazar')">
+                            <i class="fas fa-edit"></i> Notları Düzenle
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Öğün Düzenleme Modalı -->
+        <div class="meal-modal" id="mealModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modalTitle">Öğün Düzenle</h3>
+                    <button class="close-modal" onclick="closeMealModal()">&times;</button>
+                </div>
+                <form class="meal-form" id="mealForm">
+                    <input type="hidden" id="currentDay" name="day">
+                    <input type="hidden" id="currentMeal" name="meal">
+                    <div class="form-group">
+                        <label for="mealContent">Öğün İçeriği</label>
+                        <textarea id="mealContent" name="content" placeholder="Her satıra bir besin yazın..."></textarea>
+                    </div>
+                    <button type="submit" class="save-meal">Kaydet</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Notlar Modalı -->
+        <div class="meal-modal" id="notesModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Notları Düzenle</h3>
+                    <button class="close-modal" onclick="closeNotesModal()">&times;</button>
+                </div>
+                <form class="meal-form" id="notesForm">
+                    <input type="hidden" id="notesDay" name="day">
+                    <div class="form-group">
+                        <label for="notesContent">Günlük Notlar</label>
+                        <textarea id="notesContent" name="content" placeholder="Notlarınızı buraya yazın..."></textarea>
+                    </div>
+                    <button type="submit" class="save-meal">Kaydet</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="nutrition-summary">
+            <div class="summary-header">
+                <h2>Haftalık Beslenme Özeti</h2>
+                <p>Ortalama günlük besin değerleri</p>
+            </div>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <h4>Kalori</h4>
+                    <div class="value">2200</div>
+                    <div class="unit">kcal/gün</div>
+                </div>
+                <div class="summary-item">
+                    <h4>Protein</h4>
+                    <div class="value">120</div>
+                    <div class="unit">g/gün</div>
+                </div>
+                <div class="summary-item">
+                    <h4>Karbonhidrat</h4>
+                    <div class="value">250</div>
+                    <div class="unit">g/gün</div>
+                </div>
+                <div class="summary-item">
+                    <h4>Yağ</h4>
+                    <div class="value">65</div>
+                    <div class="unit">g/gün</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Kullanıcı durumunu kontrol et
+        function checkAuthStatus() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user'));
+            
+            if (token && user) {
+                document.getElementById('authButtons').style.display = 'none';
+                document.getElementById('userMenu').style.display = 'block';
+                document.getElementById('userName').textContent = user.username;
+            } else {
+                document.getElementById('authButtons').style.display = 'flex';
+                document.getElementById('userMenu').style.display = 'none';
+            }
+        }
+
+        // Sayfa yüklendiğinde kullanıcı durumunu kontrol et
+        checkAuthStatus();
+
+        // Çıkış işlemi
+        document.getElementById('logoutButton').addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            checkAuthStatus();
+            window.location.reload();
+        });
+
+        // Mobil menü toggle
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const navLinksContainer = document.querySelector('.nav-links');
+        const authButtonsContainer = document.querySelector('.auth-buttons');
+
+        mobileMenuButton.addEventListener('click', () => {
+            navLinksContainer.classList.toggle('active');
+            authButtonsContainer.classList.toggle('mobile');
+            mobileMenuButton.innerHTML = navLinksContainer.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+
+        // Öğün düzenleme fonksiyonları
+        function openMealModal(day, meal) {
+            const modal = document.getElementById('mealModal');
+            const form = document.getElementById('mealForm');
+            const title = document.getElementById('modalTitle');
+            const currentDay = document.getElementById('currentDay');
+            const currentMeal = document.getElementById('currentMeal');
+            const content = document.getElementById('mealContent');
+
+            // Modal başlığını ayarla
+            const mealNames = {
+                'kahvalti': 'Kahvaltı',
+                'ogle': 'Öğle Yemeği',
+                'aksam': 'Akşam Yemeği',
+                'ara-ogun': 'Ara Öğün'
+            };
+
+            title.textContent = `${day.charAt(0).toUpperCase() + day.slice(1)} - ${mealNames[meal]} Düzenle`;
+            currentDay.value = day;
+            currentMeal.value = meal;
+
+            // Mevcut içeriği yükle
+            const mealList = document.getElementById(`${day}-${meal}`);
+            if (mealList) {
+                content.value = Array.from(mealList.getElementsByTagName('li'))
+                    .map(li => li.textContent.trim())
+                    .join('\n');
+            } else {
+                content.value = '';
+            }
+
+            modal.classList.add('active');
+        }
+
+        function closeMealModal() {
+            document.getElementById('mealModal').classList.remove('active');
+        }
+
+        // Notlar düzenleme fonksiyonları
+        function editNotes(day) {
+            const modal = document.getElementById('notesModal');
+            const form = document.getElementById('notesForm');
+            const notesDay = document.getElementById('notesDay');
+            const content = document.getElementById('notesContent');
+
+            notesDay.value = day;
+            content.value = document.getElementById(`${day}-notlar`).textContent.trim();
+
+            modal.classList.add('active');
+        }
+
+        function closeNotesModal() {
+            document.getElementById('notesModal').classList.remove('active');
+        }
+
+        // Su takibi fonksiyonu
+        function addWater(day) {
+            const waterBar = document.getElementById(`${day}-su`);
+            const waterAmount = document.querySelector(`#${day}-su`).parentElement.nextElementSibling.querySelector('.water-amount');
+            const currentAmount = parseInt(waterAmount.textContent) || 0;
+            const newAmount = currentAmount + 250;
+            const percentage = Math.min((newAmount / 2500) * 100, 100);
+
+            waterBar.style.width = `${percentage}%`;
+            waterAmount.textContent = `${newAmount}/2500 ml`;
+
+            // localStorage'a kaydet
+            localStorage.setItem(`${day}-water`, newAmount);
+        }
+
+        // Form submit işlemleri
+        document.getElementById('mealForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const day = document.getElementById('currentDay').value;
+            const meal = document.getElementById('currentMeal').value;
+            const content = document.getElementById('mealContent').value;
+
+            // Öğün içeriğini güncelle
+            const mealList = document.getElementById(`${day}-${meal}`);
+            if (mealList) {
+                mealList.innerHTML = content.split('\n')
+                    .filter(item => item.trim())
+                    .map(item => `<li><i class="fas fa-check"></i> ${item.trim()}</li>`)
+                    .join('');
+            } else {
+                // Yeni ara öğün ekle
+                const snackSection = document.querySelector(`#${day}-ara-ogunler`);
+                if (snackSection) {
+                    const newSnack = document.createElement('div');
+                    newSnack.className = 'meal-item';
+                    newSnack.innerHTML = `
+                        <div class="meal-title">
+                            <i class="fas fa-apple-alt"></i>
+                            <h4>Ara Öğün</h4>
+                        </div>
+                        <div class="meal-content">
+                            <button class="edit-button" onclick="openMealModal('${day}', 'ara-ogun-${Date.now()}')">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </button>
+                            <ul id="${day}-ara-ogun-${Date.now()}">
+                                ${content.split('\n')
+                                    .filter(item => item.trim())
+                                    .map(item => `<li><i class="fas fa-check"></i> ${item.trim()}</li>`)
+                                    .join('')}
+                            </ul>
+                        </div>
+                    `;
+                    snackSection.appendChild(newSnack);
+                }
+            }
+
+            // localStorage'a kaydet
+            localStorage.setItem(`${day}-${meal}`, content);
+            closeMealModal();
+        });
+
+        document.getElementById('notesForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const day = document.getElementById('notesDay').value;
+            const content = document.getElementById('notesContent').value;
+
+            // Notları güncelle
+            document.getElementById(`${day}-notlar`).textContent = content;
+
+            // localStorage'a kaydet
+            localStorage.setItem(`${day}-notes`, content);
+            closeNotesModal();
+        });
+
+        // Sayfa yüklendiğinde localStorage'dan verileri yükle
+        window.addEventListener('load', function() {
+            // Öğünleri yükle
+            document.querySelectorAll('.meal-content ul').forEach(ul => {
+                const id = ul.id;
+                const [day, meal] = id.split('-');
+                const savedContent = localStorage.getItem(`${day}-${meal}`);
+                if (savedContent) {
+                    ul.innerHTML = savedContent.split('\n')
+                        .filter(item => item.trim())
+                        .map(item => `<li><i class="fas fa-check"></i> ${item.trim()}</li>`)
+                        .join('');
+                }
+            });
+
+            // Notları yükle
+            document.querySelectorAll('.notes-content').forEach(notes => {
+                const id = notes.id;
+                const day = id.split('-')[0];
+                const savedNotes = localStorage.getItem(`${day}-notes`);
+                if (savedNotes) {
+                    notes.textContent = savedNotes;
+                }
+            });
+
+            // Su miktarlarını yükle
+            document.querySelectorAll('.water-bar').forEach(bar => {
+                const id = bar.id;
+                const day = id.split('-')[0];
+                const savedWater = localStorage.getItem(`${day}-water`);
+                if (savedWater) {
+                    const percentage = Math.min((parseInt(savedWater) / 2500) * 100, 100);
+                    bar.style.width = `${percentage}%`;
+                    bar.parentElement.nextElementSibling.querySelector('.water-amount').textContent = 
+                        `${savedWater}/2500 ml`;
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
