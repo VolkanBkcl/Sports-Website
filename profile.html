@@ -7,31 +7,817 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="chatbot.css">
+    <style>
+        :root {
+            --primary-color: #1a1a1a;
+            --secondary-color: #ff4d4d;
+            --accent-color: #ff6b6b;
+            --text-color: #333;
+            --light-text: #666;
+            --white: #fff;
+            --light-gray: #f5f5f5;
+            --border-color: #ddd;
+            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --success-color: #2ecc71;
+            --warning-color: #f1c40f;
+            --border-radius: 12px;
+        }
+
+        body {
+            background-color: var(--light-gray);
+            color: var(--text-color);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        .profile-container {
+            max-width: 1200px;
+            margin: 6rem auto 2rem;
+            padding: 0 2rem;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            color: var(--white);
+            box-shadow: var(--box-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1571902943202-507ec2618e8f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') center/cover;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid var(--white);
+            box-shadow: var(--box-shadow);
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .profile-photo:hover {
+            transform: scale(1.05);
+            border-color: var(--accent-color);
+        }
+
+        .profile-details {
+            flex: 1;
+        }
+
+        .profile-details h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        .profile-details p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            color: var(--white);
+        }
+
+        .profile-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        @media (min-width: 1024px) {
+            .profile-content {
+                grid-template-columns: 1.5fr 1fr;
+            }
+        }
+
+        .profile-section {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: clamp(1.5rem, 5vw, 2.5rem);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 2rem;
+            width: 100%;
+        }
+
+        .section-header {
+            margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+            text-align: center;
+            padding: 0 1rem;
+        }
+
+        .section-header h2 {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .section-header h2 i {
+            color: var(--secondary-color);
+            font-size: clamp(1.4rem, 3.5vw, 1.8rem);
+        }
+
+        .section-description {
+            color: var(--light-text);
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+            gap: clamp(1rem, 3vw, 2rem);
+            margin-bottom: 2.5rem;
+            width: 100%;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 clamp(0.5rem, 2vw, 1rem);
+        }
+
+        .form-card {
+            background: var(--light-gray);
+            padding: clamp(1.25rem, 4vw, 2rem);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--box-shadow);
+            border-color: var(--secondary-color);
+        }
+
+        .form-icon {
+            width: clamp(45px, 8vw, 60px);
+            height: clamp(45px, 8vw, 60px);
+            background: var(--secondary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: clamp(1rem, 3vw, 1.5rem);
+        }
+
+        .form-icon i {
+            color: var(--white);
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(0.5rem, 2vw, 0.75rem);
+            flex: 1;
+        }
+
+        .form-group label {
+            color: var(--primary-color);
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: clamp(0.75rem, 2vw, 1rem);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            transition: var(--transition);
+            background: var(--white);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: clamp(80px, 15vw, 100px);
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 77, 77, 0.1);
+        }
+
+        .form-card.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .submit-btn {
+            background: var(--secondary-color);
+            color: var(--white);
+            border: none;
+            padding: clamp(1rem, 3vw, 1.2rem) clamp(2rem, 5vw, 3rem);
+            border-radius: 50px;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin: clamp(1.5rem, 4vw, 2rem) auto;
+            transition: var(--transition);
+            max-width: min(300px, 100%);
+            justify-content: center;
+            width: fit-content;
+        }
+
+        .submit-btn:hover {
+            background: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 77, 77, 0.2);
+        }
+
+        .submit-btn i {
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            transition: var(--transition);
+        }
+
+        .submit-btn:hover i {
+            transform: translateX(5px);
+        }
+
+        .goals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .goal-card {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .goal-card input {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .goal-content {
+            background: var(--light-gray);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+
+        .goal-card input:checked + .goal-content {
+            background: var(--secondary-color);
+            color: var(--white);
+            border-color: var(--accent-color);
+        }
+
+        .goal-content i {
+            font-size: 1.5rem;
+            color: var(--secondary-color);
+        }
+
+        .goal-card input:checked + .goal-content i {
+            color: var(--white);
+        }
+
+        .progress-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .progress-card {
+            background: var(--light-gray);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .progress-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--box-shadow);
+        }
+
+        .progress-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--secondary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .progress-icon i {
+            color: var(--white);
+            font-size: 1.5rem;
+        }
+
+        .progress-card h3 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .progress-bar {
+            background: var(--border-color);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress {
+            background: var(--success-color);
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-stats {
+            display: flex;
+            justify-content: space-between;
+            color: var(--light-text);
+            font-size: 0.9rem;
+        }
+
+        .loading-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .loading-content {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .loading-spinner {
+            margin-bottom: 1.5rem;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--light-gray);
+            border-top: 4px solid var(--secondary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .progress-bar-container {
+            background: #e1e1e1;
+            height: 4px;
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-bar {
+            background: var(--secondary-color);
+            height: 100%;
+            width: 0;
+            transition: width 0.5s ease;
+        }
+
+        .loading-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .profile-container {
+                padding: 1rem;
+                margin-top: 5rem;
+            }
+
+            .profile-info {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-photo {
+                width: 120px;
+                height: 120px;
+            }
+
+            .profile-details h1 {
+                font-size: 2rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .goals-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-section {
+                padding: 1.25rem;
+                margin: 0 -0.5rem;
+                border-radius: 0;
+            }
+
+            .submit-btn {
+                width: 100%;
+                max-width: none;
+            }
+
+            .section-header {
+                padding: 0;
+            }
+
+            .section-header h2 {
+                justify-content: flex-start;
+            }
+        }
+
+        /* Bildirim stilleri */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 2rem;
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transform: translateY(-100%);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .notification.success {
+            border-left: 4px solid var(--success-color);
+        }
+
+        .notification.error {
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .notification i {
+            font-size: 1.2rem;
+        }
+
+        .notification.success i {
+            color: var(--success-color);
+        }
+
+        .notification.error i {
+            color: var(--secondary-color);
+        }
+
+        /* Form kartları için animasyon */
+        .form-card {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        /* Hedef kartları için hover efekti */
+        .goal-content {
+            transition: transform 0.3s ease;
+        }
+
+        /* Navbar Stilleri */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--primary-color);
+            box-shadow: var(--box-shadow);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .navbar.scrolled {
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .logo i {
+            color: var(--secondary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--white);
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary-color);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--secondary-color);
+        }
+
+        .user-menu {
+            position: relative;
+        }
+
+        .user-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: none;
+            border: none;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--white);
+        }
+
+        .user-button:hover {
+            color: var(--secondary-color);
+        }
+
+        .profile-pic {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--secondary-color);
+        }
+
+        .user-button i {
+            font-size: 0.8rem;
+            transition: var(--transition);
+            color: var(--white);
+        }
+
+        .user-menu:hover .user-button i {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--primary-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 0.5rem;
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-menu:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            color: var(--white);
+            text-decoration: none;
+            transition: var(--transition);
+            border-radius: 4px;
+        }
+
+        .dropdown-item:hover,
+        .dropdown-item.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--secondary-color);
+        }
+
+        .dropdown-item i {
+            width: 20px;
+            text-align: center;
+            color: var(--secondary-color);
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--primary-color);
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: var(--box-shadow);
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-link {
+                padding: 0.5rem 0;
+            }
+
+            .user-button span {
+                display: none;
+            }
+
+            .dropdown-menu {
+                position: fixed;
+                top: auto;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                border-radius: var(--border-radius) var(--border-radius) 0 0;
+                transform: translateY(100%);
+            }
+
+            .user-menu:hover .dropdown-menu {
+                transform: translateY(0);
+            }
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: var(--light-text);
+            opacity: 0.7;
+        }
+
+        @media (max-width: 480px) {
+            .form-card {
+                padding: 1rem;
+            }
+
+            .form-icon {
+                width: 40px;
+                height: 40px;
+                margin-bottom: 0.75rem;
+            }
+
+            .form-icon i {
+                font-size: 1.2rem;
+            }
+
+            .form-group label {
+                font-size: 0.9rem;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                font-size: 0.9rem;
+                padding: 0.75rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <header class="header">
-        <nav class="navbar">
-            <div class="logo">
-                <h1>Byteforce</h1>
-            </div>
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <i class="fas fa-dumbbell"></i>
+                <span>ByteForce</span>
+            </a>
+            
             <ul class="nav-links">
-                <li><a href="/">Ana Sayfa</a></li>
-                <li><a href="/programlar">Programlar</a></li>
-                <li><a href="/egzersizler">Egzersizler</a></li>
-                <li><a href="/beslenme">Beslenme</a></li>
-                <li><a href="/topluluk">Topluluk</a></li>
-                <li><a href="/iletisim">İletişim</a></li>
+                <li><a href="/" class="nav-link">Ana Sayfa</a></li>
+                <li><a href="/programlar" class="nav-link">Programlar</a></li>
+                <li><a href="/egzersizler" class="nav-link">Egzersizler</a></li>
+                <li><a href="/beslenme" class="nav-link">Beslenme</a></li>
+                <li><a href="/topluluk" class="nav-link">Topluluk</a></li>
+                <li><a href="/iletisim" class="nav-link">İletişim</a></li>
             </ul>
-            <div class="auth-buttons">
-                <div id="user-menu" class="user-menu">
+
+            <div class="user-menu" id="userMenu">
+                <button class="user-button">
                     <img src="https://source.unsplash.com/random/100x100/?portrait" alt="Profil" class="profile-pic">
-                    <div class="dropdown-menu">
-                        <a href="/profile"><i class="fas fa-user"></i> Profilim</a>
-                        <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Çıkış</a>
-                    </div>
+                    <span id="userName">Kullanıcı</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="/profile" class="dropdown-item active">
+                        <i class="fas fa-user"></i>
+                        Profilim
+                    </a>
+                    <a href="#" class="dropdown-item" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Çıkış Yap
+                    </a>
                 </div>
             </div>
-        </nav>
+        </div>
     </header>
 
     <main class="profile-container">
@@ -46,51 +832,63 @@
         </section>
 
         <section class="profile-content">
-            <div class="profile-section fitness-goals-section">
+            <div class="profile-section">
                 <div class="section-header">
-                    <h2><i class="fas fa-bullseye"></i> Fitness Hedeflerim</h2>
-                    <p class="section-description">Hedeflerinizi belirleyin ve ilerlemenizi takip edin</p>
+                    <h2><i class="fas fa-user"></i> Profil Bilgileri</h2>
+                    <p class="section-description">Kişisel bilgilerinizi güncelleyin ve profilinizi özelleştirin</p>
                 </div>
                 
-                <form id="fitness-goals-form" class="profile-form">
+                <form id="profile-form" class="profile-form">
                     <div class="form-grid">
+                        <!-- Temel Bilgiler -->
                         <div class="form-card">
                             <div class="form-icon">
-                                <i class="fas fa-weight"></i>
+                                <i class="fas fa-user"></i>
                             </div>
                             <div class="form-group">
-                                <label for="current-weight">Mevcut Kilo (kg)</label>
-                                <input type="number" id="current-weight" step="0.1" required>
+                                <label for="username">Kullanıcı Adı</label>
+                                <input type="text" id="username" required>
                             </div>
                         </div>
 
                         <div class="form-card">
                             <div class="form-icon">
-                                <i class="fas fa-bullseye"></i>
+                                <i class="fas fa-envelope"></i>
                             </div>
                             <div class="form-group">
-                                <label for="target-weight">Hedef Kilo (kg)</label>
-                                <input type="number" id="target-weight" step="0.1" required>
+                                <label for="email">E-posta</label>
+                                <input type="email" id="email" required>
+                            </div>
+                        </div>
+
+                        <!-- Kişisel Bilgiler -->
+                        <div class="form-card">
+                            <div class="form-icon">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <div class="form-group">
+                                <label for="fullname">Ad Soyad</label>
+                                <input type="text" id="fullname" placeholder="Adınız ve soyadınız">
                             </div>
                         </div>
 
                         <div class="form-card">
                             <div class="form-icon">
-                                <i class="fas fa-ruler-vertical"></i>
+                                <i class="fas fa-phone"></i>
                             </div>
                             <div class="form-group">
-                                <label for="height">Boy (cm)</label>
-                                <input type="number" id="height" required>
+                                <label for="phone">Telefon Numarası</label>
+                                <input type="tel" id="phone" placeholder="(5XX) XXX XX XX">
                             </div>
                         </div>
 
                         <div class="form-card">
                             <div class="form-icon">
-                                <i class="fas fa-birthday-cake"></i>
+                                <i class="fas fa-calendar"></i>
                             </div>
                             <div class="form-group">
-                                <label for="age">Yaş</label>
-                                <input type="number" id="age" required>
+                                <label for="birthdate">Doğum Tarihi</label>
+                                <input type="date" id="birthdate">
                             </div>
                         </div>
 
@@ -100,7 +898,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="gender">Cinsiyet</label>
-                                <select id="gender" required>
+                                <select id="gender">
                                     <option value="">Seçiniz</option>
                                     <option value="male">Erkek</option>
                                     <option value="female">Kadın</option>
@@ -109,125 +907,64 @@
                             </div>
                         </div>
 
-                        <div class="form-card">
+                        <!-- Adres Bilgileri -->
+                        <div class="form-card full-width">
                             <div class="form-icon">
-                                <i class="fas fa-fire"></i>
+                                <i class="fas fa-map-marker-alt"></i>
                             </div>
                             <div class="form-group">
-                                <label for="activity-level">Aktivite Seviyesi</label>
-                                <select id="activity-level" required>
-                                    <option value="">Seçiniz</option>
-                                    <option value="sedentary">Hareketsiz</option>
-                                    <option value="light">Hafif Aktif</option>
-                                    <option value="moderate">Orta Aktif</option>
-                                    <option value="active">Aktif</option>
-                                    <option value="very-active">Çok Aktif</option>
-                                </select>
+                                <label for="address">Adres</label>
+                                <textarea id="address" rows="3" placeholder="Adres bilgilerinizi giriniz"></textarea>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="goals-section">
-                        <h3><i class="fas fa-flag"></i> Fitness Hedefleriniz</h3>
-                        <div class="goals-grid">
-                            <label class="goal-card">
-                                <input type="checkbox" name="goals" value="weight-loss">
-                                <div class="goal-content">
-                                    <i class="fas fa-weight"></i>
-                                    <span>Kilo Verme</span>
-                                </div>
-                            </label>
-                            <label class="goal-card">
-                                <input type="checkbox" name="goals" value="muscle-gain">
-                                <div class="goal-content">
-                                    <i class="fas fa-dumbbell"></i>
-                                    <span>Kas Kazanma</span>
-                                </div>
-                            </label>
-                            <label class="goal-card">
-                                <input type="checkbox" name="goals" value="endurance">
-                                <div class="goal-content">
-                                    <i class="fas fa-running"></i>
-                                    <span>Dayanıklılık</span>
-                                </div>
-                            </label>
-                            <label class="goal-card">
-                                <input type="checkbox" name="goals" value="flexibility">
-                                <div class="goal-content">
-                                    <i class="fas fa-yoga"></i>
-                                    <span>Esneklik</span>
-                                </div>
-                            </label>
+                        <div class="form-card">
+                            <div class="form-icon">
+                                <i class="fas fa-city"></i>
+                            </div>
+                            <div class="form-group">
+                                <label for="city">Şehir</label>
+                                <input type="text" id="city" placeholder="Şehriniz">
+                            </div>
+                        </div>
+
+                        <div class="form-card">
+                            <div class="form-icon">
+                                <i class="fas fa-map"></i>
+                            </div>
+                            <div class="form-group">
+                                <label for="district">İlçe</label>
+                                <input type="text" id="district" placeholder="İlçeniz">
+                            </div>
+                        </div>
+
+                        <!-- Şifre Değiştirme -->
+                        <div class="form-card">
+                            <div class="form-icon">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <div class="form-group">
+                                <label for="current-password">Mevcut Şifre</label>
+                                <input type="password" id="current-password" placeholder="Şifrenizi değiştirmek için mevcut şifrenizi girin">
+                            </div>
+                        </div>
+
+                        <div class="form-card">
+                            <div class="form-icon">
+                                <i class="fas fa-key"></i>
+                            </div>
+                            <div class="form-group">
+                                <label for="new-password">Yeni Şifre</label>
+                                <input type="password" id="new-password" placeholder="Yeni şifrenizi girin">
+                            </div>
                         </div>
                     </div>
 
                     <button type="submit" class="submit-btn">
-                        <span>Hedefleri Kaydet</span>
+                        <span>Bilgileri Güncelle</span>
                         <i class="fas fa-arrow-right"></i>
                     </button>
                 </form>
-
-                <!-- Yükleme Animasyonu -->
-                <div id="loading-animation" class="loading-animation hidden">
-                    <div class="loading-content">
-                        <div class="loading-spinner">
-                            <div class="spinner"></div>
-                        </div>
-                        <h3>Kişisel Antrenman ve Beslenme Programı Oluşturuluyor</h3>
-                        <div class="progress-bar-container">
-                            <div class="progress-bar"></div>
-                        </div>
-                        <p class="loading-text">Programınız hazırlanıyor, lütfen bekleyin...</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="profile-section progress-section">
-                <div class="section-header">
-                    <h2><i class="fas fa-chart-line"></i> İlerleme Takibi</h2>
-                    <p class="section-description">Hedeflerinize ulaşma yolundaki ilerlemenizi takip edin</p>
-                </div>
-                <div class="progress-container">
-                    <div class="progress-card">
-                        <div class="progress-icon">
-                            <i class="fas fa-weight"></i>
-                        </div>
-                        <h3>Kilo Hedefi</h3>
-                        <div class="progress-bar">
-                            <div class="progress" id="weight-progress"></div>
-                        </div>
-                        <div class="progress-stats">
-                            <span class="current" id="current-weight-display">-- kg</span>
-                            <span class="target" id="target-weight-display">Hedef: -- kg</span>
-                        </div>
-                    </div>
-                    <div class="progress-card">
-                        <div class="progress-icon">
-                            <i class="fas fa-dumbbell"></i>
-                        </div>
-                        <h3>Haftalık Antrenman</h3>
-                        <div class="progress-bar">
-                            <div class="progress" id="workout-progress"></div>
-                        </div>
-                        <div class="progress-stats">
-                            <span class="current" id="current-workouts">0/5</span>
-                            <span class="target">Hedef: 5 antrenman</span>
-                        </div>
-                    </div>
-                    <div class="progress-card">
-                        <div class="progress-icon">
-                            <i class="fas fa-utensils"></i>
-                        </div>
-                        <h3>Beslenme Takibi</h3>
-                        <div class="progress-bar">
-                            <div class="progress" id="nutrition-progress"></div>
-                        </div>
-                        <div class="progress-stats">
-                            <span class="current" id="current-nutrition">0/7</span>
-                            <span class="target">Hedef: 7 gün</span>
-                        </div>
-                    </div>
-                </div>
             </div>
         </section>
     </main>
@@ -250,177 +987,181 @@
                     }
                 });
 
-                if (response.ok) {
-                    const data = await response.json();
-                    currentUser = data.user;
-                    updateProfileInfo();
-                    loadFitnessGoals();
-                } else {
-                    window.location.href = 'index.html';
+                if (!response.ok) {
+                    throw new Error('Kullanıcı bilgileri alınamadı');
                 }
+
+                currentUser = await response.json();
+                updateProfileUI(currentUser);
             } catch (error) {
                 console.error('Profil yükleme hatası:', error);
-                window.location.href = 'index.html';
+                showNotification('Profil bilgileri yüklenirken bir hata oluştu', 'error');
             }
         }
 
-        // Profil bilgilerini güncelle
-        function updateProfileInfo() {
-            document.getElementById('user-name').textContent = `${currentUser.firstName} ${currentUser.lastName}`;
-            document.getElementById('user-email').textContent = currentUser.email;
-        }
+        // Profil UI'ını güncelle
+        function updateProfileUI(user) {
+            // Temel bilgiler
+            document.getElementById('user-name').textContent = user.username || 'İsimsiz Kullanıcı';
+            document.getElementById('user-email').textContent = user.email || 'E-posta yok';
+            document.getElementById('username').value = user.username || '';
+            document.getElementById('email').value = user.email || '';
 
-        // Fitness hedeflerini yükle
-        async function loadFitnessGoals() {
-            try {
-                const response = await fetch('http://localhost:3000/api/users/profile', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    const profile = data.profile;
-                    
-                    if (profile) {
-                        document.getElementById('current-weight').value = profile.weight || '';
-                        document.getElementById('target-weight').value = profile.targetWeight || '';
-                        document.getElementById('height').value = profile.height || '';
-                        document.getElementById('age').value = profile.age || '';
-                        document.getElementById('gender').value = profile.gender || '';
-                        document.getElementById('activity-level').value = profile.activityLevel || '';
-                        
-                        // Fitness hedeflerini işaretle
-                        if (profile.fitnessGoals) {
-                            profile.fitnessGoals.forEach(goal => {
-                                const checkbox = document.querySelector(`input[name="goals"][value="${goal}"]`);
-                                if (checkbox) checkbox.checked = true;
-                            });
-                        }
-
-                        updateProgressBars(profile);
-                    }
-                }
-            } catch (error) {
-                console.error('Hedef yükleme hatası:', error);
+            // Kişisel bilgiler
+            if (user.profile) {
+                document.getElementById('fullname').value = user.profile.fullname || '';
+                document.getElementById('phone').value = user.profile.phone || '';
+                document.getElementById('birthdate').value = user.profile.birthdate || '';
+                document.getElementById('gender').value = user.profile.gender || '';
+                document.getElementById('address').value = user.profile.address || '';
+                document.getElementById('city').value = user.profile.city || '';
+                document.getElementById('district').value = user.profile.district || '';
             }
+
+            // Animasyonlu geçiş efekti
+            document.querySelector('.profile-info').style.opacity = '0';
+            setTimeout(() => {
+                document.querySelector('.profile-info').style.opacity = '1';
+                document.querySelector('.profile-info').style.transform = 'translateY(0)';
+            }, 100);
         }
 
-        // İlerleme çubuklarını güncelle
-        function updateProgressBars(profile) {
-            if (profile.weight && profile.targetWeight) {
-                const progress = ((profile.weight - profile.targetWeight) / (profile.weight - profile.targetWeight)) * 100;
-                document.getElementById('weight-progress').style.width = `${progress}%`;
-                document.getElementById('current-weight-display').textContent = `${profile.weight} kg`;
-                document.getElementById('target-weight-display').textContent = `Hedef: ${profile.targetWeight} kg`;
-            }
-        }
-
-        // Fitness hedeflerini kaydet
-        document.getElementById('fitness-goals-form').addEventListener('submit', async (e) => {
+        // Form gönderimi
+        document.getElementById('profile-form').addEventListener('submit', async (e) => {
             e.preventDefault();
+            showLoadingAnimation();
 
-            const goals = Array.from(document.querySelectorAll('input[name="goals"]:checked'))
-                .map(checkbox => checkbox.value);
-
-            const profileData = {
-                weight: parseFloat(document.getElementById('current-weight').value),
-                targetWeight: parseFloat(document.getElementById('target-weight').value),
-                height: parseInt(document.getElementById('height').value),
-                age: parseInt(document.getElementById('age').value),
-                gender: document.getElementById('gender').value,
-                activityLevel: document.getElementById('activity-level').value,
-                fitnessGoals: goals
+            const formData = {
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                currentPassword: document.getElementById('current-password').value,
+                newPassword: document.getElementById('new-password').value,
+                profile: {
+                    fullname: document.getElementById('fullname').value,
+                    phone: document.getElementById('phone').value,
+                    birthdate: document.getElementById('birthdate').value,
+                    gender: document.getElementById('gender').value,
+                    address: document.getElementById('address').value,
+                    city: document.getElementById('city').value,
+                    district: document.getElementById('district').value
+                }
             };
 
             try {
-                // Formu gizle ve yükleme animasyonunu göster
-                document.getElementById('fitness-goals-form').classList.add('hidden');
-                document.getElementById('loading-animation').classList.remove('hidden');
-
-                // Yükleme animasyonunu başlat
-                const progressBar = document.querySelector('.loading-animation .progress-bar');
-                let progress = 0;
-                const interval = setInterval(() => {
-                    progress += 1;
-                    progressBar.style.width = `${progress}%`;
-                    if (progress >= 100) {
-                        clearInterval(interval);
-                        setTimeout(() => {
-                            document.getElementById('loading-animation').classList.add('hidden');
-                            document.querySelector('.progress-section').classList.remove('hidden');
-                            document.querySelector('.fitness-goals-section').classList.add('hidden');
-                        }, 500);
-                    }
-                }, 150);
-
-                const response = await fetch('http://localhost:3000/api/users/profile', {
-                    method: 'PUT',
+                const response = await fetch('http://localhost:3000/api/profile', {
+                    method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
                     },
-                    body: JSON.stringify(profileData)
+                    body: JSON.stringify(formData)
                 });
 
-                if (response.ok) {
-                    // İlerleme çubuklarını güncelle
-                    updateProgressBars(profileData);
-                } else {
-                    const data = await response.json();
-                    alert(data.message || 'Hedefler kaydedilirken bir hata oluştu');
+                if (!response.ok) {
+                    throw new Error('Profil güncellenemedi');
                 }
+
+                hideLoadingAnimation();
+                showNotification('Profil başarıyla güncellendi', 'success');
+                loadUserProfile();
             } catch (error) {
-                console.error('Hedef kaydetme hatası:', error);
-                alert('Hedefler kaydedilirken bir hata oluştu');
+                console.error('Profil güncelleme hatası:', error);
+                hideLoadingAnimation();
+                showNotification('Profil güncellenirken bir hata oluştu', 'error');
             }
         });
 
-        // Çıkış yap
+        // Yükleme animasyonunu göster
+        function showLoadingAnimation() {
+            const loadingAnimation = document.getElementById('loading-animation');
+            loadingAnimation.classList.remove('hidden');
+            
+            // Progress bar animasyonu
+            const progressBar = loadingAnimation.querySelector('.progress-bar');
+            let width = 0;
+            const interval = setInterval(() => {
+                if (width >= 90) {
+                    clearInterval(interval);
+                } else {
+                    width += Math.random() * 10;
+                    progressBar.style.width = `${width}%`;
+                }
+            }, 500);
+        }
+
+        // Yükleme animasyonunu gizle
+        function hideLoadingAnimation() {
+            const loadingAnimation = document.getElementById('loading-animation');
+            const progressBar = loadingAnimation.querySelector('.progress-bar');
+            progressBar.style.width = '100%';
+            
+            setTimeout(() => {
+                loadingAnimation.classList.add('hidden');
+                progressBar.style.width = '0';
+            }, 500);
+        }
+
+        // Bildirim göster
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                <span>${message}</span>
+            `;
+
+            document.body.appendChild(notification);
+
+            // Animasyonlu giriş
+            setTimeout(() => {
+                notification.style.transform = 'translateY(0)';
+                notification.style.opacity = '1';
+            }, 100);
+
+            // Otomatik kapanma
+            setTimeout(() => {
+                notification.style.transform = 'translateY(-100%)';
+                notification.style.opacity = '0';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Sayfa yüklendiğinde
+        document.addEventListener('DOMContentLoaded', () => {
+            loadUserProfile();
+
+            // Form alanları için animasyonlu geçişler
+            document.querySelectorAll('.form-card').forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100 * index);
+            });
+        });
+
+        // Çıkış işlemi
         function logout() {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             window.location.href = 'index.html';
         }
 
-        // Kullanıcı durumunu kontrol et
-        function checkAuthStatus() {
-            const token = localStorage.getItem('token');
-            const user = JSON.parse(localStorage.getItem('user'));
-            
-            if (token && user) {
-                document.getElementById('authButtons').style.display = 'none';
-                document.getElementById('userMenu').style.display = 'block';
-                document.getElementById('userName').textContent = user.username;
+        // Navbar scroll efekti
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
             } else {
-                // Kullanıcı giriş yapmamışsa kayıt sayfasına yönlendir
-                window.location.href = 'kayitol.html';
+                navbar.classList.remove('scrolled');
             }
-        }
-
-        // Sayfa yüklendiğinde kullanıcı durumunu kontrol et
-        document.addEventListener('DOMContentLoaded', function() {
-            checkAuthStatus();
-
-            // Tüm nav linklerini kontrol et
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    const token = localStorage.getItem('token');
-                    if (!token) {
-                        e.preventDefault();
-                        window.location.href = 'kayitol.html';
-                    }
-                });
-            });
         });
 
-        // Çıkış işlemi
-        document.getElementById('logoutButton').addEventListener('click', (e) => {
-            e.preventDefault();
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            window.location.href = 'kayitol.html';
+        // Kullanıcı adını güncelle
+        document.addEventListener('DOMContentLoaded', () => {
+            const userName = localStorage.getItem('username') || 'Kullanıcı';
+            document.getElementById('userName').textContent = userName;
         });
     </script>
     <script src="chatbot.js"></script>
