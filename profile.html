@@ -178,6 +178,59 @@
             line-height: 1.6;
         }
 
+        .bio-edit-form {
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .bio-edit-form textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius);
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            font-size: 1rem;
+            line-height: 1.6;
+            resize: vertical;
+        }
+
+        .bio-edit-form textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+        }
+
+        .bio-edit-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .bio-edit-buttons button {
+            padding: 0.5rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .bio-save-btn {
+            background: var(--secondary-color);
+            color: var(--white);
+        }
+
+        .bio-cancel-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--white);
+        }
+
+        .bio-edit-buttons button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--box-shadow);
+        }
+
         .profile-content {
             display: grid;
             grid-template-columns: 1fr;
@@ -922,27 +975,29 @@
                     <input type="file" id="profile-photo-input" class="profile-photo-input" accept="image/*">
                 </div>
                 <div class="profile-details">
-                    <h1 id="user-name">İsimsiz Kullanıcı</h1>
+                    <h1 id="userFullName">Kullanıcı Adı</h1>
                     <div class="user-info">
                         <div class="info-item">
+                            <i class="fas fa-user"></i>
+                            <span id="username">@kullaniciadi</span>
+                        </div>
+                        <div class="info-item">
                             <i class="fas fa-envelope"></i>
-                            <span id="user-email">E-posta adresi yok</span>
-                        </div>
-                        <div class="info-item">
-                            <i class="fas fa-phone"></i>
-                            <span id="user-phone">Telefon numarası yok</span>
-                        </div>
-                        <div class="info-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span id="user-location">Konum bilgisi yok</span>
-                        </div>
-                        <div class="info-item">
-                            <i class="fas fa-calendar-alt"></i>
-                            <span id="user-join-date">Üyelik tarihi: Yükleniyor...</span>
+                            <span id="userEmail">kullanici@email.com</span>
                         </div>
                     </div>
-                    <div class="user-bio" id="user-bio">
-                        Henüz bir biyografi eklenmemiş. Profil bilgilerinizi güncelleyerek kendiniz hakkında bilgi ekleyebilirsiniz.
+                    <div class="user-bio">
+                        <div id="bioDisplay"></div>
+                        <button id="editBioBtn" class="bio-edit-btn">
+                            <i class="fas fa-edit"></i> Biyografiyi Düzenle
+                        </button>
+                        <form id="bioEditForm" class="bio-edit-form">
+                            <textarea id="bioInput" placeholder="Kendinizden bahsedin (en az 50 karakter)..." required></textarea>
+                            <div class="bio-edit-buttons">
+                                <button type="submit" class="bio-save-btn">Kaydet</button>
+                                <button type="button" class="bio-cancel-btn">İptal</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -1119,29 +1174,7 @@
         // Profil UI'ını güncelle
         function updateProfileUI(user) {
             // Temel bilgiler
-            document.getElementById('user-name').textContent = user.profile?.fullname || user.username || 'İsimsiz Kullanıcı';
-            document.getElementById('user-email').textContent = user.email || 'E-posta adresi yok';
-            document.getElementById('user-phone').textContent = user.profile?.phone || 'Telefon numarası yok';
-            
-            // Konum bilgisi
-            const location = [];
-            if (user.profile?.city) location.push(user.profile.city);
-            if (user.profile?.district) location.push(user.profile.district);
-            document.getElementById('user-location').textContent = location.length > 0 ? location.join(', ') : 'Konum bilgisi yok';
-
-            // Üyelik tarihi
-            const joinDate = user.createdAt ? new Date(user.createdAt).toLocaleDateString('tr-TR', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            }) : 'Bilinmiyor';
-            document.getElementById('user-join-date').textContent = `Üyelik tarihi: ${joinDate}`;
-
-            // Biyografi
-            const bio = user.profile?.bio || 'Henüz bir biyografi eklenmemiş. Profil bilgilerinizi güncelleyerek kendiniz hakkında bilgi ekleyebilirsiniz.';
-            document.getElementById('user-bio').textContent = bio;
-
-            // Form alanları
+            document.getElementById('userFullName').textContent = user.profile?.fullname || user.username || 'İsimsiz Kullanıcı';
             document.getElementById('username').value = user.username || '';
             document.getElementById('email').value = user.email || '';
             document.getElementById('fullname').value = user.profile?.fullname || '';
@@ -1370,6 +1403,74 @@
                     }
                 }, 200);
             }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const editBioBtn = document.getElementById('editBioBtn');
+            const bioEditForm = document.getElementById('bioEditForm');
+            const bioInput = document.getElementById('bioInput');
+            const bioDisplay = document.getElementById('bioDisplay');
+            const cancelBioBtn = document.querySelector('.bio-cancel-btn');
+
+            // Biyografi düzenleme formunu göster/gizle
+            editBioBtn.addEventListener('click', function() {
+                bioEditForm.style.display = 'block';
+                editBioBtn.style.display = 'none';
+                bioInput.value = bioDisplay.textContent;
+            });
+
+            // İptal butonuna tıklandığında
+            cancelBioBtn.addEventListener('click', function() {
+                bioEditForm.style.display = 'none';
+                editBioBtn.style.display = 'block';
+            });
+
+            // Biyografi kaydetme
+            bioEditForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const biography = bioInput.value.trim();
+                
+                if (biography.length < 50) {
+                    alert('Biyografi en az 50 karakter olmalıdır.');
+                    return;
+                }
+
+                try {
+                    const response = await fetch('/api/users/profile', {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ biography })
+                    });
+
+                    if (response.ok) {
+                        bioDisplay.textContent = biography;
+                        bioEditForm.style.display = 'none';
+                        editBioBtn.style.display = 'block';
+                    } else {
+                        throw new Error('Biyografi güncellenirken bir hata oluştu.');
+                    }
+                } catch (error) {
+                    alert(error.message);
+                }
+            });
+
+            // Sayfa yüklendiğinde biyografiyi getir
+            async function loadUserProfile() {
+                try {
+                    const response = await fetch('/api/users/profile');
+                    if (response.ok) {
+                        const user = await response.json();
+                        bioDisplay.textContent = user.biography || 'Henüz bir biyografi eklenmemiş.';
+                    }
+                } catch (error) {
+                    console.error('Profil bilgileri yüklenirken hata:', error);
+                }
+            }
+
+            loadUserProfile();
         });
     </script>
     <script src="chatbot.js"></script>

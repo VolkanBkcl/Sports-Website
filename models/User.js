@@ -32,6 +32,24 @@ const userSchema = new mongoose.Schema({
         required: false,
         trim: true
     },
+    profile: {
+        fullname: String,
+        phone: String,
+        birthdate: Date,
+        gender: {
+            type: String,
+            enum: ['male', 'female', 'other']
+        },
+        address: String,
+        city: String,
+        district: String,
+        photoUrl: String,
+        age: Number,
+        height: Number,
+        weight: Number,
+        fitnessGoals: [String],
+        activityLevel: String
+    },
     isVerified: {
         type: Boolean,
         default: false
@@ -40,14 +58,6 @@ const userSchema = new mongoose.Schema({
     verificationTokenExpires: Date,
     resetPasswordToken: String,
     resetPasswordExpires: Date,
-    profile: {
-        age: Number,
-        gender: String,
-        height: Number,
-        weight: Number,
-        fitnessGoals: [String],
-        activityLevel: String
-    },
     createdAt: {
         type: Date,
         default: Date.now

@@ -7,6 +7,7 @@ const userRoutes = require('./routes/userRoutes');
 const programRoutes = require('./routes/programRoutes');
 const contentRoutes = require('./routes/contentRoutes');
 const authRoutes = require('./routes/authRoutes');
+const profileRoutes = require('./routes/profile');
 
 // Environment variables
 dotenv.config();
@@ -49,6 +50,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/programs', programRoutes);
 app.use('/api/content', contentRoutes);
+app.use('/api/users', profileRoutes);
 
 // 404 handler - Sayfa bulunamadığında ana sayfaya yönlendir
 app.use((req, res) => {
