@@ -64,4 +64,7 @@ npm run dev
 ## İletişim
 
 Proje Sahibi - [@VolkanBkcl](https://github.com/VolkanBkcl)
+Proje İşbirlikçileri - [@berauygr](https://github.com/berauygr)
+                       [@tasarhalil](https://github.com/tasarhalil)
+                       [@EnsFurkanKaya](https://github.com/EnsFurkanKaya)
 Proje Linki: [https://github.com/VolkanBkcl/Sports-Website]
