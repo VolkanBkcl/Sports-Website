@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const userRoutes = require('./routes/userRoutes');
-const programRoutes = require('./routes/programRoutes');
+// const programRoutes = require('./routes/programRoutes');
 const contentRoutes = require('./routes/contentRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 
@@ -16,7 +16,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(__dirname));
 
 // Ana sayfa route'u
 app.get('/', (req, res) => {
@@ -50,9 +49,11 @@ app.get('/profile', (req, res) => {
 
 // Routes
 app.use('/api/users', userRoutes);
-app.use('/api/programs', programRoutes);
+// app.use('/api/programs', programRoutes);
 app.use('/api/content', contentRoutes);
 app.use('/api/admin', adminRoutes);
+
+app.use(express.static(__dirname));
 
 // MongoDB Bağlantısı
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/byteforce', {

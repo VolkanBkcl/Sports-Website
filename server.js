@@ -8,9 +8,17 @@ const programRoutes = require('./routes/programRoutes');
 const contentRoutes = require('./routes/contentRoutes');
 const authRoutes = require('./routes/authRoutes');
 const profileRoutes = require('./routes/profile');
+const adminRoutes = require('./routes/adminRoutes');
 
 // Environment variables
 dotenv.config();
+
+// JWT_SECRET kontrolü
+if (!process.env.JWT_SECRET) {
+    console.error('JWT_SECRET environment variable tanımlanmamış!');
+    process.env.JWT_SECRET = 'gecici-jwt-secret-key-123'; // Geçici olarak bir secret key tanımla
+    console.warn('Geçici JWT_SECRET kullanılıyor. Lütfen .env dosyasına JWT_SECRET ekleyin!');
+}
 
 const app = express();
 
@@ -21,6 +29,14 @@ app.use(express.urlencoded({ extended: true }));
 
 // Statik dosyaları sun
 app.use(express.static(__dirname));
+
+// API Routes - Önce API route'larını tanımla
+app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/programs', programRoutes);
+app.use('/api/content', contentRoutes);
+app.use('/api/users', profileRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Sayfa route'ları
 const routes = [
@@ -47,15 +63,14 @@ routes.forEach(route => {
     });
 });
 
-// API Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/programs', programRoutes);
-app.use('/api/content', contentRoutes);
-app.use('/api/users', profileRoutes);
-
-// 404 handler - Sayfa bulunamadığında ana sayfaya yönlendir
+// 404 handler - Sadece HTML isteklerini ana sayfaya yönlendir
 app.use((req, res) => {
+    // Eğer istek /api ile başlıyorsa, 404 JSON yanıtı döndür
+    if (req.path.startsWith('/api/')) {
+        return res.status(404).json({ error: 'API endpoint bulunamadı' });
+    }
+    
+    // HTML istekleri için ana sayfaya yönlendir
     if (req.accepts('html')) {
         res.redirect('/');
     } else {
