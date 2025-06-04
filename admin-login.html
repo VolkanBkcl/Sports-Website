@@ -63,9 +63,10 @@
                 if (response.ok) {
                     const data = await response.json();
                     localStorage.setItem('adminToken', data.token);
-                    window.location.href = '/admin-dashboard.html';
+                    window.location.href = '/admin-dashboard';
                 } else {
-                    alert('Giriş başarısız! Lütfen bilgilerinizi kontrol edin.');
+                    const errorData = await response.json();
+                    alert(errorData.message || 'Giriş başarısız! Lütfen bilgilerinizi kontrol edin.');
                 }
             } catch (error) {
                 console.error('Giriş hatası:', error);

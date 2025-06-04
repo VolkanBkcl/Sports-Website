@@ -30,7 +30,9 @@ const routes = [
     { path: '/beslenme', file: 'beslenme.html' },
     { path: '/topluluk', file: 'topluluk.html' },
     { path: '/iletisim', file: 'iletisim.html' },
-    { path: '/profile', file: 'profile.html' }
+    { path: '/profile', file: 'profile.html' },
+    { path: '/admin-login', file: 'admin-login.html' },
+    { path: '/admin-dashboard', file: 'admin-dashboard.html' }
 ];
 
 // Her route için handler oluştur
