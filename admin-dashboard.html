@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Paneli - Spor ve Sağlık Platformu</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="admin.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="admin-dashboard">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-sidebar-header">
+                <i class="fas fa-dumbbell"></i>
+                <h2>Admin Panel</h2>
+            </div>
+            <nav class="admin-nav">
+                <a href="#" class="admin-nav-item active">
+                    <i class="fas fa-home"></i>
+                    <span>Ana Sayfa</span>
+                </a>
+                <a href="#" class="admin-nav-item">
+                    <i class="fas fa-users"></i>
+                    <span>Kullanıcılar</span>
+                </a>
+                <a href="#" class="admin-nav-item">
+                    <i class="fas fa-utensils"></i>
+                    <span>Tarifler</span>
+                </a>
+                <a href="#" class="admin-nav-item">
+                    <i class="fas fa-dumbbell"></i>
+                    <span>Egzersizler</span>
+                </a>
+                <a href="#" class="admin-nav-item">
+                    <i class="fas fa-comments"></i>
+                    <span>Yorumlar</span>
+                </a>
+                <a href="#" class="admin-nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Ayarlar</span>
+                </a>
+                <a href="#" class="admin-nav-item" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Çıkış Yap</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <h1>Kontrol Paneli</h1>
+                <div class="admin-user">
+                    <span>Hoş geldiniz, Admin</span>
+                    <i class="fas fa-user-circle"></i>
+                </div>
+            </header>
+
+            <!-- Statistics Cards -->
+            <div class="admin-stats">
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-title">Toplam Kullanıcı</span>
+                        <div class="stat-card-icon" style="background: rgba(52, 152, 219, 0.1); color: #3498db;">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                    <h3 class="stat-card-value">1,234</h3>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-title">Aktif Tarifler</span>
+                        <div class="stat-card-icon" style="background: rgba(46, 204, 113, 0.1); color: #2ecc71;">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                    </div>
+                    <h3 class="stat-card-value">567</h3>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-title">Toplam Egzersiz</span>
+                        <div class="stat-card-icon" style="background: rgba(155, 89, 182, 0.1); color: #9b59b6;">
+                            <i class="fas fa-dumbbell"></i>
+                        </div>
+                    </div>
+                    <h3 class="stat-card-value">890</h3>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <span class="stat-card-title">Yeni Yorumlar</span>
+                        <div class="stat-card-icon" style="background: rgba(241, 196, 15, 0.1); color: #f1c40f;">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                    </div>
+                    <h3 class="stat-card-value">45</h3>
+                </div>
+            </div>
+
+            <!-- Recent Users Table -->
+            <div class="admin-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Kullanıcı</th>
+                            <th>E-posta</th>
+                            <th>Kayıt Tarihi</th>
+                            <th>Durum</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <img src="https://via.placeholder.com/32" alt="User" style="border-radius: 50%;">
+                                    <span>Ahmet Yılmaz</span>
+                                </div>
+                            </td>
+                            <td>ahmet@example.com</td>
+                            <td>2024-03-15</td>
+                            <td><span style="color: #2ecc71;">Aktif</span></td>
+                            <td>
+                                <button class="admin-action-btn edit-btn">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="admin-action-btn delete-btn">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <img src="https://via.placeholder.com/32" alt="User" style="border-radius: 50%;">
+                                    <span>Ayşe Demir</span>
+                                </div>
+                            </td>
+                            <td>ayse@example.com</td>
+                            <td>2024-03-14</td>
+                            <td><span style="color: #2ecc71;">Aktif</span></td>
+                            <td>
+                                <button class="admin-action-btn edit-btn">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="admin-action-btn delete-btn">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Admin token kontrolü
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('adminToken');
+            if (!token) {
+                window.location.href = '/admin-login.html';
+            }
+        });
+
+        // Çıkış yapma işlemi
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('adminToken');
+            window.location.href = '/admin-login.html';
+        });
+
+        // Tablo satırları için işlem butonları
+        document.querySelectorAll('.admin-action-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const action = btn.classList.contains('edit-btn') ? 'düzenle' : 'sil';
+                const row = btn.closest('tr');
+                const userName = row.querySelector('td:first-child span').textContent;
+                
+                if (action === 'sil') {
+                    if (confirm(`${userName} kullanıcısını silmek istediğinizden emin misiniz?`)) {
+                        // Silme işlemi burada yapılacak
+                        console.log(`${userName} silindi`);
+                    }
+                } else {
+                    // Düzenleme işlemi burada yapılacak
+                    console.log(`${userName} düzenleniyor`);
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
