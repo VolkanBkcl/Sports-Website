@@ -3,6 +3,9 @@ const router = express.Router();
 const Admin = require('../models/Admin');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const Recipe = require('../models/Recipe');
+const Exercise = require('../models/Exercise');
+const Comment = require('../models/Comment');
 
 // Admin login
 router.post('/login', async (req, res) => {
@@ -103,6 +106,27 @@ router.get('/check-admins', async (req, res) => {
         });
     } catch (err) {
         console.error('Admin listeleme hatası:', err);
+        res.status(500).json({ message: 'Sunucu hatası.' });
+    }
+});
+
+// Dashboard istatistikleri
+router.get('/dashboard-stats', async (req, res) => {
+    try {
+        const [userCount, recipeCount, exerciseCount, newCommentCount] = await Promise.all([
+            require('../models/User').countDocuments(),
+            Recipe.countDocuments({ isActive: true }),
+            Exercise.countDocuments(),
+            Comment.countDocuments({ isNew: true })
+        ]);
+        res.json({
+            userCount,
+            recipeCount,
+            exerciseCount,
+            newCommentCount
+        });
+    } catch (err) {
+        console.error('Dashboard stats hatası:', err);
         res.status(500).json({ message: 'Sunucu hatası.' });
     }
 });
