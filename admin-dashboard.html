@@ -156,14 +156,13 @@
     </div>
 
     <script>
-        // Admin token kontrolü
+        // Admin token kontrolü ve dashboard istatistikleri
         document.addEventListener('DOMContentLoaded', async () => {
             const token = localStorage.getItem('adminToken');
             if (!token) {
                 window.location.href = '/admin-login';
                 return;
             }
-
             // Dashboard istatistiklerini çek
             try {
                 const response = await fetch('/api/admin/dashboard-stats', {
@@ -181,6 +180,19 @@
             } catch (err) {
                 console.error('Dashboard stats çekilemedi:', err);
             }
+        });
+        // Sadece çıkış butonunda engelleme
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+
+            // Sidebar linklerinde sadece href="#" olanlarda preventDefault uygula
+            document.querySelectorAll('.admin-nav-item').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (this.getAttribute('href') === '#') {
+                        e.preventDefault();
+                    }
+                });
+            });
         });
 
         // Çıkış yapma işlemi

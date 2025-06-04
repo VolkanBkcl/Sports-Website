@@ -47,6 +47,30 @@ app.get('/profile', (req, res) => {
     res.sendFile(__dirname + '/profile.html');
 });
 
+app.get('/admin-dashboard', (req, res) => {
+    res.sendFile(__dirname + '/admin-dashboard.html');
+});
+
+app.get('/admin-users', (req, res) => {
+    res.sendFile(__dirname + '/admin-users.html');
+});
+
+app.get('/admin-recipes', (req, res) => {
+    res.sendFile(__dirname + '/admin-recipes.html');
+});
+
+app.get('/admin-exercises', (req, res) => {
+    res.sendFile(__dirname + '/admin-exercises.html');
+});
+
+app.get('/admin-comments', (req, res) => {
+    res.sendFile(__dirname + '/admin-comments.html');
+});
+
+app.get('/admin-settings', (req, res) => {
+    res.sendFile(__dirname + '/admin-settings.html');
+});
+
 // Routes
 app.use('/api/users', userRoutes);
 // app.use('/api/programs', programRoutes);

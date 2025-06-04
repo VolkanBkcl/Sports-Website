@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Paneli - Ayarlar</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="admin.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="admin-dashboard">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-sidebar-header">
+                <i class="fas fa-dumbbell"></i>
+                <h2>Admin Panel</h2>
+            </div>
+            <nav class="admin-nav">
+                <a href="/admin-dashboard" class="admin-nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Ana Sayfa</span>
+                </a>
+                <a href="/admin-users" class="admin-nav-item">
+                    <i class="fas fa-users"></i>
+                    <span>Kullanıcılar</span>
+                </a>
+                <a href="/admin-recipes" class="admin-nav-item">
+                    <i class="fas fa-utensils"></i>
+                    <span>Tarifler</span>
+                </a>
+                <a href="/admin-exercises" class="admin-nav-item">
+                    <i class="fas fa-dumbbell"></i>
+                    <span>Egzersizler</span>
+                </a>
+                <a href="/admin-comments" class="admin-nav-item">
+                    <i class="fas fa-comments"></i>
+                    <span>Yorumlar</span>
+                </a>
+                <a href="/admin-settings" class="admin-nav-item active">
+                    <i class="fas fa-cog"></i>
+                    <span>Ayarlar</span>
+                </a>
+                <a href="#" class="admin-nav-item" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Çıkış Yap</span>
+                </a>
+            </nav>
+        </aside>
+        <!-- Main Content -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <h1>Ayarlar</h1>
+                <div class="admin-user">
+                    <span>Hoş geldiniz, Admin</span>
+                    <i class="fas fa-user-circle"></i>
+                </div>
+            </header>
+            <div class="admin-table" style="padding:2rem;">
+                <h2 style="margin-bottom:1.5rem; color:var(--primary-color);">Panel Ayarları</h2>
+                <form>
+                    <div class="form-group" style="margin-bottom:1.5rem;">
+                        <label for="siteTitle">Site Başlığı</label>
+                        <input type="text" id="siteTitle" name="siteTitle" value="ByteForce - Fitness & Sağlık Platformu" style="width:100%;padding:0.7rem;border-radius:6px;border:1px solid var(--border-color);">
+                    </div>
+                    <div class="form-group" style="margin-bottom:1.5rem;">
+                        <label for="adminEmail">Admin E-posta</label>
+                        <input type="email" id="adminEmail" name="adminEmail" value="admin@example.com" style="width:100%;padding:0.7rem;border-radius:6px;border:1px solid var(--border-color);">
+                    </div>
+                    <button type="submit" class="admin-action-btn edit-btn">Kaydet</button>
+                </form>
+            </div>
+        </main>
+    </div>
+    <script>
+        // Token kontrolü
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('adminToken');
+            if (!token) {
+                window.location.href = '/admin-login';
+            }
+        });
+        // Sadece çıkış butonunda engelleme
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('adminToken');
+            window.location.href = '/admin-login';
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Paneli - Yorumlar</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="admin.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="admin-dashboard">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-sidebar-header">
+                <i class="fas fa-dumbbell"></i>
+                <h2>Admin Panel</h2>
+            </div>
+            <nav class="admin-nav">
+                <a href="/admin-dashboard" class="admin-nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Ana Sayfa</span>
+                </a>
+                <a href="/admin-users" class="admin-nav-item">
+                    <i class="fas fa-users"></i>
+                    <span>Kullanıcılar</span>
+                </a>
+                <a href="/admin-recipes" class="admin-nav-item">
+                    <i class="fas fa-utensils"></i>
+                    <span>Tarifler</span>
+                </a>
+                <a href="/admin-exercises" class="admin-nav-item">
+                    <i class="fas fa-dumbbell"></i>
+                    <span>Egzersizler</span>
+                </a>
+                <a href="/admin-comments" class="admin-nav-item active">
+                    <i class="fas fa-comments"></i>
+                    <span>Yorumlar</span>
+                </a>
+                <a href="/admin-settings" class="admin-nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Ayarlar</span>
+                </a>
+                <a href="#" class="admin-nav-item" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Çıkış Yap</span>
+                </a>
+            </nav>
+        </aside>
+        <!-- Main Content -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <h1>Yorumlar</h1>
+                <div class="admin-user">
+                    <span>Hoş geldiniz, Admin</span>
+                    <i class="fas fa-user-circle"></i>
+                </div>
+            </header>
+            <div class="admin-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Kullanıcı</th>
+                            <th>Yorum</th>
+                            <th>Tarih</th>
+                            <th>Durum</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Ahmet Yılmaz</td>
+                            <td>Çok faydalı bir tarif, teşekkürler!</td>
+                            <td>2024-03-15</td>
+                            <td><span style="color: #ff9800;">Yeni</span></td>
+                            <td>
+                                <button class="admin-action-btn edit-btn"><i class="fas fa-check"></i></button>
+                                <button class="admin-action-btn delete-btn"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Ayşe Demir</td>
+                            <td>Egzersiz videosu çok açıklayıcıydı.</td>
+                            <td>2024-03-14</td>
+                            <td><span style="color: #4caf50;">Onaylı</span></td>
+                            <td>
+                                <button class="admin-action-btn edit-btn"><i class="fas fa-check"></i></button>
+                                <button class="admin-action-btn delete-btn"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    <script>
+        // Token kontrolü
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('adminToken');
+            if (!token) {
+                window.location.href = '/admin-login';
+            }
+        });
+        // Sadece çıkış butonunda engelleme
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('adminToken');
+            window.location.href = '/admin-login';
+        });
+    </script>
+</body>
+</html> 
